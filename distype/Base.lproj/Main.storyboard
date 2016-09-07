@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,11 +17,94 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R4l-7J-K2N">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8ON-3p-v3B">
+                                        <rect key="frame" x="40" y="88" width="520" height="29"/>
+                                        <color key="backgroundColor" red="0.76862745099999996" green="0.80392156859999997" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <state key="normal" title="СКАЗАТЬ">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="keyPath">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="VbG-YJ-F8d">
+                                        <rect key="frame" x="40" y="125" width="520" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" enablesReturnKeyAutomatically="YES"/>
+                                    </textField>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZYX-PJ-eII">
+                                        <rect key="frame" x="40" y="163" width="520" height="429"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableView>
+                                    <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dZi-Z6-shq">
+                                        <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                        <items>
+                                            <barButtonItem title="DisType" style="plain" id="2Ej-Ho-KtA">
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </barButtonItem>
+                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="2my-dx-uB0"/>
+                                            <barButtonItem image="chatSelection" style="plain" id="Tp8-rI-bXG">
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </barButtonItem>
+                                            <barButtonItem image="deleteChat" id="RhC-8B-5KC">
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </barButtonItem>
+                                            <barButtonItem title=". . ." id="QHt-dt-tmd">
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </barButtonItem>
+                                        </items>
+                                        <color key="barTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </toolbar>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="8ON-3p-v3B" firstAttribute="top" secondItem="dZi-Z6-shq" secondAttribute="bottom" constant="24" id="7Cm-HL-PQ2"/>
+                                    <constraint firstItem="ZYX-PJ-eII" firstAttribute="trailing" secondItem="8ON-3p-v3B" secondAttribute="trailing" id="FvN-P1-piq"/>
+                                    <constraint firstItem="ZYX-PJ-eII" firstAttribute="top" secondItem="VbG-YJ-F8d" secondAttribute="bottom" constant="8" id="Nur-zu-BKz"/>
+                                    <constraint firstItem="8ON-3p-v3B" firstAttribute="leading" secondItem="R4l-7J-K2N" secondAttribute="leading" constant="40" id="U35-wr-TbQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="dZi-Z6-shq" secondAttribute="trailing" id="W33-xH-lx6"/>
+                                    <constraint firstItem="dZi-Z6-shq" firstAttribute="leading" secondItem="R4l-7J-K2N" secondAttribute="leading" id="X2w-LR-xg0"/>
+                                    <constraint firstItem="ZYX-PJ-eII" firstAttribute="leading" secondItem="8ON-3p-v3B" secondAttribute="leading" id="cho-FM-4ha"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="ZYX-PJ-eII" secondAttribute="bottom" id="dCU-jQ-q7g"/>
+                                    <constraint firstItem="VbG-YJ-F8d" firstAttribute="trailing" secondItem="8ON-3p-v3B" secondAttribute="trailing" id="fzt-WE-1Nt"/>
+                                    <constraint firstItem="VbG-YJ-F8d" firstAttribute="leading" secondItem="8ON-3p-v3B" secondAttribute="leading" id="hcd-PN-BK2"/>
+                                    <constraint firstItem="8ON-3p-v3B" firstAttribute="centerX" secondItem="R4l-7J-K2N" secondAttribute="centerX" id="j2K-9c-Wug"/>
+                                    <constraint firstItem="VbG-YJ-F8d" firstAttribute="top" secondItem="8ON-3p-v3B" secondAttribute="bottom" constant="8" id="v1V-Eu-Ogo"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="R4l-7J-K2N" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Nxv-4i-YrS"/>
+                            <constraint firstItem="R4l-7J-K2N" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ZtE-7J-ER5"/>
+                            <constraint firstItem="R4l-7J-K2N" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="ao5-w3-VUm"/>
+                            <constraint firstItem="R4l-7J-K2N" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="uvO-Sh-gjI"/>
+                            <constraint firstItem="dZi-Z6-shq" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="vgm-ch-1a9"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="enterTextField" destination="VbG-YJ-F8d" id="pRC-9p-xZb"/>
+                        <outlet property="phrasesTableView" destination="ZYX-PJ-eII" id="pTD-GE-6H5"/>
+                        <outlet property="sayButton" destination="8ON-3p-v3B" id="bh2-pn-ny1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="389" y="415"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="chatSelection" width="23" height="23"/>
+        <image name="deleteChat" width="25" height="25"/>
+    </resources>
 </document>
