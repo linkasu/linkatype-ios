@@ -10,11 +10,14 @@
 		09EE57E9A343DD10084140C3 /* libPods-distype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6075458B309E16CED04FC6E9 /* libPods-distype.a */; };
 		749240B11D749D5100A371F8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B01D749D5100A371F8 /* main.m */; };
 		749240B41D749D5100A371F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B31D749D5100A371F8 /* AppDelegate.m */; };
-		749240B71D749D5100A371F8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B61D749D5100A371F8 /* ViewController.m */; };
 		749240BA1D749D5100A371F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 749240B81D749D5100A371F8 /* Main.storyboard */; };
-		749240BD1D749D5100A371F8 /* distype.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 749240BB1D749D5100A371F8 /* distype.xcdatamodeld */; };
 		749240BF1D749D5100A371F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 749240BE1D749D5100A371F8 /* Assets.xcassets */; };
 		749240C21D749D5100A371F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 749240C01D749D5100A371F8 /* LaunchScreen.storyboard */; };
+		D976ACD21D8815E1002799B0 /* AMChatsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D976ACD11D8815E1002799B0 /* AMChatsListViewController.m */; };
+		D976ACD61D881AF5002799B0 /* AMChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D976ACD51D881AF5002799B0 /* AMChatMessageModel.m */; };
+		D976ACDC1D8820A2002799B0 /* AMChatTextInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = D976ACDB1D8820A2002799B0 /* AMChatTextInputView.m */; };
+		D976ACDF1D8820CC002799B0 /* AMChatTextInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D976ACDE1D8820CC002799B0 /* AMChatTextInputView.xib */; };
+		D97D3D701D87F6DE00B2E13B /* AMActiveChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D97D3D6F1D87F6DE00B2E13B /* AMActiveChatViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,14 +26,20 @@
 		749240B01D749D5100A371F8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		749240B21D749D5100A371F8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		749240B31D749D5100A371F8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		749240B51D749D5100A371F8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		749240B61D749D5100A371F8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		749240B91D749D5100A371F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		749240BC1D749D5100A371F8 /* distype.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = distype.xcdatamodel; sourceTree = "<group>"; };
 		749240BE1D749D5100A371F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		749240C11D749D5100A371F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		749240C31D749D5100A371F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CEE2547E1977FACADE7C090 /* Pods-distype.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-distype.debug.xcconfig"; path = "Pods/Target Support Files/Pods-distype/Pods-distype.debug.xcconfig"; sourceTree = "<group>"; };
+		D976ACD01D8815E1002799B0 /* AMChatsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMChatsListViewController.h; sourceTree = "<group>"; };
+		D976ACD11D8815E1002799B0 /* AMChatsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMChatsListViewController.m; sourceTree = "<group>"; };
+		D976ACD41D881AF5002799B0 /* AMChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMChatMessageModel.h; sourceTree = "<group>"; };
+		D976ACD51D881AF5002799B0 /* AMChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMChatMessageModel.m; sourceTree = "<group>"; };
+		D976ACDA1D8820A2002799B0 /* AMChatTextInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMChatTextInputView.h; sourceTree = "<group>"; };
+		D976ACDB1D8820A2002799B0 /* AMChatTextInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMChatTextInputView.m; sourceTree = "<group>"; };
+		D976ACDE1D8820CC002799B0 /* AMChatTextInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMChatTextInputView.xib; sourceTree = "<group>"; };
+		D97D3D6E1D87F6DE00B2E13B /* AMActiveChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMActiveChatViewController.h; sourceTree = "<group>"; };
+		D97D3D6F1D87F6DE00B2E13B /* AMActiveChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMActiveChatViewController.m; sourceTree = "<group>"; };
 		DB4D9D930C836901AF75E2A5 /* Pods-distype.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-distype.release.xcconfig"; path = "Pods/Target Support Files/Pods-distype/Pods-distype.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,15 +93,15 @@
 		749240AE1D749D5100A371F8 /* distype */ = {
 			isa = PBXGroup;
 			children = (
+				D976ACD31D881ADB002799B0 /* Models */,
+				D976ACCF1D8815B1002799B0 /* ChatsList */,
+				D97D3D6D1D87F67400B2E13B /* ActiveChat */,
 				749240B21D749D5100A371F8 /* AppDelegate.h */,
 				749240B31D749D5100A371F8 /* AppDelegate.m */,
-				749240B51D749D5100A371F8 /* ViewController.h */,
-				749240B61D749D5100A371F8 /* ViewController.m */,
 				749240B81D749D5100A371F8 /* Main.storyboard */,
 				749240BE1D749D5100A371F8 /* Assets.xcassets */,
 				749240C01D749D5100A371F8 /* LaunchScreen.storyboard */,
 				749240C31D749D5100A371F8 /* Info.plist */,
-				749240BB1D749D5100A371F8 /* distype.xcdatamodeld */,
 				749240AF1D749D5100A371F8 /* Supporting Files */,
 			);
 			path = distype;
@@ -106,6 +115,44 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D976ACCF1D8815B1002799B0 /* ChatsList */ = {
+			isa = PBXGroup;
+			children = (
+				D976ACD01D8815E1002799B0 /* AMChatsListViewController.h */,
+				D976ACD11D8815E1002799B0 /* AMChatsListViewController.m */,
+			);
+			name = ChatsList;
+			sourceTree = "<group>";
+		};
+		D976ACD31D881ADB002799B0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D976ACD41D881AF5002799B0 /* AMChatMessageModel.h */,
+				D976ACD51D881AF5002799B0 /* AMChatMessageModel.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		D976ACDD1D8820AE002799B0 /* ChatTextInput */ = {
+			isa = PBXGroup;
+			children = (
+				D976ACDA1D8820A2002799B0 /* AMChatTextInputView.h */,
+				D976ACDB1D8820A2002799B0 /* AMChatTextInputView.m */,
+				D976ACDE1D8820CC002799B0 /* AMChatTextInputView.xib */,
+			);
+			name = ChatTextInput;
+			sourceTree = "<group>";
+		};
+		D97D3D6D1D87F67400B2E13B /* ActiveChat */ = {
+			isa = PBXGroup;
+			children = (
+				D97D3D6E1D87F6DE00B2E13B /* AMActiveChatViewController.h */,
+				D97D3D6F1D87F6DE00B2E13B /* AMActiveChatViewController.m */,
+				D976ACDD1D8820AE002799B0 /* ChatTextInput */,
+			);
+			name = ActiveChat;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -113,12 +160,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 749240C61D749D5100A371F8 /* Build configuration list for PBXNativeTarget "distype" */;
 			buildPhases = (
-				10986E3FD492161A25D88755 /* 📦 Check Pods Manifest.lock */,
+				10986E3FD492161A25D88755 /* [CP] Check Pods Manifest.lock */,
 				749240A81D749D5100A371F8 /* Sources */,
 				749240A91D749D5100A371F8 /* Frameworks */,
 				749240AA1D749D5100A371F8 /* Resources */,
-				18031D8B5595EC0389B24722 /* 📦 Embed Pods Frameworks */,
-				D07545B54D8CEF6A9072783B /* 📦 Copy Pods Resources */,
+				18031D8B5595EC0389B24722 /* [CP] Embed Pods Frameworks */,
+				D07545B54D8CEF6A9072783B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -168,6 +215,7 @@
 			files = (
 				749240C21D749D5100A371F8 /* LaunchScreen.storyboard in Resources */,
 				749240BF1D749D5100A371F8 /* Assets.xcassets in Resources */,
+				D976ACDF1D8820CC002799B0 /* AMChatTextInputView.xib in Resources */,
 				749240BA1D749D5100A371F8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,14 +223,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		10986E3FD492161A25D88755 /* 📦 Check Pods Manifest.lock */ = {
+		10986E3FD492161A25D88755 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -190,14 +238,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		18031D8B5595EC0389B24722 /* 📦 Embed Pods Frameworks */ = {
+		18031D8B5595EC0389B24722 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -205,14 +253,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-distype/Pods-distype-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D07545B54D8CEF6A9072783B /* 📦 Copy Pods Resources */ = {
+		D07545B54D8CEF6A9072783B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,9 +275,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				749240B71D749D5100A371F8 /* ViewController.m in Sources */,
 				749240B41D749D5100A371F8 /* AppDelegate.m in Sources */,
-				749240BD1D749D5100A371F8 /* distype.xcdatamodeld in Sources */,
+				D97D3D701D87F6DE00B2E13B /* AMActiveChatViewController.m in Sources */,
+				D976ACDC1D8820A2002799B0 /* AMChatTextInputView.m in Sources */,
+				D976ACD21D8815E1002799B0 /* AMChatsListViewController.m in Sources */,
+				D976ACD61D881AF5002799B0 /* AMChatMessageModel.m in Sources */,
 				749240B11D749D5100A371F8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +399,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aacidov.distype;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -361,6 +412,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aacidov.distype;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -386,19 +438,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		749240BB1D749D5100A371F8 /* distype.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				749240BC1D749D5100A371F8 /* distype.xcdatamodel */,
-			);
-			currentVersion = 749240BC1D749D5100A371F8 /* distype.xcdatamodel */;
-			path = distype.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 749240A41D749D5100A371F8 /* Project object */;
 }

@@ -6,5 +6,6 @@ target 'distype' do
   # use_frameworks!
 
   # Pods for distype
+  pod 'Realm'
 
 end
