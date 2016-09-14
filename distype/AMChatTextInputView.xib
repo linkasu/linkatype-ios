@@ -3,9 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AMChatTextInputView">
@@ -20,9 +17,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uzw-62-JSu">
-                    <rect key="frame" x="8" y="0.0" width="55" height="48"/>
+                    <rect key="frame" x="0.0" y="0.0" width="55" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="55" id="pUq-3J-6IE"/>
+                        <constraint firstAttribute="width" constant="55" id="tbX-RX-pve"/>
                     </constraints>
                     <state key="normal" title="Add"/>
                     <connections>
@@ -30,9 +27,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AF6-k7-uVi">
-                    <rect key="frame" x="391" y="0.0" width="53" height="50"/>
+                    <rect key="frame" x="397" y="0.0" width="55" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="53" id="lbh-rM-0he"/>
+                        <constraint firstAttribute="width" constant="55" id="X6g-Li-2Hf"/>
                     </constraints>
                     <state key="normal" title="Send"/>
                     <connections>
@@ -40,7 +37,7 @@
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Message" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MmB-QB-osX">
-                    <rect key="frame" x="71" y="0.0" width="312" height="50"/>
+                    <rect key="frame" x="55" y="0.0" width="342" height="50"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" returnKeyType="send"/>
@@ -48,19 +45,19 @@
             </subviews>
             <color key="backgroundColor" red="0.97407767084070762" green="0.98843317863751989" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="Uzw-62-JSu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="3xc-bl-YNK"/>
-                <constraint firstItem="MmB-QB-osX" firstAttribute="leading" secondItem="Uzw-62-JSu" secondAttribute="trailing" constant="8" symbolic="YES" id="96n-f0-Der"/>
-                <constraint firstItem="MmB-QB-osX" firstAttribute="bottom" secondItem="AF6-k7-uVi" secondAttribute="bottom" id="COK-Cq-OqK"/>
-                <constraint firstItem="AF6-k7-uVi" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="Lot-pB-h3F"/>
-                <constraint firstAttribute="bottom" secondItem="MmB-QB-osX" secondAttribute="bottom" id="RwX-Qb-wAC"/>
-                <constraint firstItem="MmB-QB-osX" firstAttribute="top" secondItem="AF6-k7-uVi" secondAttribute="top" id="Sj0-T7-zkA"/>
-                <constraint firstItem="AF6-k7-uVi" firstAttribute="leading" secondItem="MmB-QB-osX" secondAttribute="trailing" constant="8" symbolic="YES" id="Xyy-P6-jqa"/>
-                <constraint firstItem="Uzw-62-JSu" firstAttribute="baseline" secondItem="MmB-QB-osX" secondAttribute="baseline" id="a6l-2V-r51"/>
-                <constraint firstItem="Uzw-62-JSu" firstAttribute="top" secondItem="MmB-QB-osX" secondAttribute="top" id="aIF-rj-AMD"/>
-                <constraint firstItem="MmB-QB-osX" firstAttribute="baseline" secondItem="Uzw-62-JSu" secondAttribute="firstBaseline" id="aiG-Dh-KYt"/>
-                <constraint firstItem="Uzw-62-JSu" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="frF-Dx-MEg"/>
+                <constraint firstAttribute="bottom" secondItem="AF6-k7-uVi" secondAttribute="bottom" id="E5U-Ri-Qa5"/>
+                <constraint firstItem="MmB-QB-osX" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="G7W-Wv-fQm"/>
+                <constraint firstItem="AF6-k7-uVi" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="Iw1-dY-Co9"/>
+                <constraint firstItem="AF6-k7-uVi" firstAttribute="leading" secondItem="MmB-QB-osX" secondAttribute="trailing" id="JRS-Gt-6eq"/>
+                <constraint firstAttribute="bottom" secondItem="MmB-QB-osX" secondAttribute="bottom" id="Nde-wR-hbM"/>
+                <constraint firstItem="Uzw-62-JSu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="S5E-B5-POk"/>
+                <constraint firstAttribute="trailing" secondItem="AF6-k7-uVi" secondAttribute="trailing" id="YFj-Iz-1wy"/>
+                <constraint firstItem="MmB-QB-osX" firstAttribute="leading" secondItem="Uzw-62-JSu" secondAttribute="trailing" id="ihJ-Q9-Iq1"/>
+                <constraint firstAttribute="bottom" secondItem="Uzw-62-JSu" secondAttribute="bottom" id="jvx-TB-bkF"/>
+                <constraint firstItem="Uzw-62-JSu" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="r5j-jW-HLF"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="409" y="432"/>
         </view>

@@ -80,6 +80,7 @@ UITextFieldDelegate
         && self.delegate != nil) {
         if ([self.delegate respondsToSelector:@selector(needToSendMessage:)] == YES) {
             [self.delegate needToSendMessage:self.messageTextField.text];
+            self.messageTextField.text = nil;
         }
     }
 }

@@ -28,19 +28,17 @@ AMChatTextInputViewDelegate
 
 @implementation AMActiveChatViewController
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    
-    [self initialize];
-    
-    return self;
-}
-
 - (void)initialize {
     self.chatMessages = [[NSMutableArray alloc] init];
     self.cellIdentifier = [NSUUID UUID].UUIDString;
-    self.chatTable.separatorColor = [UIColor clearColor];
     self.chatMessageInput.delegate = self;
+    
+    self.chatTable.transform = CGAffineTransformMakeRotation(M_PI);
+    self.chatTable.separatorColor = [UIColor clearColor];
+    self.chatTable.delegate = self;
+    self.chatTable.dataSource = self;
+    [self.chatTable registerClass:[UITableViewCell class]
+           forCellReuseIdentifier:self.cellIdentifier];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -53,6 +51,11 @@ AMChatTextInputViewDelegate
                                                object:nil];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self initialize];
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -62,12 +65,12 @@ AMChatTextInputViewDelegate
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGRect keyboardFrame = [[[notification userInfo] valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat keyboardAppearingDuration = [[[notification userInfo] valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    CGPoint offset = CGPointMake(self.mainScrollView.contentOffset.x, keyboardFrame.size.height - self.chatMessageInput.frame.size.height);
-    
+    CGPoint scrollOffset = CGPointMake(self.mainScrollView.contentOffset.x, keyboardFrame.size.height - self.chatMessageInput.frame.size.height);
+
     __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:keyboardAppearingDuration animations:^{
         __strong typeof(weakSelf) self = weakSelf;
-        self.mainScrollView.contentOffset = offset;
+        self.mainScrollView.contentOffset = scrollOffset;
     }];
 }
 
@@ -80,6 +83,24 @@ AMChatTextInputViewDelegate
         __strong typeof(weakSelf) self = weakSelf;
         self.mainScrollView.contentOffset = offset;
     }];
+}
+
+#pragma mark - AMChatTextInputViewDelegate
+
+- (void)needToSendMessage:(NSString*)message {
+    if (message == nil
+        || [message isEqualToString:@" "] == YES
+        || [message isEqualToString:@""] == YES) {
+        return;
+    }
+    
+    AMChatMessageModel *msg = [[AMChatMessageModel alloc] init];
+    
+    msg.chatMessage = message;
+    msg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
+    
+    [self.chatMessages insertObject:msg atIndex:0];
+    [self.chatTable insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:YES];
 }
 
 #pragma mark - UITableViewDelegate
@@ -98,6 +119,7 @@ AMChatTextInputViewDelegate
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
     
     cell.textLabel.text = [self.chatMessages objectAtIndex:indexPath.row].chatMessage;
+    cell.transform = CGAffineTransformMakeRotation(M_PI);
     
     return cell;
 }

@@ -12,7 +12,7 @@
 @interface AMChatMessageModel : RLMObject
 
 @property (assign) NSTimeInterval chatMessageTimestamp;
-@property (strong) NSUUID *conversationUniqId;
+@property (strong) NSString *conversationUniqId;
 @property (strong) NSString *chatMessage;
 
 @end
