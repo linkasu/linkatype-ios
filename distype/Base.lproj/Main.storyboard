@@ -17,36 +17,51 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aOt-uA-fGF">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="542"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="he5-TU-KYF" customClass="AMChatTextInputView">
-                                <rect key="frame" x="0.0" y="550" width="600" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JyL-wZ-gn5">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aOt-uA-fGF">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="493"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="493" id="YfP-0v-tf6"/>
+                                        </constraints>
+                                    </tableView>
+                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="he5-TU-KYF" customClass="AMChatTextInputView">
+                                        <rect key="frame" x="0.0" y="501" width="600" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="HSV-nT-AxP"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="RGt-3Z-nRV"/>
+                                    <constraint firstItem="aOt-uA-fGF" firstAttribute="centerX" secondItem="JyL-wZ-gn5" secondAttribute="centerX" id="DWr-ao-0uE"/>
+                                    <constraint firstAttribute="trailing" secondItem="aOt-uA-fGF" secondAttribute="trailing" id="FRU-EA-bk1"/>
+                                    <constraint firstItem="aOt-uA-fGF" firstAttribute="top" secondItem="JyL-wZ-gn5" secondAttribute="top" id="I4D-f1-3OL"/>
+                                    <constraint firstItem="aOt-uA-fGF" firstAttribute="leading" secondItem="he5-TU-KYF" secondAttribute="leading" id="ZmF-DI-xWt"/>
+                                    <constraint firstItem="aOt-uA-fGF" firstAttribute="leading" secondItem="JyL-wZ-gn5" secondAttribute="leading" id="avU-9j-e9F"/>
+                                    <constraint firstItem="aOt-uA-fGF" firstAttribute="trailing" secondItem="he5-TU-KYF" secondAttribute="trailing" id="rbk-uL-bCm"/>
+                                    <constraint firstAttribute="bottom" secondItem="he5-TU-KYF" secondAttribute="bottom" id="sXn-du-QgI"/>
+                                    <constraint firstItem="he5-TU-KYF" firstAttribute="top" secondItem="aOt-uA-fGF" secondAttribute="bottom" constant="8" symbolic="YES" id="x5v-Q9-ts6"/>
                                 </constraints>
-                            </view>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="he5-TU-KYF" firstAttribute="trailing" secondItem="aOt-uA-fGF" secondAttribute="trailing" id="9db-Ad-Pdp"/>
-                            <constraint firstItem="he5-TU-KYF" firstAttribute="leading" secondItem="aOt-uA-fGF" secondAttribute="leading" id="PK1-8Y-Uk9"/>
-                            <constraint firstItem="he5-TU-KYF" firstAttribute="bottom" secondItem="p0a-yY-Ba8" secondAttribute="top" id="SiG-n5-b0x"/>
-                            <constraint firstAttribute="trailing" secondItem="aOt-uA-fGF" secondAttribute="trailing" id="YFO-ve-NZZ"/>
-                            <constraint firstItem="aOt-uA-fGF" firstAttribute="top" secondItem="iBb-po-w67" secondAttribute="top" id="dPS-3R-6U6"/>
-                            <constraint firstItem="he5-TU-KYF" firstAttribute="top" secondItem="aOt-uA-fGF" secondAttribute="bottom" constant="8" symbolic="YES" id="too-9R-h5t"/>
-                            <constraint firstItem="aOt-uA-fGF" firstAttribute="leading" secondItem="iBb-po-w67" secondAttribute="leading" id="vHv-lX-kXU"/>
+                            <constraint firstItem="JyL-wZ-gn5" firstAttribute="leading" secondItem="iBb-po-w67" secondAttribute="leading" id="71O-VD-Rvf"/>
+                            <constraint firstAttribute="trailing" secondItem="JyL-wZ-gn5" secondAttribute="trailing" id="LSB-xq-ILA"/>
+                            <constraint firstItem="JyL-wZ-gn5" firstAttribute="top" secondItem="g1W-19-37D" secondAttribute="bottom" id="bJk-Yw-MzJ"/>
+                            <constraint firstItem="JyL-wZ-gn5" firstAttribute="bottom" secondItem="p0a-yY-Ba8" secondAttribute="top" id="cvg-2L-Cme"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ncM-Ff-d7D"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
-                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="chatMessageInput" destination="he5-TU-KYF" id="wh5-tw-RpQ"/>
                         <outlet property="chatTable" destination="aOt-uA-fGF" id="8uu-RX-pAc"/>
+                        <outlet property="mainScrollView" destination="JyL-wZ-gn5" id="Udh-WA-lcP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sEh-vq-3Ew" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -21,6 +21,7 @@ AMChatTextInputViewDelegate
 
 @property (strong) NSString *cellIdentifier;
 @property (strong, nonatomic) IBOutlet UITableView *chatTable;
+@property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
 @property (strong, nonatomic) IBOutlet AMChatTextInputView *chatMessageInput;
 
 @end
@@ -61,17 +62,24 @@ AMChatTextInputViewDelegate
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGRect keyboardFrame = [[[notification userInfo] valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat keyboardAppearingDuration = [[[notification userInfo] valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGPoint offset = CGPointMake(self.mainScrollView.contentOffset.x, keyboardFrame.size.height - self.chatMessageInput.frame.size.height);
     
-    CGRect frameForInput = CGRectMake(self.chatMessageInput.frame.origin.x,
-                                      keyboardFrame.origin.y - self.chatMessageInput.frame.size.height,
-                                      self.chatMessageInput.frame.size.width,
-                                      self.chatMessageInput.frame.size.height);
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:keyboardAppearingDuration animations:^{
-        self.chatMessageInput.frame = frameForInput;
+        __strong typeof(weakSelf) self = weakSelf;
+        self.mainScrollView.contentOffset = offset;
     }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
+    CGFloat keyboardAppearingDuration = [[[notification userInfo] valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGPoint offset = CGPointZero;
+    
+    __weak typeof(self) weakSelf = self;
+    [UIView animateWithDuration:keyboardAppearingDuration animations:^{
+        __strong typeof(weakSelf) self = weakSelf;
+        self.mainScrollView.contentOffset = offset;
+    }];
 }
 
 #pragma mark - UITableViewDelegate
