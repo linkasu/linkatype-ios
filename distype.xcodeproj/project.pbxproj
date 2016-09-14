@@ -19,6 +19,8 @@
 		D976ACDF1D8820CC002799B0 /* AMChatTextInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D976ACDE1D8820CC002799B0 /* AMChatTextInputView.xib */; };
 		D97D3D701D87F6DE00B2E13B /* AMActiveChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D97D3D6F1D87F6DE00B2E13B /* AMActiveChatViewController.m */; };
 		D9F1030A1D8991CE007A8796 /* AMMessageTextFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F103091D8991CE007A8796 /* AMMessageTextFieldView.m */; };
+		D9F1030E1D899530007A8796 /* AMConversationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F1030D1D899530007A8796 /* AMConversationManager.m */; };
+		D9F103111D899658007A8796 /* AMConversationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F103101D899658007A8796 /* AMConversationModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,10 @@
 		D97D3D6F1D87F6DE00B2E13B /* AMActiveChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMActiveChatViewController.m; sourceTree = "<group>"; };
 		D9F103081D8991CE007A8796 /* AMMessageTextFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMMessageTextFieldView.h; sourceTree = "<group>"; };
 		D9F103091D8991CE007A8796 /* AMMessageTextFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMMessageTextFieldView.m; sourceTree = "<group>"; };
+		D9F1030C1D899530007A8796 /* AMConversationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMConversationManager.h; sourceTree = "<group>"; };
+		D9F1030D1D899530007A8796 /* AMConversationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConversationManager.m; sourceTree = "<group>"; };
+		D9F1030F1D899658007A8796 /* AMConversationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMConversationModel.h; sourceTree = "<group>"; };
+		D9F103101D899658007A8796 /* AMConversationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConversationModel.m; sourceTree = "<group>"; };
 		DB4D9D930C836901AF75E2A5 /* Pods-distype.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-distype.release.xcconfig"; path = "Pods/Target Support Files/Pods-distype/Pods-distype.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,6 +102,7 @@
 		749240AE1D749D5100A371F8 /* distype */ = {
 			isa = PBXGroup;
 			children = (
+				D9F1030B1D89950C007A8796 /* Managers */,
 				D976ACD31D881ADB002799B0 /* Models */,
 				D976ACCF1D8815B1002799B0 /* ChatsList */,
 				D97D3D6D1D87F67400B2E13B /* ActiveChat */,
@@ -132,6 +139,8 @@
 			children = (
 				D976ACD41D881AF5002799B0 /* AMChatMessageModel.h */,
 				D976ACD51D881AF5002799B0 /* AMChatMessageModel.m */,
+				D9F1030F1D899658007A8796 /* AMConversationModel.h */,
+				D9F103101D899658007A8796 /* AMConversationModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -156,6 +165,15 @@
 				D976ACDD1D8820AE002799B0 /* ChatTextInput */,
 			);
 			name = ActiveChat;
+			sourceTree = "<group>";
+		};
+		D9F1030B1D89950C007A8796 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D9F1030C1D899530007A8796 /* AMConversationManager.h */,
+				D9F1030D1D899530007A8796 /* AMConversationManager.m */,
+			);
+			name = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,8 +302,10 @@
 				D97D3D701D87F6DE00B2E13B /* AMActiveChatViewController.m in Sources */,
 				D9F1030A1D8991CE007A8796 /* AMMessageTextFieldView.m in Sources */,
 				D976ACDC1D8820A2002799B0 /* AMChatTextInputView.m in Sources */,
+				D9F103111D899658007A8796 /* AMConversationModel.m in Sources */,
 				D976ACD21D8815E1002799B0 /* AMChatsListViewController.m in Sources */,
 				D976ACD61D881AF5002799B0 /* AMChatMessageModel.m in Sources */,
+				D9F1030E1D899530007A8796 /* AMConversationManager.m in Sources */,
 				749240B11D749D5100A371F8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
