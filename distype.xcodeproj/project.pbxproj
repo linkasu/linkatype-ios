@@ -18,6 +18,7 @@
 		D976ACDC1D8820A2002799B0 /* AMChatTextInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = D976ACDB1D8820A2002799B0 /* AMChatTextInputView.m */; };
 		D976ACDF1D8820CC002799B0 /* AMChatTextInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D976ACDE1D8820CC002799B0 /* AMChatTextInputView.xib */; };
 		D97D3D701D87F6DE00B2E13B /* AMActiveChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D97D3D6F1D87F6DE00B2E13B /* AMActiveChatViewController.m */; };
+		D9F1030A1D8991CE007A8796 /* AMMessageTextFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F103091D8991CE007A8796 /* AMMessageTextFieldView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,8 @@
 		D976ACDE1D8820CC002799B0 /* AMChatTextInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMChatTextInputView.xib; sourceTree = "<group>"; };
 		D97D3D6E1D87F6DE00B2E13B /* AMActiveChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMActiveChatViewController.h; sourceTree = "<group>"; };
 		D97D3D6F1D87F6DE00B2E13B /* AMActiveChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMActiveChatViewController.m; sourceTree = "<group>"; };
+		D9F103081D8991CE007A8796 /* AMMessageTextFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMMessageTextFieldView.h; sourceTree = "<group>"; };
+		D9F103091D8991CE007A8796 /* AMMessageTextFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMMessageTextFieldView.m; sourceTree = "<group>"; };
 		DB4D9D930C836901AF75E2A5 /* Pods-distype.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-distype.release.xcconfig"; path = "Pods/Target Support Files/Pods-distype/Pods-distype.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,6 +142,8 @@
 				D976ACDA1D8820A2002799B0 /* AMChatTextInputView.h */,
 				D976ACDB1D8820A2002799B0 /* AMChatTextInputView.m */,
 				D976ACDE1D8820CC002799B0 /* AMChatTextInputView.xib */,
+				D9F103081D8991CE007A8796 /* AMMessageTextFieldView.h */,
+				D9F103091D8991CE007A8796 /* AMMessageTextFieldView.m */,
 			);
 			name = ChatTextInput;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 			files = (
 				749240B41D749D5100A371F8 /* AppDelegate.m in Sources */,
 				D97D3D701D87F6DE00B2E13B /* AMActiveChatViewController.m in Sources */,
+				D9F1030A1D8991CE007A8796 /* AMMessageTextFieldView.m in Sources */,
 				D976ACDC1D8820A2002799B0 /* AMChatTextInputView.m in Sources */,
 				D976ACD21D8815E1002799B0 /* AMChatsListViewController.m in Sources */,
 				D976ACD61D881AF5002799B0 /* AMChatMessageModel.m in Sources */,

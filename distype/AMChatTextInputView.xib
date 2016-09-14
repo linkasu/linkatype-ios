@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AMChatTextInputView">
             <connections>
-                <outlet property="messageTextField" destination="MmB-QB-osX" id="mHZ-Z7-EIt"/>
+                <outlet property="messageTextField" destination="MmB-QB-osX" id="jrY-IO-nv8"/>
                 <outlet property="view" destination="iN0-l3-epB" id="KWe-6h-L4P"/>
             </connections>
         </placeholder>
@@ -36,11 +36,16 @@
                         <action selector="sendButtonPressed:" destination="-1" eventType="touchUpInside" id="1Rv-EJ-EEn"/>
                     </connections>
                 </button>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Message" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MmB-QB-osX">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Message" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MmB-QB-osX" customClass="AMMessageTextFieldView">
                     <rect key="frame" x="55" y="0.0" width="342" height="50"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" returnKeyType="send"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="insetX">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </textField>
             </subviews>
             <color key="backgroundColor" red="0.97407767084070762" green="0.98843317863751989" blue="1" alpha="1" colorSpace="calibratedRGB"/>

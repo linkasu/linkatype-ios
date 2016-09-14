@@ -56,8 +56,7 @@
                                                                 <exclude reference="LkN-Vs-vxd"/>
                                                             </mask>
                                                         </variation>
-                                                        <variation key="heightClass=regular" misplaced="YES">
-                                                            <rect key="frame" x="0.0" y="637" width="600" height="50"/>
+                                                        <variation key="heightClass=regular">
                                                             <mask key="constraints">
                                                                 <include reference="LkN-Vs-vxd"/>
                                                             </mask>
@@ -173,6 +172,7 @@
                                 </variation>
                             </scrollView>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="1SI-s5-fX0" secondAttribute="trailing" id="2yj-I2-Oid"/>
                             <constraint firstItem="1SI-s5-fX0" firstAttribute="leading" secondItem="qaK-Jl-ygd" secondAttribute="leading" id="BFg-fh-AFn"/>

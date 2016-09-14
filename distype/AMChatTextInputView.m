@@ -7,6 +7,7 @@
 //
 
 #import "AMChatTextInputView.h"
+#import "AMMessageTextFieldView.h"
 
 @interface AMChatTextInputView ()
 <
@@ -16,7 +17,7 @@ UITextFieldDelegate
 - (void)initialize;
 
 @property (strong, nonatomic) IBOutlet UIView *view;
-@property (strong, nonatomic) IBOutlet UITextField *messageTextField;
+@property (strong, nonatomic) IBOutlet AMMessageTextFieldView *messageTextField;
 
 @end
 
@@ -45,8 +46,6 @@ UITextFieldDelegate
 }
 
 - (void)initialize {
-    self.messageTextField.layer.cornerRadius = 8;
-    self.messageTextField.layer.borderWidth = 1;
     self.messageTextField.delegate = self;
 }
 

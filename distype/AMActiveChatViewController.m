@@ -31,7 +31,6 @@ AMChatTextInputViewDelegate
 - (void)initialize {
     self.chatMessages = [[NSMutableArray alloc] init];
     self.cellIdentifier = [NSUUID UUID].UUIDString;
-    self.chatMessageInput.delegate = self;
     
     self.chatTable.transform = CGAffineTransformMakeRotation(M_PI);
     self.chatTable.separatorColor = [UIColor clearColor];
@@ -39,6 +38,8 @@ AMChatTextInputViewDelegate
     self.chatTable.dataSource = self;
     [self.chatTable registerClass:[UITableViewCell class]
            forCellReuseIdentifier:self.cellIdentifier];
+  
+    self.chatMessageInput.delegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -65,7 +66,7 @@ AMChatTextInputViewDelegate
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGRect keyboardFrame = [[[notification userInfo] valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat keyboardAppearingDuration = [[[notification userInfo] valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    CGPoint scrollOffset = CGPointMake(self.mainScrollView.contentOffset.x, keyboardFrame.size.height - self.chatMessageInput.frame.size.height);
+    CGPoint scrollOffset = CGPointMake(self.mainScrollView.contentOffset.x, keyboardFrame.size.height - self.chatMessageInput.frame.size.height + 1);
 
     __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:keyboardAppearingDuration animations:^{
@@ -120,6 +121,8 @@ AMChatTextInputViewDelegate
     
     cell.textLabel.text = [self.chatMessages objectAtIndex:indexPath.row].chatMessage;
     cell.transform = CGAffineTransformMakeRotation(M_PI);
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
     return cell;
 }
