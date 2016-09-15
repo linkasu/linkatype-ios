@@ -12,6 +12,6 @@
 
 @interface AMActiveChatViewController : UIViewController
 
-@property (strong) NSMutableArray<AMChatMessageModel*> *chatMessages;
+@property (strong, nonatomic) NSString *conversationUniqId;
 
 @end

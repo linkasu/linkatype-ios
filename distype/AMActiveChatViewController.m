@@ -22,6 +22,7 @@ AMChatTextInputViewDelegate
 @property (strong) NSString *cellIdentifier;
 @property (strong, nonatomic) IBOutlet UITableView *chatTable;
 @property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
+@property (strong) NSMutableArray<AMChatMessageModel*> *chatMessages;
 @property (strong, nonatomic) IBOutlet AMChatTextInputView *chatMessageInput;
 
 @end
@@ -41,6 +42,21 @@ AMChatTextInputViewDelegate
   
     self.chatMessageInput.delegate = self;
     
+#warning Need to delete this code after implementing ChatsList
+    /*
+     START
+     */
+    self.conversationUniqId = [NSUUID UUID].UUIDString;
+    
+    RLMResults *resultsConversation = [AMChatMessageModel allObjects];
+    
+    for (AMChatMessageModel *obj in resultsConversation) {
+        [self.chatMessages insertObject:obj atIndex:0];
+    }
+    /*
+     END
+     */
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -59,6 +75,23 @@ AMChatTextInputViewDelegate
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setConversationUniqId:(NSString *)conversationUniqId {
+    if (self.chatMessages == nil) {
+        self.chatMessages = [[NSMutableArray alloc] init];
+    } else {
+        [self.chatMessages removeAllObjects];
+    }
+    
+    _conversationUniqId = conversationUniqId;
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationUniqId == %@", conversationUniqId];
+    RLMResults *resultsConversation = [AMChatMessageModel objectsWithPredicate:predicate];
+    
+    for (AMChatMessageModel *obj in resultsConversation) {
+        [self.chatMessages insertObject:obj atIndex:0];
+    }
 }
 
 #pragma mark - Keyboard Events
@@ -98,10 +131,16 @@ AMChatTextInputViewDelegate
     AMChatMessageModel *msg = [[AMChatMessageModel alloc] init];
     
     msg.chatMessage = message;
+    msg.conversationUniqId = self.conversationUniqId;
     msg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
     
     [self.chatMessages insertObject:msg atIndex:0];
     [self.chatTable insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:YES];
+    
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    [realm addObject:msg];
+    [realm commitWriteTransaction];
 }
 
 #pragma mark - UITableViewDelegate
