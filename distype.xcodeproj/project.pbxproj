@@ -13,6 +13,7 @@
 		749240BA1D749D5100A371F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 749240B81D749D5100A371F8 /* Main.storyboard */; };
 		749240BF1D749D5100A371F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 749240BE1D749D5100A371F8 /* Assets.xcassets */; };
 		749240C21D749D5100A371F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 749240C01D749D5100A371F8 /* LaunchScreen.storyboard */; };
+		D96F48641D8AA2EE003EAB60 /* AMCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D96F48631D8AA2EE003EAB60 /* AMCategoryModel.m */; };
 		D976ACD21D8815E1002799B0 /* AMChatsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D976ACD11D8815E1002799B0 /* AMChatsListViewController.m */; };
 		D976ACD61D881AF5002799B0 /* AMChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D976ACD51D881AF5002799B0 /* AMChatMessageModel.m */; };
 		D976ACDC1D8820A2002799B0 /* AMChatTextInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = D976ACDB1D8820A2002799B0 /* AMChatTextInputView.m */; };
@@ -34,6 +35,8 @@
 		749240C11D749D5100A371F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		749240C31D749D5100A371F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CEE2547E1977FACADE7C090 /* Pods-distype.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-distype.debug.xcconfig"; path = "Pods/Target Support Files/Pods-distype/Pods-distype.debug.xcconfig"; sourceTree = "<group>"; };
+		D96F48621D8AA2EE003EAB60 /* AMCategoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMCategoryModel.h; sourceTree = "<group>"; };
+		D96F48631D8AA2EE003EAB60 /* AMCategoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMCategoryModel.m; sourceTree = "<group>"; };
 		D976ACD01D8815E1002799B0 /* AMChatsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMChatsListViewController.h; sourceTree = "<group>"; };
 		D976ACD11D8815E1002799B0 /* AMChatsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMChatsListViewController.m; sourceTree = "<group>"; };
 		D976ACD41D881AF5002799B0 /* AMChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMChatMessageModel.h; sourceTree = "<group>"; };
@@ -141,6 +144,8 @@
 				D976ACD51D881AF5002799B0 /* AMChatMessageModel.m */,
 				D9F1030F1D899658007A8796 /* AMConversationModel.h */,
 				D9F103101D899658007A8796 /* AMConversationModel.m */,
+				D96F48621D8AA2EE003EAB60 /* AMCategoryModel.h */,
+				D96F48631D8AA2EE003EAB60 /* AMCategoryModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -301,6 +306,7 @@
 				749240B41D749D5100A371F8 /* AppDelegate.m in Sources */,
 				D97D3D701D87F6DE00B2E13B /* AMActiveChatViewController.m in Sources */,
 				D9F1030A1D8991CE007A8796 /* AMMessageTextFieldView.m in Sources */,
+				D96F48641D8AA2EE003EAB60 /* AMCategoryModel.m in Sources */,
 				D976ACDC1D8820A2002799B0 /* AMChatTextInputView.m in Sources */,
 				D9F103111D899658007A8796 /* AMConversationModel.m in Sources */,
 				D976ACD21D8815E1002799B0 /* AMChatsListViewController.m in Sources */,

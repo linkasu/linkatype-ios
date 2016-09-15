@@ -13,6 +13,7 @@
 
 @property (assign) NSTimeInterval chatMessageTimestamp;
 @property (strong) NSString *conversationUniqId;
+@property (strong) NSString *categoryUniqId;
 @property (strong) NSString *chatMessage;
 
 @end

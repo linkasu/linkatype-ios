@@ -6,6 +6,9 @@
 //  Copyright © 2016 aacidov. All rights reserved.
 //
 
+#import <LGAlertView.h>
+
+#import "AMCategoryModel.h"
 #import "AMChatMessageModel.h"
 #import "AMChatTextInputView.h"
 #import "AMActiveChatViewController.h"
@@ -18,8 +21,10 @@ AMChatTextInputViewDelegate
 >
 
 - (void)initialize;
+- (BOOL)isTextEmpty:(NSString*)text;
 
 @property (strong) NSString *cellIdentifier;
+@property (strong) AMChatMessageModel *temporaryMsg;
 @property (strong, nonatomic) IBOutlet UITableView *chatTable;
 @property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
 @property (strong) NSMutableArray<AMChatMessageModel*> *chatMessages;
@@ -94,6 +99,24 @@ AMChatTextInputViewDelegate
     }
 }
 
+- (BOOL)isTextEmpty:(NSString*)text {
+    BOOL result = NO;
+    
+    if (text == nil
+        || [text isEqualToString:@""] == YES) {
+        result = YES;
+    } else {
+        NSRegularExpression *regexp = [[NSRegularExpression alloc] initWithPattern:@"^[ ]+$"
+                                                                           options:NSRegularExpressionAnchorsMatchLines
+                                                                             error:nil];
+        if ([regexp matchesInString:text options:0 range:NSMakeRange(0, text.length)].count > 0) {
+            result = YES;
+        }
+    }
+    
+    return result;
+}
+
 #pragma mark - Keyboard Events
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -121,18 +144,70 @@ AMChatTextInputViewDelegate
 
 #pragma mark - AMChatTextInputViewDelegate
 
+- (void)needToAddToCategory:(NSString*)message {
+    __weak typeof(self) weakSelf = self;
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTextFieldsAndTitle:@"Add word"
+                                                                     message:@"Type name of word category"
+                                                          numberOfTextFields:1
+                                                      textFieldsSetupHandler:nil
+                                                                buttonTitles:@[@"Add"]
+                                                           cancelButtonTitle:@"Cancel"
+                                                      destructiveButtonTitle:nil
+                                                               actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                   __strong typeof(weakSelf) self = weakSelf;
+                                                                   
+                                                                   UITextField *textField = [alertView.textFieldsArray objectAtIndex:index];
+                                                                   if ([self isTextEmpty:textField.text] == YES
+                                                                       || [self isTextEmpty:message] == YES) {
+                                                                       return;
+                                                                   }
+                                                                   
+                                                                   self.temporaryMsg = [[AMChatMessageModel alloc] init];
+                                                                   self.temporaryMsg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
+                                                                   self.temporaryMsg.chatMessage = message;
+                                                                   self.temporaryMsg.conversationUniqId = self.conversationUniqId;
+                                                                   
+                                                                   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryTitle == %@", title];
+                                                                   RLMResults *resultsConversation = [AMCategoryModel objectsWithPredicate:predicate];
+                                                                   AMCategoryModel *category = nil;
+                                                                   
+                                                                   if (resultsConversation.count == 0) {
+                                                                       category = [[AMCategoryModel alloc] init];
+                                                                       category.categoryTitle = title;
+                                                                       category.categoryTimestamp = [[NSDate date] timeIntervalSince1970];
+                                                                       category.categoryUniqId = [NSUUID UUID].UUIDString;
+                                                                       
+                                                                       
+                                                                       RLMRealm *realm = [RLMRealm defaultRealm];
+                                                                       [realm beginWriteTransaction];
+                                                                       [realm addObject:category];
+                                                                       [realm commitWriteTransaction];
+                                                                   } else {
+                                                                       category = (AMCategoryModel*)[resultsConversation objectAtIndex:0];
+                                                                   }
+                                                                   self.temporaryMsg.categoryUniqId = category.categoryUniqId;
+                                                               }
+                                                               cancelHandler:nil
+                                                          destructiveHandler:nil];
+    [alertView showAnimated:YES completionHandler:nil];
+}
+
 - (void)needToSendMessage:(NSString*)message {
-    if (message == nil
-        || [message isEqualToString:@" "] == YES
-        || [message isEqualToString:@""] == YES) {
+    if ([self isTextEmpty:message] == YES) {
         return;
     }
     
-    AMChatMessageModel *msg = [[AMChatMessageModel alloc] init];
-    
-    msg.chatMessage = message;
-    msg.conversationUniqId = self.conversationUniqId;
-    msg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
+    AMChatMessageModel *msg = nil;
+    if ([self.temporaryMsg.chatMessage isEqualToString:message] == YES) {
+        msg = self.temporaryMsg;
+        self.temporaryMsg = nil;
+    } else {
+        msg = [[AMChatMessageModel alloc] init];
+        
+        msg.chatMessage = message;
+        msg.conversationUniqId = self.conversationUniqId;
+        msg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
+    }
     
     [self.chatMessages insertObject:msg atIndex:0];
     [self.chatTable insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:YES];
