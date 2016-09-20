@@ -215,6 +215,8 @@
 				TargetAttributes = {
 					749240AB1D749D5100A371F8 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = DXM6WCNAFA;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -427,9 +429,11 @@
 			baseConfigurationReference = 7CEE2547E1977FACADE7C090 /* Pods-distype.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = DXM6WCNAFA;
 				INFOPLIST_FILE = distype/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.aacidov.distype;
+				PRODUCT_BUNDLE_IDENTIFIER = com.amakushkin.distype;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -440,9 +444,11 @@
 			baseConfigurationReference = DB4D9D930C836901AF75E2A5 /* Pods-distype.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = DXM6WCNAFA;
 				INFOPLIST_FILE = distype/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.aacidov.distype;
+				PRODUCT_BUNDLE_IDENTIFIER = com.amakushkin.distype;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
