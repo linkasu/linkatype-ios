@@ -87,7 +87,13 @@
                             <constraint firstItem="PRZ-Sk-PrN" firstAttribute="leading" secondItem="NwH-mM-t6b" secondAttribute="leading" id="wMj-sP-3wX"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="wvp-Vq-3Va"/>
+                    <navigationItem key="navigationItem" id="wvp-Vq-3Va">
+                        <barButtonItem key="rightBarButtonItem" title="Change Keyboard" id="K3Q-Sf-n8Q">
+                            <connections>
+                                <action selector="changeKeyboardAction:" destination="mM7-9f-zLT" id="toO-9e-VLt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="chatMessageInput" destination="fcQ-M4-jQp" id="Bny-2T-eVU"/>
                         <outlet property="chatTable" destination="Y29-7i-ZYk" id="QUK-I8-uWj"/>

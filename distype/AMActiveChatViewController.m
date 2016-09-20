@@ -17,6 +17,8 @@
 <
 UITableViewDelegate,
 UITableViewDataSource,
+UIPickerViewDelegate,
+UIPickerViewDataSource,
 AMChatTextInputViewDelegate
 >
 
@@ -24,6 +26,8 @@ AMChatTextInputViewDelegate
 - (BOOL)isTextEmpty:(NSString*)text;
 
 @property (strong) NSString *cellIdentifier;
+@property (strong) LGAlertView *pickerActionSheet;
+@property (strong) RLMResults *categoryQueryResult;
 @property (strong) AMChatMessageModel *temporaryMsg;
 @property (strong, nonatomic) IBOutlet UITableView *chatTable;
 @property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
@@ -117,6 +121,51 @@ AMChatTextInputViewDelegate
     return result;
 }
 
+#pragma mark - Button events
+
+- (IBAction)changeKeyboardAction:(UIBarButtonItem *)sender {
+    self.categoryQueryResult = [AMCategoryModel allObjects];
+    
+    if (self.categoryQueryResult.count > 0) {
+        UIPickerView *categoryPicker = [[UIPickerView alloc] init];
+        categoryPicker.delegate = self;
+        categoryPicker.dataSource = self;
+        
+        __weak typeof(self) weakSelf = self;
+        self.pickerActionSheet = [[LGAlertView alloc] initWithViewAndTitle:@"Select word category"
+                                                                   message:nil
+                                                                     style:LGAlertViewStyleActionSheet
+                                                                      view:categoryPicker
+                                                              buttonTitles:@[@"Select"]
+                                                         cancelButtonTitle:@"Cancel"
+                                                    destructiveButtonTitle:nil
+                                                             actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                                                                 __strong typeof(weakSelf) self = weakSelf;
+                                                                 [self.pickerActionSheet dismissAnimated:YES completionHandler:nil];
+                                                                 self.pickerActionSheet = nil;
+                                                             }
+                                                             cancelHandler:^(LGAlertView *alertView) {
+                                                                 __strong typeof(weakSelf) self = weakSelf;
+                                                                 [self.pickerActionSheet dismissAnimated:YES completionHandler:nil];
+                                                                 self.pickerActionSheet = nil;
+                                                             }
+                                                        destructiveHandler:nil];
+        self.pickerActionSheet.cancelOnTouch = NO;
+        
+        [self.pickerActionSheet showAnimated:YES completionHandler:nil];
+    } else {
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Words category doesn't exist yet. Please ad at least one word category"
+                                                              style:LGAlertViewStyleAlert
+                                                       buttonTitles:@[@"Ok"]
+                                                  cancelButtonTitle:nil
+                                             destructiveButtonTitle:nil];
+        alertView.cancelOnTouch = NO;
+        
+        [alertView showAnimated:YES completionHandler:nil];
+    }
+}
+
 #pragma mark - Keyboard Events
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -167,13 +216,13 @@ AMChatTextInputViewDelegate
                                                                    self.temporaryMsg.chatMessage = message;
                                                                    self.temporaryMsg.conversationUniqId = self.conversationUniqId;
                                                                    
-                                                                   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryTitle == %@", title];
+                                                                   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryTitle == %@", textField.text];
                                                                    RLMResults *resultsConversation = [AMCategoryModel objectsWithPredicate:predicate];
                                                                    AMCategoryModel *category = nil;
                                                                    
                                                                    if (resultsConversation.count == 0) {
                                                                        category = [[AMCategoryModel alloc] init];
-                                                                       category.categoryTitle = title;
+                                                                       category.categoryTitle = textField.text;
                                                                        category.categoryTimestamp = [[NSDate date] timeIntervalSince1970];
                                                                        category.categoryUniqId = [NSUUID UUID].UUIDString;
                                                                        
@@ -189,6 +238,8 @@ AMChatTextInputViewDelegate
                                                                }
                                                                cancelHandler:nil
                                                           destructiveHandler:nil];
+    alertView.cancelOnTouch = NO;
+    
     [alertView showAnimated:YES completionHandler:nil];
 }
 
@@ -216,6 +267,24 @@ AMChatTextInputViewDelegate
     [realm beginWriteTransaction];
     [realm addObject:msg];
     [realm commitWriteTransaction];
+}
+
+#pragma mark - UIPickerViewDelegate
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    AMCategoryModel *categoryModel = [self.categoryQueryResult objectAtIndex:row];
+    
+    return categoryModel.categoryTitle;
+}
+
+#pragma mark - UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return self.categoryQueryResult.count;
 }
 
 #pragma mark - UITableViewDelegate
