@@ -49,6 +49,16 @@ UITextFieldDelegate
     self.messageTextField.delegate = self;
 }
 
+#pragma mark - Setters
+
+- (void)setHidden:(BOOL)hidden {
+    super.hidden = hidden;
+    
+    if (hidden == YES) {
+        [self.messageTextField resignFirstResponder];
+    }
+}
+
 #pragma mark - Action Handlers
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
