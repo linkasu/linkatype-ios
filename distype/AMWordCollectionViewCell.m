@@ -23,7 +23,7 @@
     self.layer.borderWidth = 2;
     self.layer.cornerRadius = 10;
     
-    self.wordLabel.numberOfLines = 2;
+    self.wordLabel.numberOfLines = 1;
 }
 
 - (void)setWord:(AMChatMessageModel *)word {

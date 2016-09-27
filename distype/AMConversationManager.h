@@ -16,7 +16,7 @@
 + (instancetype)sharedInstance;
 
 - (void)removeConversationWithUniqId:(NSString*)uniqId;
-- (NSArray<AMConversationModel*>*)getAllConversations;
 - (void)addNewConversationWithTitle:(NSString*)title;
+- (NSArray<AMConversationModel*>*)getAllConversations;
 
 @end

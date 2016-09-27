@@ -35,8 +35,8 @@ AMWordCollectionViewCellDelegate
 @property (assign) BOOL isNonStandartKeyboardUsed;
 
 @property (strong) RLMResults *wordsForCategory;
-@property (strong) RLMResults *categoryQueryResult;
 @property (strong) AMChatMessageModel *temporaryMsg;
+@property (strong) RLMResults *categoryQueryResult;
 @property (strong) NSMutableArray<AMChatMessageModel*> *chatMessages;
 
 @property (strong) LGAlertView *pickerActionSheet;
@@ -68,7 +68,6 @@ AMWordCollectionViewCellDelegate
                                        [UIScreen mainScreen].bounds.size.width,
                                        [UIScreen mainScreen].bounds.size.height / 4);
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.itemSize = CGSizeMake(rectCollection.size.width / 4, rectCollection.size.height / 4);
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.estimatedItemSize = CGSizeMake(rectCollection.size.width / 4, rectCollection.size.height / 4);
     self.categoryWordCollection = [[UICollectionView alloc] initWithFrame:rectCollection collectionViewLayout:flowLayout];
@@ -164,14 +163,14 @@ AMWordCollectionViewCellDelegate
         
         [self.view addSubview:self.categoryWordCollection];
         CGPoint scrollOffset = CGPointMake(self.mainScrollView.contentOffset.x,
-                                           self.categoryWordCollection.frame.size.height);
+                                           self.categoryWordCollection.frame.size.height - self.chatMessageInput.frame.size.height);
         
         __weak typeof(self) weakSelf = self;
         [UIView animateWithDuration:0.5f animations:^{
             __strong typeof(weakSelf) self = weakSelf;
             self.mainScrollView.contentOffset = scrollOffset;
             self.categoryWordCollection.frame = CGRectMake(self.categoryWordCollection.frame.origin.x,
-                                                           [UIScreen mainScreen].bounds.size.height - self.categoryWordCollection.frame.size.height,
+                                                           [UIScreen mainScreen].bounds.size.height - self.categoryWordCollection.frame.size.height - self.chatMessageInput.frame.size.height,
                                                            self.categoryWordCollection.frame.size.width,
                                                            self.categoryWordCollection.frame.size.height);
         } completion:^(BOOL finished) {
@@ -245,7 +244,7 @@ AMWordCollectionViewCellDelegate
             [self.pickerActionSheet showAnimated:YES completionHandler:nil];
         } else {
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"Words category doesn't exist yet. Please ad at least one word category"
+                                                                message:@"Words category doesn't exist yet. Please add at least one word category"
                                                                   style:LGAlertViewStyleAlert
                                                            buttonTitles:@[@"Ok"]
                                                       cancelButtonTitle:nil
@@ -262,7 +261,8 @@ AMWordCollectionViewCellDelegate
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGRect keyboardFrame = [[[notification userInfo] valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat keyboardAppearingDuration = [[[notification userInfo] valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    CGPoint scrollOffset = CGPointMake(self.mainScrollView.contentOffset.x, keyboardFrame.size.height - self.chatMessageInput.frame.size.height + 1);
+    CGPoint scrollOffset = CGPointMake(self.mainScrollView.contentOffset.x,
+                                       keyboardFrame.size.height - self.chatMessageInput.frame.size.height + 1);
 
     __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:keyboardAppearingDuration animations:^{
@@ -323,7 +323,6 @@ AMWordCollectionViewCellDelegate
                                                                        category.categoryTimestamp = [[NSDate date] timeIntervalSince1970];
                                                                        category.categoryUniqId = [NSUUID UUID].UUIDString;
                                                                        
-                                                                       
                                                                        RLMRealm *realm = [RLMRealm defaultRealm];
                                                                        [realm beginWriteTransaction];
                                                                        [realm addObject:category];
@@ -332,6 +331,11 @@ AMWordCollectionViewCellDelegate
                                                                        category = (AMCategoryModel*)[resultsConversation objectAtIndex:0];
                                                                    }
                                                                    self.temporaryMsg.categoryUniqId = category.categoryUniqId;
+                                                                   
+                                                                   RLMRealm *realm = [RLMRealm defaultRealm];
+                                                                   [realm beginWriteTransaction];
+                                                                   [realm addObject:self.temporaryMsg];
+                                                                   [realm commitWriteTransaction];
                                                                }
                                                                cancelHandler:nil
                                                           destructiveHandler:nil];
@@ -345,25 +349,30 @@ AMWordCollectionViewCellDelegate
         return;
     }
     
+    BOOL isNeedToAddToRealm = NO;
     AMChatMessageModel *msg = nil;
     if ([self.temporaryMsg.chatMessage isEqualToString:message] == YES) {
         msg = self.temporaryMsg;
         self.temporaryMsg = nil;
+        isNeedToAddToRealm = NO;
     } else {
         msg = [[AMChatMessageModel alloc] init];
         
         msg.chatMessage = message;
         msg.conversationUniqId = self.conversationUniqId;
         msg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
+        isNeedToAddToRealm = YES;
     }
     
     [self.chatMessages insertObject:msg atIndex:0];
     [self.chatTable insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:YES];
     
-    RLMRealm *realm = [RLMRealm defaultRealm];
-    [realm beginWriteTransaction];
-    [realm addObject:msg];
-    [realm commitWriteTransaction];
+    if (isNeedToAddToRealm == YES) {
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        [realm addObject:msg];
+        [realm commitWriteTransaction];
+    }
 }
 
 #pragma mark - UICollectionViewDelegate
