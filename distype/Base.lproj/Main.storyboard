@@ -6,6 +6,52 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Chats List-->
+        <scene sceneID="6Ow-3Q-88w">
+            <objects>
+                <tableViewController id="Oxu-OI-lFl" customClass="AMChatsListViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="hsn-Dc-ezF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Xpx-3X-qFR">
+                                <rect key="frame" x="0.0" y="120" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xpx-3X-qFR" id="OFU-h7-B9s">
+                                    <frame key="frameInset" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Oxu-OI-lFl" id="6Sy-Gq-Dux"/>
+                            <outlet property="delegate" destination="Oxu-OI-lFl" id="X1N-3J-ejW"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Chats List" id="kEe-U7-VCF"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iuY-KC-K3B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3140" y="-319"/>
+        </scene>
+        <!--Chats List-->
+        <scene sceneID="Rl0-eG-YaQ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="v8i-iU-Jlh" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Chats List" id="7mj-wG-bfv"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8NT-uB-uPU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Oxu-OI-lFl" kind="relationship" relationship="rootViewController" id="bHm-Fj-51m"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="R6Y-6F-wGI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2185" y="-318"/>
+        </scene>
         <!--Active Chat-->
         <scene sceneID="gyW-mx-bdr">
             <objects>
@@ -115,6 +161,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="mKE-Zs-xtf" kind="relationship" relationship="viewControllers" id="ezr-9q-oVy"/>
+                        <segue destination="v8i-iU-Jlh" kind="relationship" relationship="viewControllers" id="pU4-L8-4Zo"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GbA-XY-zRp" userLabel="First Responder" sceneMemberID="firstResponder"/>

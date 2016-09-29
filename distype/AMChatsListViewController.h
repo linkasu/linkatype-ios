@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AMChatsListViewController : UIViewController
+@interface AMChatsListViewController : UITableViewController
 
 @end

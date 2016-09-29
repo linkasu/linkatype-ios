@@ -175,7 +175,9 @@ AMWordCollectionViewCellDelegate
                                                            self.categoryWordCollection.frame.size.height);
         } completion:^(BOOL finished) {
             __strong typeof(weakSelf) self = weakSelf;
-            [self.categoryWordCollection reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.categoryWordCollection reloadData];
+            });
         }];
     } else {
         self.chatMessageInput.hidden = NO;
