@@ -180,6 +180,16 @@ AMWordCollectionViewCellDelegate
     } else {
         self.chatMessageInput.hidden = NO;
         self.isNonStandartKeyboardUsed = NO;
+        
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Words category doesn't contain any words yet."
+                                                              style:LGAlertViewStyleAlert
+                                                       buttonTitles:@[@"Ok"]
+                                                  cancelButtonTitle:nil
+                                             destructiveButtonTitle:nil];
+        alertView.cancelOnTouch = NO;
+        
+        [alertView showAnimated:YES completionHandler:nil];
     }
 }
 
@@ -285,7 +295,20 @@ AMWordCollectionViewCellDelegate
 #pragma mark - AMWordViewDelegate
 
 - (void)wordDeleteButtonPressed:(AMChatMessageModel*)message {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryUniqId == %@", message.categoryUniqId];
     
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    message.categoryUniqId = nil;
+    [realm commitWriteTransaction];
+    
+    self.wordsForCategory = [AMChatMessageModel objectsWithPredicate:predicate];
+    
+    if (self.wordsForCategory.count == 0) {
+        [self hideWordsKeyboard];
+    } else {
+        [self.categoryWordCollection reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    }
 }
 
 #pragma mark - AMChatTextInputViewDelegate
@@ -378,7 +401,23 @@ AMWordCollectionViewCellDelegate
 
 #pragma mark - UICollectionViewDelegate
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    AMWordCollectionViewCell *cell = (AMWordCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    
+    [UIView animateWithDuration:0.15f animations:^{
+        cell.backgroundColor = [UIColor lightGrayColor];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.15f animations:^{
+            cell.backgroundColor = [UIColor clearColor];
+        }];
+    }];
+    
+    [self.chatMessages insertObject:cell.word atIndex:0];
+    [self.chatTable reloadData];
+}
+
 #pragma mark - UICollectionViewDataSource
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.wordsForCategory.count;
 }
@@ -387,6 +426,7 @@ AMWordCollectionViewCellDelegate
     AMWordCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[AMWordCollectionViewCell cellId]
                                                                                forIndexPath:indexPath];
     cell.word = [self.wordsForCategory objectAtIndex:indexPath.item];
+    cell.delegate = self;
     
     return cell;
 }
