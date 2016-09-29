@@ -94,4 +94,8 @@ UITextFieldDelegate
     }
 }
 
+- (void)hideKeyboard {
+    [self.messageTextField resignFirstResponder];
+}
+
 @end

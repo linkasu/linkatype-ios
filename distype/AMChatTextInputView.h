@@ -19,6 +19,8 @@
 
 @interface AMChatTextInputView : UIView
 
+- (void)hideKeyboard;
+
 @property (weak) id<AMChatTextInputViewDelegate> delegate;
 
 @end

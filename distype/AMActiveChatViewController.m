@@ -60,7 +60,7 @@ AMWordCollectionViewCellDelegate
     self.chatTable.dataSource = self;
     [self.chatTable registerClass:[UITableViewCell class]
            forCellReuseIdentifier:self.cellIdentifier];
-  
+    
     self.chatMessageInput.delegate = self;
     
     CGRect rectCollection = CGRectMake(0,
@@ -69,7 +69,7 @@ AMWordCollectionViewCellDelegate
                                        [UIScreen mainScreen].bounds.size.height / 4);
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.estimatedItemSize = CGSizeMake(rectCollection.size.width / 4, rectCollection.size.height / 4);
+    flowLayout.estimatedItemSize = CGSizeMake(rectCollection.size.width / 3, rectCollection.size.height / 3);
     self.categoryWordCollection = [[UICollectionView alloc] initWithFrame:rectCollection collectionViewLayout:flowLayout];
     [self.categoryWordCollection registerNib:[UINib nibWithNibName:@"AMWordCollectionViewCell" bundle:nil]
                   forCellWithReuseIdentifier:[AMWordCollectionViewCell cellId]];
@@ -263,7 +263,7 @@ AMWordCollectionViewCellDelegate
     CGFloat keyboardAppearingDuration = [[[notification userInfo] valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGPoint scrollOffset = CGPointMake(self.mainScrollView.contentOffset.x,
                                        keyboardFrame.size.height - self.chatMessageInput.frame.size.height + 1);
-
+    
     __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:keyboardAppearingDuration animations:^{
         __strong typeof(weakSelf) self = weakSelf;
@@ -291,6 +291,7 @@ AMWordCollectionViewCellDelegate
 #pragma mark - AMChatTextInputViewDelegate
 
 - (void)needToAddToCategory:(NSString*)message {
+    [self.chatMessageInput hideKeyboard];
     __weak typeof(self) weakSelf = self;
     LGAlertView *alertView = [[LGAlertView alloc] initWithTextFieldsAndTitle:@"Add word"
                                                                      message:@"Type name of word category"
