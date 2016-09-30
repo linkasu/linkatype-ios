@@ -11,12 +11,13 @@
 #import "AMActiveChatViewController.h"
 #import "AMChatsListViewController.h"
 #import "AMConversationModel.h"
+#import "AMChatTableViewCell.h"
 
 @interface AMChatsListViewController ()
 
 - (BOOL)isTextEmpty:(NSString*)text;
 
-@property (strong) NSString *cellId;
+@property (strong) NSString *addChatTitle;
 @property (strong) RLMResults *conversationsArray;
 
 @end
@@ -24,8 +25,7 @@
 @implementation AMChatsListViewController
 
 - (void)initialize {
-    self.cellId = [NSUUID UUID].UUIDString;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:self.cellId];
+    self.addChatTitle = @"ADD NEW CHAT";
     
     self.conversationsArray = [AMConversationModel allObjects];
 }
@@ -51,6 +51,32 @@
     }
     
     return result;
+}
+
+#pragma mark - Segue
+
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    BOOL result = YES;
+    
+    if ([sender isKindOfClass:[UITableViewCell class]] == YES) {
+        UITableViewCell *cell = (UITableViewCell*)sender;
+        
+        if ([cell.textLabel.text isEqualToString:self.addChatTitle] == YES) {
+            result = NO;
+        }
+    }
+    
+    return result;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.destinationViewController isKindOfClass:[AMActiveChatViewController class]] == YES
+        && [sender isKindOfClass:[AMChatTableViewCell class]] == YES) {
+        AMActiveChatViewController *controller = (AMActiveChatViewController*)segue.destinationViewController;
+        AMChatTableViewCell *cell = (AMChatTableViewCell*)sender;
+        
+        controller.conversation = cell.conversation;
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -137,15 +163,15 @@
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellId forIndexPath:indexPath];
+    AMChatTableViewCell *cell = (AMChatTableViewCell*)[tableView dequeueReusableCellWithIdentifier:[AMChatTableViewCell cellId] forIndexPath:indexPath];
     
     switch (indexPath.section) {
         case 0:
-            cell.textLabel.text = @"ADD NEW CHAT";
+            cell.textLabel.text = self.addChatTitle;
             break;
             
         case 1:
-            cell.textLabel.text = ((AMConversationModel*)[self.conversationsArray objectAtIndex:indexPath.row]).conversationTitle;
+            cell.conversation = [self.conversationsArray objectAtIndex:indexPath.row];
             break;
     }
     

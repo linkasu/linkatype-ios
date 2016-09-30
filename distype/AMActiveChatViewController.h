@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class AMChatMessageModel;
+@class AMConversationModel;
 
 @interface AMActiveChatViewController : UIViewController
 
-@property (strong, nonatomic) NSString *conversationUniqId;
+@property (strong) AMConversationModel *conversation;
 
 @end

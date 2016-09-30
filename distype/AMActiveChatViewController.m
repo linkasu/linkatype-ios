@@ -10,6 +10,7 @@
 
 #import "AMCategoryModel.h"
 #import "AMChatMessageModel.h"
+#import "AMConversationModel.h"
 #import "AMChatTextInputView.h"
 #import "AMWordCollectionViewCell.h"
 #import "AMActiveChatViewController.h"
@@ -51,6 +52,8 @@ AMWordCollectionViewCellDelegate
 @implementation AMActiveChatViewController
 
 - (void)initialize {
+    self.title = self.conversation.conversationTitle;
+    
     self.chatMessages = [[NSMutableArray alloc] init];
     self.cellIdentifier = [NSUUID UUID].UUIDString;
     
@@ -77,20 +80,12 @@ AMWordCollectionViewCellDelegate
     self.categoryWordCollection.delegate = self;
     self.categoryWordCollection.backgroundColor = [UIColor whiteColor];
     
-#warning Need to delete this code after implementing ChatsList
-    /*
-     START
-     */
-    self.conversationUniqId = [NSUUID UUID].UUIDString;
-    
-    RLMResults *resultsConversation = [AMChatMessageModel allObjects];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationUniqId == %@", self.conversation.conversationUniqId];
+    RLMResults *resultsConversation = [AMChatMessageModel objectsWithPredicate:predicate];
     
     for (AMChatMessageModel *obj in resultsConversation) {
         [self.chatMessages insertObject:obj atIndex:0];
     }
-    /*
-     END
-     */
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -110,23 +105,6 @@ AMWordCollectionViewCellDelegate
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)setConversationUniqId:(NSString *)conversationUniqId {
-    if (self.chatMessages == nil) {
-        self.chatMessages = [[NSMutableArray alloc] init];
-    } else {
-        [self.chatMessages removeAllObjects];
-    }
-    
-    _conversationUniqId = conversationUniqId;
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationUniqId == %@", conversationUniqId];
-    RLMResults *resultsConversation = [AMChatMessageModel objectsWithPredicate:predicate];
-    
-    for (AMChatMessageModel *obj in resultsConversation) {
-        [self.chatMessages insertObject:obj atIndex:0];
-    }
 }
 
 - (void)hideWordsKeyboard {
@@ -163,7 +141,7 @@ AMWordCollectionViewCellDelegate
         
         [self.view addSubview:self.categoryWordCollection];
         CGPoint scrollOffset = CGPointMake(self.mainScrollView.contentOffset.x,
-                                           self.categoryWordCollection.frame.size.height - self.chatMessageInput.frame.size.height);
+                                           self.categoryWordCollection.frame.size.height);
         
         __weak typeof(self) weakSelf = self;
         [UIView animateWithDuration:0.5f animations:^{
@@ -274,7 +252,7 @@ AMWordCollectionViewCellDelegate
     CGRect keyboardFrame = [[[notification userInfo] valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat keyboardAppearingDuration = [[[notification userInfo] valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGPoint scrollOffset = CGPointMake(self.mainScrollView.contentOffset.x,
-                                       keyboardFrame.size.height - self.chatMessageInput.frame.size.height + 1);
+                                       keyboardFrame.size.height);
     
     __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:keyboardAppearingDuration animations:^{
@@ -337,7 +315,7 @@ AMWordCollectionViewCellDelegate
                                                                    self.temporaryMsg = [[AMChatMessageModel alloc] init];
                                                                    self.temporaryMsg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
                                                                    self.temporaryMsg.chatMessage = message;
-                                                                   self.temporaryMsg.conversationUniqId = self.conversationUniqId;
+                                                                   self.temporaryMsg.conversationUniqId = self.conversation.conversationUniqId;
                                                                    
                                                                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryTitle == %@", textField.text];
                                                                    RLMResults *resultsConversation = [AMCategoryModel objectsWithPredicate:predicate];
@@ -385,7 +363,7 @@ AMWordCollectionViewCellDelegate
         msg = [[AMChatMessageModel alloc] init];
         
         msg.chatMessage = message;
-        msg.conversationUniqId = self.conversationUniqId;
+        msg.conversationUniqId = self.conversation.conversationUniqId;
         msg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
         isNeedToAddToRealm = YES;
     }
