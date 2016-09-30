@@ -12,6 +12,7 @@
 #import "AMChatsListViewController.h"
 #import "AMConversationModel.h"
 #import "AMChatTableViewCell.h"
+#import "AMChatMessageModel.h"
 
 @interface AMChatsListViewController ()
 
@@ -144,6 +145,32 @@
 }
 
 #pragma mark - UITableViewDataSource
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        AMChatTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationUniqId == %@", cell.conversation.conversationUniqId];
+        RLMResults *messages = [AMChatMessageModel objectsWithPredicate:predicate];
+        [realm deleteObjects:messages];
+        [realm deleteObject:cell.conversation];
+        
+        [realm commitWriteTransaction];
+        
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section != 0) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
