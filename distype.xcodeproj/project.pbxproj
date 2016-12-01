@@ -9,12 +9,22 @@
 /* Begin PBXBuildFile section */
 		09EE57E9A343DD10084140C3 /* libPods-distype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6075458B309E16CED04FC6E9 /* libPods-distype.a */; };
 		749240B11D749D5100A371F8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B01D749D5100A371F8 /* main.m */; };
-		749240B41D749D5100A371F8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B31D749D5100A371F8 /* AppDelegate.m */; };
-		749240B71D749D5100A371F8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B61D749D5100A371F8 /* ViewController.m */; };
 		749240BA1D749D5100A371F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 749240B81D749D5100A371F8 /* Main.storyboard */; };
 		749240BD1D749D5100A371F8 /* distype.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 749240BB1D749D5100A371F8 /* distype.xcdatamodeld */; };
 		749240BF1D749D5100A371F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 749240BE1D749D5100A371F8 /* Assets.xcassets */; };
 		749240C21D749D5100A371F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 749240C01D749D5100A371F8 /* LaunchScreen.storyboard */; };
+		9E163A051DF0770500C242C5 /* AMCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1639E71DF0770500C242C5 /* AMCategoryModel.m */; };
+		9E163A061DF0770500C242C5 /* AMChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1639EA1DF0770500C242C5 /* AMChatMessageModel.m */; };
+		9E163A071DF0770500C242C5 /* AMConversationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1639ED1DF0770500C242C5 /* AMConversationModel.m */; };
+		9E163A081DF0770500C242C5 /* AMActiveChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1639F11DF0770500C242C5 /* AMActiveChatViewController.m */; };
+		9E163A091DF0770500C242C5 /* AMChatsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1639F41DF0770500C242C5 /* AMChatsListViewController.m */; };
+		9E163A0A1DF0770500C242C5 /* AMChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1639F91DF0770500C242C5 /* AMChatTableViewCell.m */; };
+		9E163A0B1DF0770500C242C5 /* AMWordCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1639FC1DF0770500C242C5 /* AMWordCollectionViewCell.m */; };
+		9E163A0C1DF0770500C242C5 /* AMWordCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E1639FD1DF0770500C242C5 /* AMWordCollectionViewCell.xib */; };
+		9E163A0D1DF0770500C242C5 /* AMChatTextInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E163A001DF0770500C242C5 /* AMChatTextInputView.m */; };
+		9E163A0E1DF0770500C242C5 /* AMChatTextInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E163A011DF0770500C242C5 /* AMChatTextInputView.xib */; };
+		9E163A0F1DF0770500C242C5 /* AMMessageTextFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E163A041DF0770500C242C5 /* AMMessageTextFieldView.m */; };
+		9E163A101DF0779C00C242C5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B31D749D5100A371F8 /* AppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,14 +33,32 @@
 		749240B01D749D5100A371F8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		749240B21D749D5100A371F8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		749240B31D749D5100A371F8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		749240B51D749D5100A371F8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		749240B61D749D5100A371F8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		749240B91D749D5100A371F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		749240BC1D749D5100A371F8 /* distype.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = distype.xcdatamodel; sourceTree = "<group>"; };
 		749240BE1D749D5100A371F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		749240C11D749D5100A371F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		749240C31D749D5100A371F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CEE2547E1977FACADE7C090 /* Pods-distype.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-distype.debug.xcconfig"; path = "Pods/Target Support Files/Pods-distype/Pods-distype.debug.xcconfig"; sourceTree = "<group>"; };
+		9E1639E61DF0770500C242C5 /* AMCategoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMCategoryModel.h; sourceTree = "<group>"; };
+		9E1639E71DF0770500C242C5 /* AMCategoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMCategoryModel.m; sourceTree = "<group>"; };
+		9E1639E91DF0770500C242C5 /* AMChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMChatMessageModel.h; sourceTree = "<group>"; };
+		9E1639EA1DF0770500C242C5 /* AMChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMChatMessageModel.m; sourceTree = "<group>"; };
+		9E1639EC1DF0770500C242C5 /* AMConversationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMConversationModel.h; sourceTree = "<group>"; };
+		9E1639ED1DF0770500C242C5 /* AMConversationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConversationModel.m; sourceTree = "<group>"; };
+		9E1639F01DF0770500C242C5 /* AMActiveChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMActiveChatViewController.h; sourceTree = "<group>"; };
+		9E1639F11DF0770500C242C5 /* AMActiveChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMActiveChatViewController.m; sourceTree = "<group>"; };
+		9E1639F31DF0770500C242C5 /* AMChatsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMChatsListViewController.h; sourceTree = "<group>"; };
+		9E1639F41DF0770500C242C5 /* AMChatsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMChatsListViewController.m; sourceTree = "<group>"; };
+		9E1639F81DF0770500C242C5 /* AMChatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMChatTableViewCell.h; sourceTree = "<group>"; };
+		9E1639F91DF0770500C242C5 /* AMChatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMChatTableViewCell.m; sourceTree = "<group>"; };
+		9E1639FB1DF0770500C242C5 /* AMWordCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWordCollectionViewCell.h; sourceTree = "<group>"; };
+		9E1639FC1DF0770500C242C5 /* AMWordCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWordCollectionViewCell.m; sourceTree = "<group>"; };
+		9E1639FD1DF0770500C242C5 /* AMWordCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMWordCollectionViewCell.xib; sourceTree = "<group>"; };
+		9E1639FF1DF0770500C242C5 /* AMChatTextInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMChatTextInputView.h; sourceTree = "<group>"; };
+		9E163A001DF0770500C242C5 /* AMChatTextInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMChatTextInputView.m; sourceTree = "<group>"; };
+		9E163A011DF0770500C242C5 /* AMChatTextInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMChatTextInputView.xib; sourceTree = "<group>"; };
+		9E163A031DF0770500C242C5 /* AMMessageTextFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMMessageTextFieldView.h; sourceTree = "<group>"; };
+		9E163A041DF0770500C242C5 /* AMMessageTextFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMMessageTextFieldView.m; sourceTree = "<group>"; };
 		DB4D9D930C836901AF75E2A5 /* Pods-distype.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-distype.release.xcconfig"; path = "Pods/Target Support Files/Pods-distype/Pods-distype.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,10 +112,11 @@
 		749240AE1D749D5100A371F8 /* distype */ = {
 			isa = PBXGroup;
 			children = (
+				9E1639E41DF0770500C242C5 /* Models */,
+				9E1639F51DF0770500C242C5 /* View */,
+				9E1639EE1DF0770500C242C5 /* Screens */,
 				749240B21D749D5100A371F8 /* AppDelegate.h */,
 				749240B31D749D5100A371F8 /* AppDelegate.m */,
-				749240B51D749D5100A371F8 /* ViewController.h */,
-				749240B61D749D5100A371F8 /* ViewController.m */,
 				749240B81D749D5100A371F8 /* Main.storyboard */,
 				749240BE1D749D5100A371F8 /* Assets.xcassets */,
 				749240C01D749D5100A371F8 /* LaunchScreen.storyboard */,
@@ -106,6 +135,127 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		9E1639E41DF0770500C242C5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639E51DF0770500C242C5 /* CategoryModel */,
+				9E1639E81DF0770500C242C5 /* ChatMessageModel */,
+				9E1639EB1DF0770500C242C5 /* ConversationModel */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9E1639E51DF0770500C242C5 /* CategoryModel */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639E61DF0770500C242C5 /* AMCategoryModel.h */,
+				9E1639E71DF0770500C242C5 /* AMCategoryModel.m */,
+			);
+			path = CategoryModel;
+			sourceTree = "<group>";
+		};
+		9E1639E81DF0770500C242C5 /* ChatMessageModel */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639E91DF0770500C242C5 /* AMChatMessageModel.h */,
+				9E1639EA1DF0770500C242C5 /* AMChatMessageModel.m */,
+			);
+			path = ChatMessageModel;
+			sourceTree = "<group>";
+		};
+		9E1639EB1DF0770500C242C5 /* ConversationModel */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639EC1DF0770500C242C5 /* AMConversationModel.h */,
+				9E1639ED1DF0770500C242C5 /* AMConversationModel.m */,
+			);
+			path = ConversationModel;
+			sourceTree = "<group>";
+		};
+		9E1639EE1DF0770500C242C5 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639EF1DF0770500C242C5 /* ActiveChat */,
+				9E1639F21DF0770500C242C5 /* ChatList */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		9E1639EF1DF0770500C242C5 /* ActiveChat */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639F01DF0770500C242C5 /* AMActiveChatViewController.h */,
+				9E1639F11DF0770500C242C5 /* AMActiveChatViewController.m */,
+			);
+			path = ActiveChat;
+			sourceTree = "<group>";
+		};
+		9E1639F21DF0770500C242C5 /* ChatList */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639F31DF0770500C242C5 /* AMChatsListViewController.h */,
+				9E1639F41DF0770500C242C5 /* AMChatsListViewController.m */,
+			);
+			path = ChatList;
+			sourceTree = "<group>";
+		};
+		9E1639F51DF0770500C242C5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639F61DF0770500C242C5 /* Cells */,
+				9E1639FE1DF0770500C242C5 /* ChatTextInput */,
+				9E163A021DF0770500C242C5 /* MessageTextField */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9E1639F61DF0770500C242C5 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639F71DF0770500C242C5 /* ChatTableViewCell */,
+				9E1639FA1DF0770500C242C5 /* WordCollectionCell */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		9E1639F71DF0770500C242C5 /* ChatTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639F81DF0770500C242C5 /* AMChatTableViewCell.h */,
+				9E1639F91DF0770500C242C5 /* AMChatTableViewCell.m */,
+			);
+			path = ChatTableViewCell;
+			sourceTree = "<group>";
+		};
+		9E1639FA1DF0770500C242C5 /* WordCollectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639FB1DF0770500C242C5 /* AMWordCollectionViewCell.h */,
+				9E1639FC1DF0770500C242C5 /* AMWordCollectionViewCell.m */,
+				9E1639FD1DF0770500C242C5 /* AMWordCollectionViewCell.xib */,
+			);
+			path = WordCollectionCell;
+			sourceTree = "<group>";
+		};
+		9E1639FE1DF0770500C242C5 /* ChatTextInput */ = {
+			isa = PBXGroup;
+			children = (
+				9E1639FF1DF0770500C242C5 /* AMChatTextInputView.h */,
+				9E163A001DF0770500C242C5 /* AMChatTextInputView.m */,
+				9E163A011DF0770500C242C5 /* AMChatTextInputView.xib */,
+			);
+			path = ChatTextInput;
+			sourceTree = "<group>";
+		};
+		9E163A021DF0770500C242C5 /* MessageTextField */ = {
+			isa = PBXGroup;
+			children = (
+				9E163A031DF0770500C242C5 /* AMMessageTextFieldView.h */,
+				9E163A041DF0770500C242C5 /* AMMessageTextFieldView.m */,
+			);
+			path = MessageTextField;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -113,12 +263,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 749240C61D749D5100A371F8 /* Build configuration list for PBXNativeTarget "distype" */;
 			buildPhases = (
-				10986E3FD492161A25D88755 /* 📦 Check Pods Manifest.lock */,
+				10986E3FD492161A25D88755 /* [CP] Check Pods Manifest.lock */,
 				749240A81D749D5100A371F8 /* Sources */,
 				749240A91D749D5100A371F8 /* Frameworks */,
 				749240AA1D749D5100A371F8 /* Resources */,
-				18031D8B5595EC0389B24722 /* 📦 Embed Pods Frameworks */,
-				D07545B54D8CEF6A9072783B /* 📦 Copy Pods Resources */,
+				18031D8B5595EC0389B24722 /* [CP] Embed Pods Frameworks */,
+				D07545B54D8CEF6A9072783B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -166,8 +316,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E163A0E1DF0770500C242C5 /* AMChatTextInputView.xib in Resources */,
 				749240C21D749D5100A371F8 /* LaunchScreen.storyboard in Resources */,
 				749240BF1D749D5100A371F8 /* Assets.xcassets in Resources */,
+				9E163A0C1DF0770500C242C5 /* AMWordCollectionViewCell.xib in Resources */,
 				749240BA1D749D5100A371F8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,29 +327,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		10986E3FD492161A25D88755 /* 📦 Check Pods Manifest.lock */ = {
+		10986E3FD492161A25D88755 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		18031D8B5595EC0389B24722 /* 📦 Embed Pods Frameworks */ = {
+		18031D8B5595EC0389B24722 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -205,14 +357,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-distype/Pods-distype-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D07545B54D8CEF6A9072783B /* 📦 Copy Pods Resources */ = {
+		D07545B54D8CEF6A9072783B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,9 +379,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				749240B71D749D5100A371F8 /* ViewController.m in Sources */,
-				749240B41D749D5100A371F8 /* AppDelegate.m in Sources */,
+				9E163A101DF0779C00C242C5 /* AppDelegate.m in Sources */,
+				9E163A0B1DF0770500C242C5 /* AMWordCollectionViewCell.m in Sources */,
 				749240BD1D749D5100A371F8 /* distype.xcdatamodeld in Sources */,
+				9E163A0A1DF0770500C242C5 /* AMChatTableViewCell.m in Sources */,
+				9E163A051DF0770500C242C5 /* AMCategoryModel.m in Sources */,
+				9E163A091DF0770500C242C5 /* AMChatsListViewController.m in Sources */,
+				9E163A081DF0770500C242C5 /* AMActiveChatViewController.m in Sources */,
+				9E163A0F1DF0770500C242C5 /* AMMessageTextFieldView.m in Sources */,
+				9E163A061DF0770500C242C5 /* AMChatMessageModel.m in Sources */,
+				9E163A0D1DF0770500C242C5 /* AMChatTextInputView.m in Sources */,
+				9E163A071DF0770500C242C5 /* AMConversationModel.m in Sources */,
 				749240B11D749D5100A371F8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
