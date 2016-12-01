@@ -25,6 +25,8 @@
 
 @implementation AMChatsListViewController
 
+static CGFloat headerHeight = 50.;
+
 - (void)initialize {
     self.addChatTitle = @"ADD NEW CHAT";
     
@@ -72,7 +74,8 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.destinationViewController isKindOfClass:[AMActiveChatViewController class]] == YES
-        && [sender isKindOfClass:[AMChatTableViewCell class]] == YES) {
+        && [sender isKindOfClass:[AMChatTableViewCell class]] == YES)
+    {
         AMActiveChatViewController *controller = (AMActiveChatViewController*)segue.destinationViewController;
         AMChatTableViewCell *cell = (AMChatTableViewCell*)sender;
         
@@ -80,73 +83,78 @@
     }
 }
 
-#pragma mark - UITableViewDelegate
+#pragma mark - Private
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+- (void)dialogShowCreateNewChat
+{
+    __weak typeof(self) weakSelf = self;
     
-    switch (indexPath.section) {
-        case 0: {
-            __weak typeof(self) weakSelf = self;
-            LGAlertView *alertView = [[LGAlertView alloc] initWithTextFieldsAndTitle:@"Create new chat"
-                                                                             message:@"Enter name of new chat"
-                                                                  numberOfTextFields:1
-                                                              textFieldsSetupHandler:nil
-                                                                        buttonTitles:@[@"Ok"]
-                                                                   cancelButtonTitle:@"Cancel"
-                                                              destructiveButtonTitle:nil
-                                                                       actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-                                                                           __strong typeof(weakSelf) self = weakSelf;
-                                                                           
-                                                                           UITextField *textField = [alertView.textFieldsArray objectAtIndex:index];
-                                                                           NSString *chatTitle = textField.text;
-                                                                           if ([self isTextEmpty:chatTitle] == YES) {
-                                                                               return;
-                                                                           }
-                                                                           
-                                                                           NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationTitle == %@", chatTitle];
-                                                                           RLMResults *realmResults = [AMConversationModel objectsWithPredicate:predicate];
-                                                                           
-                                                                           if (realmResults.count == 0) {
-                                                                               AMConversationModel *conversationModel = [[AMConversationModel alloc] init];
-                                                                               conversationModel.conversationTitle = chatTitle;
-                                                                               conversationModel.conversationTimestamp = [[NSDate date] timeIntervalSince1970];
-                                                                               conversationModel.conversationUniqId = [NSUUID UUID].UUIDString;
-                                                                               
-                                                                               RLMRealm *realm = [RLMRealm defaultRealm];
-                                                                               [realm beginWriteTransaction];
-                                                                               [realm addObject:conversationModel];
-                                                                               [realm commitWriteTransaction];
-                                                                               
-                                                                               self.conversationsArray = [AMConversationModel allObjects];
-                                                                               
-                                                                               dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                   [self.tableView reloadData];
-                                                                               });
-                                                                           } else {
-                                                                               [textField resignFirstResponder];
-                                                                               LGAlertView *errorAlert = [[LGAlertView alloc] initWithTitle:@"Error"
-                                                                                                                                    message:@"Chat is already exist"
-                                                                                                                                      style:LGAlertViewStyleAlert
-                                                                                                                               buttonTitles:@[@"Ok"]
-                                                                                                                          cancelButtonTitle:nil
-                                                                                                                     destructiveButtonTitle:nil];
-                                                                               errorAlert.cancelOnTouch = NO;
-                                                                               [errorAlert showAnimated:YES completionHandler:nil];
-                                                                           }
-                                                                       }
-                                                                       cancelHandler:nil
-                                                                  destructiveHandler:nil];
-            alertView.cancelOnTouch = NO;
-            [alertView showAnimated:YES completionHandler:nil];
-            break;
+    void (^createChatBlock)(LGAlertView *, NSString *, NSUInteger) = ^(LGAlertView *alertView,
+                                                                       NSString *title,
+                                                                       NSUInteger index)
+    {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        UITextField *textField = [alertView.textFieldsArray objectAtIndex:index];
+        NSString *chatTitle = textField.text;
+        if ([strongSelf isTextEmpty:chatTitle] == YES) {
+            return;
         }
-    }
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationTitle == %@", chatTitle];
+        RLMResults *realmResults = [AMConversationModel objectsWithPredicate:predicate];
+        
+        if (realmResults.count == 0) {
+            AMConversationModel *conversationModel = [[AMConversationModel alloc] init];
+            conversationModel.conversationTitle = chatTitle;
+            conversationModel.conversationTimestamp = [[NSDate date] timeIntervalSince1970];
+            conversationModel.conversationUniqId = [NSUUID UUID].UUIDString;
+            
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            [realm beginWriteTransaction];
+            [realm addObject:conversationModel];
+            [realm commitWriteTransaction];
+            
+            strongSelf.conversationsArray = [AMConversationModel allObjects];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                __weak typeof(self) weakSelf = strongSelf;
+                [weakSelf.tableView reloadData];
+            });
+        }
+        else
+        {
+            [textField resignFirstResponder];
+            LGAlertView *errorAlert = [[LGAlertView alloc] initWithTitle:@"Error"
+                                                                 message:@"Chat is already exist"
+                                                                   style:LGAlertViewStyleAlert
+                                                            buttonTitles:@[@"Ok"]
+                                                       cancelButtonTitle:nil
+                                                  destructiveButtonTitle:nil];
+            errorAlert.cancelOnTouch = NO;
+            [errorAlert showAnimated:YES completionHandler:nil];
+        }
+    };
+    
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTextFieldsAndTitle:@"Create new chat"
+                                                                     message:@"Enter name of new chat"
+                                                          numberOfTextFields:1
+                                                      textFieldsSetupHandler:nil
+                                                                buttonTitles:@[@"Ok"]
+                                                           cancelButtonTitle:@"Cancel"
+                                                      destructiveButtonTitle:nil
+                                                               actionHandler:createChatBlock
+                                                               cancelHandler:nil
+                                                          destructiveHandler:nil];
+    alertView.cancelOnTouch = NO;
+    [alertView showAnimated:YES completionHandler:nil];
 }
 
+#pragma mark - UITableViewDelegate
 #pragma mark - UITableViewDataSource
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         AMChatTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
@@ -165,43 +173,38 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section != 0) {
-        return YES;
-    } else {
-        return NO;
-    }
+    return YES;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, headerHeight)];
+    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 200, headerHeight)];
+    text.text = self.addChatTitle;
+    header.backgroundColor = [UIColor lightTextColor];
+    [header addSubview:text];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dialogShowCreateNewChat)];
+    [header addGestureRecognizer:tap];
+    
+    return header;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
-        case 0:
-            return 1;
-            
-        case 1:
-            return self.conversationsArray.count;
-            
-        default:
-            return 0;
-    }
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return headerHeight;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.conversationsArray.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     AMChatTableViewCell *cell = (AMChatTableViewCell*)[tableView dequeueReusableCellWithIdentifier:[AMChatTableViewCell cellId] forIndexPath:indexPath];
-    
-    switch (indexPath.section) {
-        case 0:
-            cell.textLabel.text = self.addChatTitle;
-            break;
-            
-        case 1:
-            cell.conversation = [self.conversationsArray objectAtIndex:indexPath.row];
-            break;
-    }
-    
+
+    cell.conversation = [self.conversationsArray objectAtIndex:indexPath.row];
+
     return cell;
 }
 
