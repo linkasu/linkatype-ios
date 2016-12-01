@@ -6,5 +6,7 @@ target 'distype' do
   # use_frameworks!
 
   # Pods for distype
+  pod 'Realm'
+  pod 'LGAlertView', '~> 2.0.0'
 
 end
