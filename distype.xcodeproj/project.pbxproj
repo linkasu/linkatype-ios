@@ -25,6 +25,7 @@
 		9E163A0E1DF0770500C242C5 /* AMChatTextInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E163A011DF0770500C242C5 /* AMChatTextInputView.xib */; };
 		9E163A0F1DF0770500C242C5 /* AMMessageTextFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E163A041DF0770500C242C5 /* AMMessageTextFieldView.m */; };
 		9E163A101DF0779C00C242C5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B31D749D5100A371F8 /* AppDelegate.m */; };
+		9E163A161DF1683500C242C5 /* AMDBController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E163A151DF1683500C242C5 /* AMDBController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,8 @@
 		9E163A011DF0770500C242C5 /* AMChatTextInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMChatTextInputView.xib; sourceTree = "<group>"; };
 		9E163A031DF0770500C242C5 /* AMMessageTextFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMMessageTextFieldView.h; sourceTree = "<group>"; };
 		9E163A041DF0770500C242C5 /* AMMessageTextFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMMessageTextFieldView.m; sourceTree = "<group>"; };
+		9E163A141DF1683500C242C5 /* AMDBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMDBController.h; sourceTree = "<group>"; };
+		9E163A151DF1683500C242C5 /* AMDBController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMDBController.m; sourceTree = "<group>"; };
 		DB4D9D930C836901AF75E2A5 /* Pods-distype.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-distype.release.xcconfig"; path = "Pods/Target Support Files/Pods-distype/Pods-distype.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,6 +118,7 @@
 				9E1639E41DF0770500C242C5 /* Models */,
 				9E1639F51DF0770500C242C5 /* View */,
 				9E1639EE1DF0770500C242C5 /* Screens */,
+				9E163A111DF1678C00C242C5 /* Logic */,
 				749240B21D749D5100A371F8 /* AppDelegate.h */,
 				749240B31D749D5100A371F8 /* AppDelegate.m */,
 				749240B81D749D5100A371F8 /* Main.storyboard */,
@@ -256,6 +260,31 @@
 			path = MessageTextField;
 			sourceTree = "<group>";
 		};
+		9E163A111DF1678C00C242C5 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				9E163A121DF1678C00C242C5 /* Controllers */,
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		9E163A121DF1678C00C242C5 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9E163A131DF1678C00C242C5 /* DBController */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		9E163A131DF1678C00C242C5 /* DBController */ = {
+			isa = PBXGroup;
+			children = (
+				9E163A141DF1683500C242C5 /* AMDBController.h */,
+				9E163A151DF1683500C242C5 /* AMDBController.m */,
+			);
+			path = DBController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -382,6 +411,7 @@
 				9E163A101DF0779C00C242C5 /* AppDelegate.m in Sources */,
 				9E163A0B1DF0770500C242C5 /* AMWordCollectionViewCell.m in Sources */,
 				749240BD1D749D5100A371F8 /* distype.xcdatamodeld in Sources */,
+				9E163A161DF1683500C242C5 /* AMDBController.m in Sources */,
 				9E163A0A1DF0770500C242C5 /* AMChatTableViewCell.m in Sources */,
 				9E163A051DF0770500C242C5 /* AMCategoryModel.m in Sources */,
 				9E163A091DF0770500C242C5 /* AMChatsListViewController.m in Sources */,

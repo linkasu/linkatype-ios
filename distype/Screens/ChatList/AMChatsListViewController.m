@@ -41,8 +41,7 @@ static CGFloat headerHeight = 50.;
 - (BOOL)isTextEmpty:(NSString*)text {
     BOOL result = NO;
     
-    if (text == nil
-        || [text isEqualToString:@""] == YES) {
+    if (text == nil || [text isEqualToString:@""] == YES) {
         result = YES;
     } else {
         NSRegularExpression *regexp = [[NSRegularExpression alloc] initWithPattern:@"^[ ]+$"
