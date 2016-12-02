@@ -14,6 +14,4 @@
 
 + (NSString*)cellId;
 
-@property (strong, nonatomic) AMConversationModel *conversation;
-
 @end

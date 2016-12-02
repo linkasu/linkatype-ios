@@ -8,6 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+@class RLMResults, AMConversationModel, AMChatMessageModel, AMCategoryModel;
+
 @interface AMDBController : NSObject
+
+- (RLMResults *)allChats;
+- (RLMResults *)allCategories;
+- (RLMResults *)allWordsForChatID:(NSString *)chatId;
+- (RLMResults *)allWordsForCategoryID:(NSString *)categoryUniqId;
+- (AMConversationModel *)chatForTitle:(NSString *)title;
+- (AMCategoryModel *)categoryWithID:(NSString*)categoryUniqId;
+- (AMCategoryModel *)categoryWithTitle:(NSString*)categoryTitle;
+
+- (BOOL)createChatWithTitle:(NSString *)title;
+- (BOOL)createCategoryWithTitle:(NSString *)title;
+- (void)addMessage:(AMChatMessageModel *)message;
+
+- (BOOL)deleteChat:(AMConversationModel *)conversation;
+- (BOOL)deleteWord:(AMChatMessageModel *)message;
 
 @end

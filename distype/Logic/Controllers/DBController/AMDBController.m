@@ -9,27 +9,35 @@
 #import "AMDBController.h"
 #import "AMChatMessageModel.h"
 #import "AMConversationModel.h"
+#import "AMCategoryModel.h"
 
 
 @implementation AMDBController
 
 #pragma mark - Requests
-- (RLMResults *)allChats
+- (RLMResults< AMConversationModel *> *)allChats
 {
     RLMResults *realmResults = [AMConversationModel allObjects];
     
     return realmResults;
 }
 
-- (RLMResults *)allWordsForChatID:(NSString *)chatID
+- (RLMResults< AMCategoryModel *> *)allCategories
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationUniqId == %@", chatID];
+    RLMResults *realmResults = [AMCategoryModel allObjects];
+    
+    return realmResults;
+}
+
+- (RLMResults< AMChatMessageModel *> *)allWordsForChatID:(NSString *)chatId
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationUniqId == %@", chatId];
     RLMResults *realmResults = [AMChatMessageModel objectsWithPredicate:predicate];
     
     return realmResults;
 }
 
-- (RLMResults *)allWordsForCategoryID:(NSString*)categoryUniqId
+- (RLMResults< AMCategoryModel *> *)allWordsForCategoryID:(NSString*)categoryUniqId
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryUniqId == %@", categoryUniqId];
     RLMResults *realmResults = [AMChatMessageModel objectsWithPredicate:predicate];
@@ -37,32 +45,95 @@
     return realmResults;
 }
 
-- (RLMResults *)chatForTitle:(NSString*)title
+- (AMConversationModel *)chatForTitle:(NSString*)title
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationTitle == %@", title];
     RLMResults *realmResults = [AMConversationModel objectsWithPredicate:predicate];
     
     if (realmResults.count == 0)
     {
-//        self.createChatWithTitle(title);
-        
+        [self createChatWithTitle:title];
         realmResults = [AMConversationModel objectsWithPredicate:predicate];
     }
     
-    return realmResults;
+    return [realmResults firstObject];
+}
+
+- (AMCategoryModel *)categoryWithID:(NSString*)categoryUniqId
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryUniqId == %@", categoryUniqId];
+    RLMResults *realmResults = [AMCategoryModel objectsWithPredicate:predicate];
+    
+    return [realmResults firstObject];
+}
+
+- (AMCategoryModel *)categoryWithTitle:(NSString*)title
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryTitle == %@", title];
+    RLMResults *realmResults = [AMCategoryModel objectsWithPredicate:predicate];
+    
+    if (realmResults.count == 0)
+    {
+        [self createCategoryWithTitle:title];
+        realmResults = [AMCategoryModel objectsWithPredicate:predicate];
+    }
+    
+    return [realmResults firstObject];
+}
+
+#pragma mark - Deletion
+- (BOOL)deleteChat:(AMConversationModel *)conversation
+{
+    NSString *chatId = conversation.conversationUniqId;
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    
+    RLMResults *messages = [self allWordsForChatID:chatId];
+    [realm deleteObjects:messages];
+    [realm deleteObject:conversation];
+    
+    return [realm commitWriteTransaction:nil];
+}
+
+- (BOOL)deleteWord:(AMChatMessageModel*)message
+{
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    message.categoryUniqId = nil;
+    
+    return [realm commitWriteTransaction:nil];
 }
 
 #pragma mark - Creations
-- (void)createChatWithTitle:(NSString *)title
+- (BOOL)createChatWithTitle:(NSString *)title
 {
-    AMConversationModel *conversationModel = [[AMConversationModel alloc] init];
+    AMConversationModel *conversationModel = [AMConversationModel new];
     conversationModel.conversationTitle = title;
-    conversationModel.conversationTimestamp = [[NSDate date] timeIntervalSince1970];
-    conversationModel.conversationUniqId = [NSUUID UUID].UUIDString;
     
     RLMRealm *realm = [RLMRealm defaultRealm];
     [realm beginWriteTransaction];
     [realm addObject:conversationModel];
+    
+    return [realm commitWriteTransaction:nil];
+}
+
+- (BOOL)createCategoryWithTitle:(NSString *)title
+{
+    AMCategoryModel *category = [AMCategoryModel new];
+    category.categoryTitle = title;
+
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    [realm addObject:category];
+    
+    return [realm commitWriteTransaction:nil];
+}
+
+- (void)addMessage:(AMChatMessageModel *)message
+{
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    [realm addObject:message];
     [realm commitWriteTransaction];
 }
 

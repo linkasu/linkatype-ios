@@ -10,4 +10,17 @@
 
 @implementation AMConversationModel
 
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self != nil)
+    {
+        self.conversationTimestamp = [[NSDate date] timeIntervalSince1970];
+        self.conversationUniqId = [NSUUID UUID].UUIDString;
+    }
+    
+    return self;
+}
+
 @end

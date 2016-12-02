@@ -29,7 +29,7 @@
 - (void)setWord:(AMChatMessageModel *)word {
     _word = word;
     
-    self.wordLabel.text = word.chatMessage;
+    self.wordLabel.text = word.text;
 }
 
 - (IBAction)deleteButtonTap:(UIButton *)sender {

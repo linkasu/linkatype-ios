@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class AMConversationModel;
+@class AMConversationModel, AMDBController;
 
 @interface AMActiveChatViewController : UIViewController
 
-@property (strong) AMConversationModel *conversation;
+@property (nonatomic, strong) AMDBController *db;
+@property (strong) AMConversationModel *chat;
 
 @end

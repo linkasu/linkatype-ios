@@ -8,6 +8,7 @@
 
 #import <LGAlertView.h>
 
+#import "AMDBController.h"
 #import "AMCategoryModel.h"
 #import "AMChatMessageModel.h"
 #import "AMConversationModel.h"
@@ -35,9 +36,9 @@ AMWordCollectionViewCellDelegate
 @property (strong) NSString *cellIdentifier;
 @property (assign) BOOL isNonStandartKeyboardUsed;
 
-@property (strong) RLMResults *wordsForCategory;
+@property (strong) RLMResults <AMChatMessageModel *> *wordsForCategory;
 @property (strong) AMChatMessageModel *temporaryMsg;
-@property (strong) RLMResults *categoryQueryResult;
+@property (strong) RLMResults <AMCategoryModel *> *categoryQueryResult;
 @property (strong) NSMutableArray<AMChatMessageModel*> *chatMessages;
 
 @property (strong) LGAlertView *pickerActionSheet;
@@ -52,7 +53,7 @@ AMWordCollectionViewCellDelegate
 @implementation AMActiveChatViewController
 
 - (void)initialize {
-    self.title = self.conversation.conversationTitle;
+    self.title = self.chat.conversationTitle;
     
     self.chatMessages = [[NSMutableArray alloc] init];
     self.cellIdentifier = [NSUUID UUID].UUIDString;
@@ -80,8 +81,7 @@ AMWordCollectionViewCellDelegate
     self.categoryWordCollection.delegate = self;
     self.categoryWordCollection.backgroundColor = [UIColor whiteColor];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationUniqId == %@", self.conversation.conversationUniqId];
-    RLMResults *resultsConversation = [AMChatMessageModel objectsWithPredicate:predicate];
+    RLMResults <AMChatMessageModel *> *resultsConversation = [self.db allWordsForChatID:self.chat.conversationUniqId];
     
     for (AMChatMessageModel *obj in resultsConversation) {
         [self.chatMessages insertObject:obj atIndex:0];
@@ -133,8 +133,7 @@ AMWordCollectionViewCellDelegate
 - (void)showWordsKeyboardForCategory:(NSString*)categoryUniqId {
     self.chatMessageInput.hidden = YES;
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryUniqId == %@", categoryUniqId];
-    self.wordsForCategory = [AMChatMessageModel objectsWithPredicate:predicate];
+    self.wordsForCategory = [self.db allWordsForCategoryID:categoryUniqId];
     
     if (self.wordsForCategory.count > 0) {
         self.isNonStandartKeyboardUsed = YES;
@@ -176,8 +175,7 @@ AMWordCollectionViewCellDelegate
 - (BOOL)isTextEmpty:(NSString*)text {
     BOOL result = NO;
     
-    if (text == nil
-        || [text isEqualToString:@""] == YES) {
+    if (text == nil || [text isEqualToString:@""] == YES) {
         result = YES;
     } else {
         NSRegularExpression *regexp = [[NSRegularExpression alloc] initWithPattern:@"^[ ]+$"
@@ -197,7 +195,7 @@ AMWordCollectionViewCellDelegate
     if (self.isNonStandartKeyboardUsed == YES) {
         [self hideWordsKeyboard];
     } else {
-        self.categoryQueryResult = [AMCategoryModel allObjects];
+        self.categoryQueryResult = [self.db allCategories];
         
         if (self.categoryQueryResult.count > 0) {
             UIPickerView *categoryPicker = [[UIPickerView alloc] init];
@@ -205,6 +203,22 @@ AMWordCollectionViewCellDelegate
             categoryPicker.dataSource = self;
             
             __weak typeof(self) weakSelf = self;
+            void (^createKeyboardBlock)(LGAlertView *, NSString *, NSUInteger) = ^(LGAlertView *alertView,
+                                                                                   NSString *title,
+                                                                                   NSUInteger index)
+            {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                
+                [strongSelf.pickerActionSheet dismissAnimated:YES completionHandler:nil];
+                strongSelf.pickerActionSheet = nil;
+                
+                NSInteger row = [categoryPicker selectedRowInComponent:0];
+                if (row >= 0) {
+                    AMCategoryModel *category = [strongSelf.categoryQueryResult objectAtIndex:row];
+                    [strongSelf showWordsKeyboardForCategory:category.categoryUniqId];
+                }
+            };
+            
             self.pickerActionSheet = [[LGAlertView alloc] initWithViewAndTitle:@"Select word category"
                                                                        message:nil
                                                                          style:LGAlertViewStyleActionSheet
@@ -212,17 +226,7 @@ AMWordCollectionViewCellDelegate
                                                                   buttonTitles:@[@"Select"]
                                                              cancelButtonTitle:@"Cancel"
                                                         destructiveButtonTitle:nil
-                                                                 actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-                                                                     __strong typeof(weakSelf) self = weakSelf;
-                                                                     [self.pickerActionSheet dismissAnimated:YES completionHandler:nil];
-                                                                     self.pickerActionSheet = nil;
-                                                                     
-                                                                     NSInteger row = [categoryPicker selectedRowInComponent:0];
-                                                                     if (row >= 0) {
-                                                                         AMCategoryModel *category = [self.categoryQueryResult objectAtIndex:row];
-                                                                         [self showWordsKeyboardForCategory:category.categoryUniqId];
-                                                                     }
-                                                                 }
+                                                                 actionHandler:createKeyboardBlock
                                                                  cancelHandler:^(LGAlertView *alertView) {
                                                                      __strong typeof(weakSelf) self = weakSelf;
                                                                      [self.pickerActionSheet dismissAnimated:YES completionHandler:nil];
@@ -275,14 +279,9 @@ AMWordCollectionViewCellDelegate
 #pragma mark - AMWordViewDelegate
 
 - (void)wordDeleteButtonPressed:(AMChatMessageModel*)message {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryUniqId == %@", message.categoryUniqId];
+    [self.db deleteWord:message];
     
-    RLMRealm *realm = [RLMRealm defaultRealm];
-    [realm beginWriteTransaction];
-    message.categoryUniqId = nil;
-    [realm commitWriteTransaction];
-    
-    self.wordsForCategory = [AMChatMessageModel objectsWithPredicate:predicate];
+    self.wordsForCategory = [self.db allWordsForCategoryID:message.categoryUniqId];
     
     if (self.wordsForCategory.count == 0) {
         [self hideWordsKeyboard];
@@ -295,7 +294,30 @@ AMWordCollectionViewCellDelegate
 
 - (void)needToAddToCategory:(NSString*)message {
     [self.chatMessageInput hideKeyboard];
+    
     __weak typeof(self) weakSelf = self;
+    void (^addMessageToCategoryBlock)(LGAlertView *, NSString *, NSUInteger) = ^(LGAlertView *alertView,
+                                                                                 NSString *title,
+                                                                                 NSUInteger index)
+    {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        UITextField *textField = [alertView.textFieldsArray objectAtIndex:index];
+        if ([strongSelf isTextEmpty:textField.text] == YES
+            || [strongSelf isTextEmpty:message] == YES) {
+            return;
+        }
+        
+        strongSelf.temporaryMsg = [AMChatMessageModel new];
+        strongSelf.temporaryMsg.text = message;
+        strongSelf.temporaryMsg.conversationUniqId = strongSelf.chat.conversationUniqId;
+        
+        AMCategoryModel *category = [strongSelf.db categoryWithTitle:textField.text];
+        strongSelf.temporaryMsg.categoryUniqId = category.categoryUniqId;
+
+        [strongSelf.db addMessage:strongSelf.temporaryMsg];
+    };
+    
     LGAlertView *alertView = [[LGAlertView alloc] initWithTextFieldsAndTitle:@"Add word"
                                                                      message:@"Type name of word category"
                                                           numberOfTextFields:1
@@ -303,44 +325,7 @@ AMWordCollectionViewCellDelegate
                                                                 buttonTitles:@[@"Add"]
                                                            cancelButtonTitle:@"Cancel"
                                                       destructiveButtonTitle:nil
-                                                               actionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-                                                                   __strong typeof(weakSelf) self = weakSelf;
-                                                                   
-                                                                   UITextField *textField = [alertView.textFieldsArray objectAtIndex:index];
-                                                                   if ([self isTextEmpty:textField.text] == YES
-                                                                       || [self isTextEmpty:message] == YES) {
-                                                                       return;
-                                                                   }
-                                                                   
-                                                                   self.temporaryMsg = [[AMChatMessageModel alloc] init];
-                                                                   self.temporaryMsg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
-                                                                   self.temporaryMsg.chatMessage = message;
-                                                                   self.temporaryMsg.conversationUniqId = self.conversation.conversationUniqId;
-                                                                   
-                                                                   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryTitle == %@", textField.text];
-                                                                   RLMResults *resultsConversation = [AMCategoryModel objectsWithPredicate:predicate];
-                                                                   AMCategoryModel *category = nil;
-                                                                   
-                                                                   if (resultsConversation.count == 0) {
-                                                                       category = [[AMCategoryModel alloc] init];
-                                                                       category.categoryTitle = textField.text;
-                                                                       category.categoryTimestamp = [[NSDate date] timeIntervalSince1970];
-                                                                       category.categoryUniqId = [NSUUID UUID].UUIDString;
-                                                                       
-                                                                       RLMRealm *realm = [RLMRealm defaultRealm];
-                                                                       [realm beginWriteTransaction];
-                                                                       [realm addObject:category];
-                                                                       [realm commitWriteTransaction];
-                                                                   } else {
-                                                                       category = (AMCategoryModel*)[resultsConversation objectAtIndex:0];
-                                                                   }
-                                                                   self.temporaryMsg.categoryUniqId = category.categoryUniqId;
-                                                                   
-                                                                   RLMRealm *realm = [RLMRealm defaultRealm];
-                                                                   [realm beginWriteTransaction];
-                                                                   [realm addObject:self.temporaryMsg];
-                                                                   [realm commitWriteTransaction];
-                                                               }
+                                                               actionHandler:addMessageToCategoryBlock
                                                                cancelHandler:nil
                                                           destructiveHandler:nil];
     alertView.cancelOnTouch = NO;
@@ -348,34 +333,31 @@ AMWordCollectionViewCellDelegate
     [alertView showAnimated:YES completionHandler:nil];
 }
 
-- (void)needToSendMessage:(NSString*)message {
-    if ([self isTextEmpty:message] == YES) {
+- (void)needToSendMessage:(NSString*)text {
+    if ([self isTextEmpty:text] == YES) {
         return;
     }
     
     BOOL isNeedToAddToRealm = NO;
     AMChatMessageModel *msg = nil;
-    if ([self.temporaryMsg.chatMessage isEqualToString:message] == YES) {
+    
+    if ([self.temporaryMsg.text isEqualToString:text] == YES) {
         msg = self.temporaryMsg;
         self.temporaryMsg = nil;
         isNeedToAddToRealm = NO;
     } else {
-        msg = [[AMChatMessageModel alloc] init];
-        
-        msg.chatMessage = message;
-        msg.conversationUniqId = self.conversation.conversationUniqId;
-        msg.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
+        msg = [AMChatMessageModel new];
+        msg.text = text;
+        msg.conversationUniqId = self.chat.conversationUniqId;
         isNeedToAddToRealm = YES;
     }
     
     [self.chatMessages insertObject:msg atIndex:0];
     [self.chatTable insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:YES];
     
-    if (isNeedToAddToRealm == YES) {
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        [realm beginWriteTransaction];
-        [realm addObject:msg];
-        [realm commitWriteTransaction];
+    if (isNeedToAddToRealm == YES)
+    {
+        [self.db addMessage:msg];
     }
 }
 
@@ -444,7 +426,7 @@ AMWordCollectionViewCellDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
     
-    cell.textLabel.text = [self.chatMessages objectAtIndex:indexPath.row].chatMessage;
+    cell.textLabel.text = [self.chatMessages objectAtIndex:indexPath.row].text;
     cell.transform = CGAffineTransformMakeRotation(M_PI);
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.adjustsFontSizeToFitWidth = YES;

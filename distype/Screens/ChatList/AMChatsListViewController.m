@@ -8,6 +8,7 @@
 
 #import <LGAlertView.h>
 
+#import "AMDBController.h"
 #import "AMActiveChatViewController.h"
 #import "AMChatsListViewController.h"
 #import "AMConversationModel.h"
@@ -18,8 +19,9 @@
 
 - (BOOL)isTextEmpty:(NSString*)text;
 
+@property (nonatomic, strong) AMDBController *db;
 @property (strong) NSString *addChatTitle;
-@property (strong) RLMResults *conversationsArray;
+@property (strong) RLMResults< AMConversationModel *> *chatArray;
 
 @end
 
@@ -27,17 +29,19 @@
 
 static CGFloat headerHeight = 50.;
 
-- (void)initialize {
+- (void)setup {
     self.addChatTitle = @"ADD NEW CHAT";
+    self.db = [AMDBController new];
     
-    self.conversationsArray = [AMConversationModel allObjects];
+    [self updateChatList];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initialize];
+    [self setup];
 }
 
+#pragma mark - Private
 - (BOOL)isTextEmpty:(NSString*)text {
     BOOL result = NO;
     
@@ -53,6 +57,11 @@ static CGFloat headerHeight = 50.;
     }
     
     return result;
+}
+
+- (void)updateChatList
+{
+    self.chatArray =  self.db.allChats;
 }
 
 #pragma mark - Segue
@@ -75,10 +84,12 @@ static CGFloat headerHeight = 50.;
     if ([segue.destinationViewController isKindOfClass:[AMActiveChatViewController class]] == YES
         && [sender isKindOfClass:[AMChatTableViewCell class]] == YES)
     {
+        NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+        AMConversationModel *chat = [self.chatArray objectAtIndex:[indexPath row]];
         AMActiveChatViewController *controller = (AMActiveChatViewController*)segue.destinationViewController;
-        AMChatTableViewCell *cell = (AMChatTableViewCell*)sender;
         
-        controller.conversation = cell.conversation;
+        controller.db = self.db;
+        controller.chat = chat;
     }
 }
 
@@ -96,42 +107,17 @@ static CGFloat headerHeight = 50.;
         
         UITextField *textField = [alertView.textFieldsArray objectAtIndex:index];
         NSString *chatTitle = textField.text;
+        
         if ([strongSelf isTextEmpty:chatTitle] == YES) {
             return;
         }
         
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationTitle == %@", chatTitle];
-        RLMResults *realmResults = [AMConversationModel objectsWithPredicate:predicate];
-        
-        if (realmResults.count == 0) {
-            AMConversationModel *conversationModel = [[AMConversationModel alloc] init];
-            conversationModel.conversationTitle = chatTitle;
-            conversationModel.conversationTimestamp = [[NSDate date] timeIntervalSince1970];
-            conversationModel.conversationUniqId = [NSUUID UUID].UUIDString;
-            
-            RLMRealm *realm = [RLMRealm defaultRealm];
-            [realm beginWriteTransaction];
-            [realm addObject:conversationModel];
-            [realm commitWriteTransaction];
-            
-            strongSelf.conversationsArray = [AMConversationModel allObjects];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                __weak typeof(self) weakSelf = strongSelf;
-                [weakSelf.tableView reloadData];
-            });
-        }
-        else
+        if ([strongSelf.db createChatWithTitle:chatTitle])
         {
-            [textField resignFirstResponder];
-            LGAlertView *errorAlert = [[LGAlertView alloc] initWithTitle:@"Error"
-                                                                 message:@"Chat is already exist"
-                                                                   style:LGAlertViewStyleAlert
-                                                            buttonTitles:@[@"Ok"]
-                                                       cancelButtonTitle:nil
-                                                  destructiveButtonTitle:nil];
-            errorAlert.cancelOnTouch = NO;
-            [errorAlert showAnimated:YES completionHandler:nil];
+            [strongSelf updateChatList];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [strongSelf.tableView reloadData];
+            });
         }
     };
     
@@ -154,20 +140,12 @@ static CGFloat headerHeight = 50.;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        AMChatTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        [realm beginWriteTransaction];
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversationUniqId == %@", cell.conversation.conversationUniqId];
-        RLMResults *messages = [AMChatMessageModel objectsWithPredicate:predicate];
-        [realm deleteObjects:messages];
-        [realm deleteObject:cell.conversation];
-        
-        [realm commitWriteTransaction];
-        
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        AMConversationModel *chat = [self.chatArray objectAtIndex:[indexPath row]];
+
+        if ([self.db deleteChat:chat])
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
@@ -196,13 +174,13 @@ static CGFloat headerHeight = 50.;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.conversationsArray.count;
+    return self.chatArray.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     AMChatTableViewCell *cell = (AMChatTableViewCell*)[tableView dequeueReusableCellWithIdentifier:[AMChatTableViewCell cellId] forIndexPath:indexPath];
 
-    cell.conversation = [self.conversationsArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = [[self.chatArray objectAtIndex:indexPath.row] conversationTitle];
 
     return cell;
 }

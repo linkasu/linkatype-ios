@@ -10,4 +10,16 @@
 
 @implementation AMChatMessageModel
 
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self != nil)
+    {
+        self.chatMessageTimestamp = [[NSDate date] timeIntervalSince1970];
+    }
+    
+    return self;
+}
+
 @end

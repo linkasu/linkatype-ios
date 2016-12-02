@@ -11,12 +11,6 @@
 
 @implementation AMChatTableViewCell
 
-- (void)setConversation:(AMConversationModel *)conversation {
-    _conversation = conversation;
-    
-    self.textLabel.text = conversation.conversationTitle;
-}
-
 
 + (NSString*)cellId {
     return @"AMChatTableViewCell";
