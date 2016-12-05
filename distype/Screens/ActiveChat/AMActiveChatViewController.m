@@ -6,7 +6,7 @@
 //  Copyright © 2016 aacidov. All rights reserved.
 //
 
-#import <LGAlertView.h>
+#import "LGAlertView.h"
 
 #import "AMDBController.h"
 #import "AMCategoryModel.h"
@@ -15,6 +15,9 @@
 #import "AMChatTextInputView.h"
 #import "AMWordCollectionViewCell.h"
 #import "AMActiveChatViewController.h"
+
+@import DropdownMenu;
+
 
 @interface AMActiveChatViewController ()
 <
@@ -25,7 +28,8 @@ UIPickerViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDataSource,
 AMChatTextInputViewDelegate,
-AMWordCollectionViewCellDelegate
+AMWordCollectionViewCellDelegate,
+DropdownMenuDelegate
 >
 
 - (void)initialize;
@@ -33,16 +37,18 @@ AMWordCollectionViewCellDelegate
 - (BOOL)isTextEmpty:(NSString*)text;
 - (void)showWordsKeyboardForCategory:(NSString*)categoryUniqId;
 
-@property (strong) NSString *cellIdentifier;
-@property (assign) BOOL isNonStandartKeyboardUsed;
+@property (nonatomic, strong) NSString *cellIdentifier;
+@property (nonatomic, assign) BOOL isNonStandartKeyboardUsed;
+@property (nonatomic, assign) NSInteger selectedRow;
 
-@property (strong) RLMResults <AMChatMessageModel *> *wordsForCategory;
-@property (strong) AMChatMessageModel *temporaryMsg;
-@property (strong) RLMResults <AMCategoryModel *> *categoryQueryResult;
-@property (strong) NSMutableArray<AMChatMessageModel*> *chatMessages;
+@property (nonatomic, strong) RLMResults <AMChatMessageModel *> *wordsForCategory;
+@property (nonatomic, strong) AMChatMessageModel *temporaryMsg;
+@property (nonatomic, strong) RLMResults <AMCategoryModel *> *categoryQueryResult;
+@property (nonatomic, strong) NSMutableArray<AMChatMessageModel*> *chatMessages;
 
-@property (strong) LGAlertView *pickerActionSheet;
-@property (strong) UICollectionView *categoryWordCollection;
+@property (nonatomic, strong) LGAlertView *pickerActionSheet;
+@property (nonatomic, strong) UICollectionView *categoryWordCollection;
+@property (nonatomic, strong, nonatomic) DropdownMenu *menuView;
 
 @property (strong, nonatomic) IBOutlet UITableView *chatTable;
 @property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
@@ -53,6 +59,7 @@ AMWordCollectionViewCellDelegate
 @implementation AMActiveChatViewController
 
 - (void)initialize {
+    self.selectedRow = 0;
     self.title = self.chat.conversationTitle;
     
     self.chatMessages = [[NSMutableArray alloc] init];
@@ -189,65 +196,45 @@ AMWordCollectionViewCellDelegate
     return result;
 }
 
+- (void)showMenu
+{
+    self.categoryQueryResult = [self.db allCategories];
+    NSMutableArray *items = [NSMutableArray arrayWithCapacity:[self.categoryQueryResult count] + 1];
+    
+    DropdownItem *item = [[DropdownItem alloc] initWithImage:nil
+                                                       title:@"Standart keyboard"
+                                                       style:DropdownItemStyleDefault
+                                              accessoryImage:nil];
+    [items addObject:item];
+    
+    for (AMCategoryModel *category in self.categoryQueryResult)
+    {
+        item = [[DropdownItem alloc] initWithImage:nil
+                                             title:category.categoryTitle
+                                             style:DropdownItemStyleDefault
+                                    accessoryImage:nil];
+        [items addObject:item];
+    }
+    
+    self.menuView = [[DropdownMenu alloc] initWithNavigationController:self.navigationController
+                                                                 items:items
+                                                           selectedRow:self.selectedRow];
+    self.menuView.delegate = self;
+    [self.menuView showMenuWithIsOnNavigaitionView:YES];
+}
+
+
 #pragma mark - Button events
 
-- (IBAction)changeKeyboardAction:(UIBarButtonItem *)sender {
-    if (self.isNonStandartKeyboardUsed == YES) {
-        [self hideWordsKeyboard];
-    } else {
-        self.categoryQueryResult = [self.db allCategories];
-        
-        if (self.categoryQueryResult.count > 0) {
-            UIPickerView *categoryPicker = [[UIPickerView alloc] init];
-            categoryPicker.delegate = self;
-            categoryPicker.dataSource = self;
-            
-            __weak typeof(self) weakSelf = self;
-            void (^createKeyboardBlock)(LGAlertView *, NSString *, NSUInteger) = ^(LGAlertView *alertView,
-                                                                                   NSString *title,
-                                                                                   NSUInteger index)
-            {
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                
-                [strongSelf.pickerActionSheet dismissAnimated:YES completionHandler:nil];
-                strongSelf.pickerActionSheet = nil;
-                
-                NSInteger row = [categoryPicker selectedRowInComponent:0];
-                if (row >= 0) {
-                    AMCategoryModel *category = [strongSelf.categoryQueryResult objectAtIndex:row];
-                    [strongSelf showWordsKeyboardForCategory:category.categoryUniqId];
-                }
-            };
-            
-            self.pickerActionSheet = [[LGAlertView alloc] initWithViewAndTitle:@"Select word category"
-                                                                       message:nil
-                                                                         style:LGAlertViewStyleActionSheet
-                                                                          view:categoryPicker
-                                                                  buttonTitles:@[@"Select"]
-                                                             cancelButtonTitle:@"Cancel"
-                                                        destructiveButtonTitle:nil
-                                                                 actionHandler:createKeyboardBlock
-                                                                 cancelHandler:^(LGAlertView *alertView) {
-                                                                     __strong typeof(weakSelf) self = weakSelf;
-                                                                     [self.pickerActionSheet dismissAnimated:YES completionHandler:nil];
-                                                                     self.pickerActionSheet = nil;
-                                                                 }
-                                                            destructiveHandler:nil];
-            self.pickerActionSheet.cancelOnTouch = NO;
-            
-            [self.pickerActionSheet showAnimated:YES completionHandler:nil];
-        } else {
-            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"Words category doesn't exist yet. Please add at least one word category"
-                                                                  style:LGAlertViewStyleAlert
-                                                           buttonTitles:@[@"Ok"]
-                                                      cancelButtonTitle:nil
-                                                 destructiveButtonTitle:nil];
-            alertView.cancelOnTouch = NO;
-            
-            [alertView showAnimated:YES completionHandler:nil];
-        }
-    }
+- (IBAction)changeKeyboardAction:(UIBarButtonItem *)sender
+{
+//    if (self.isNonStandartKeyboardUsed == YES)
+//    {
+//        [self hideWordsKeyboard];
+//    } else
+//    {
+        [self showMenu];
+//    }
 }
 
 #pragma mark - Keyboard Events
@@ -432,6 +419,34 @@ AMWordCollectionViewCellDelegate
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
     return cell;
+}
+
+#pragma mark - DropdownMenuDelegate
+- (UITableViewCell * _Nullable)dropdownMenu:(DropdownMenu * _Nonnull)dropdownMenu cellForRowAt:(NSIndexPath * _Nonnull)indexPath
+{
+    return [[dropdownMenu tableView] cellForRowAtIndexPath:indexPath];
+}
+
+- (void)dropdownMenu:(DropdownMenu * _Nonnull)dropdownMenu didSelectRowAt:(NSIndexPath * _Nonnull)indexPath
+{
+    NSInteger row = [indexPath row];
+    self.selectedRow = row;
+    
+    if (row == 0)
+    {
+        [self hideWordsKeyboard];
+    }
+    else
+    {
+        // we added StandertKeyboard row at Table, so correct index og category in arra would be  n-1
+        AMCategoryModel *category = [self.categoryQueryResult objectAtIndex:row - 1];
+        [self showWordsKeyboardForCategory:category.categoryUniqId];
+    }
+}
+
+- (void)dropdownMenuCancel:(DropdownMenu * _Nonnull)dropdownMenu
+{
+    
 }
 
 @end

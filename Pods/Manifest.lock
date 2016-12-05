@@ -1,0 +1,20 @@
+PODS:
+  - DropdownMenu (2.3.0)
+  - LGAlertView (2.0.13)
+  - Realm (2.1.0):
+    - Realm/Headers (= 2.1.0)
+  - Realm/Headers (2.1.0)
+
+DEPENDENCIES:
+  - DropdownMenu (~> 2.3.0)
+  - LGAlertView (~> 2.0.0)
+  - Realm (~> 2.1.0)
+
+SPEC CHECKSUMS:
+  DropdownMenu: 7eab57e79033369e06dde6c607fd02dd2c0069c3
+  LGAlertView: 9a5dcbf4f81b02b718083539d7f222280adc9547
+  Realm: bc829ad0ef3d4eea70c34cfcc3b1704d18d50df1
+
+PODFILE CHECKSUM: 51219bba8664b4b79b376236c5a5cb8a789b195f
+
+COCOAPODS: 1.1.0.rc.3
