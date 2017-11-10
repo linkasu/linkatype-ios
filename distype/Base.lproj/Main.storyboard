@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="v8i-iU-Jlh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="v8i-iU-Jlh">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,7 +15,7 @@
                 <navigationController id="v8i-iU-Jlh" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chats List" id="7mj-wG-bfv"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8NT-uB-uPU">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -39,7 +39,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tDs-EP-Gbn" id="vcb-EB-PkR">
-                                    <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -59,7 +59,7 @@
             </objects>
             <point key="canvasLocation" x="2345" y="-321"/>
         </scene>
-        <!--Title-->
+        <!--Data Source-->
         <scene sceneID="ov2-KB-XR0">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="c69-Fv-WbJ" customClass="AMActiveChatViewController" sceneMemberID="viewController">
@@ -120,17 +120,43 @@
                             <constraint firstItem="dBU-jA-xOn" firstAttribute="width" secondItem="ygV-z4-IFM" secondAttribute="width" id="g9g-pY-jST"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="hZz-9F-kRn">
-                        <barButtonItem key="rightBarButtonItem" title="Change Keyboard" id="tRs-la-ZQY">
-                            <connections>
-                                <action selector="changeKeyboardAction:" destination="c69-Fv-WbJ" id="u7C-LS-WZh"/>
-                            </connections>
+                    <navigationItem key="navigationItem" title="ActiveChat" id="hZz-9F-kRn">
+                        <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="Y70-ar-vEN">
+                            <view key="customView" contentMode="scaleToFill" id="eqx-ju-6oY" customClass="MKDropdownMenu">
+                                <rect key="frame" x="359" y="22" width="0.0" height="0.0"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change Keyboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Xy-gJ-qQ5">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="3Ep-2f-HdZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="9Xy-gJ-qQ5" secondAttribute="trailing" id="KB8-XC-7eK"/>
+                                    <constraint firstItem="9Xy-gJ-qQ5" firstAttribute="leading" secondItem="eqx-ju-6oY" secondAttribute="leading" id="Nzk-GT-33t"/>
+                                    <constraint firstAttribute="bottom" secondItem="9Xy-gJ-qQ5" secondAttribute="bottom" id="WwK-YN-Wtl"/>
+                                    <constraint firstAttribute="width" constant="150" id="kuH-tm-PNB"/>
+                                    <constraint firstItem="9Xy-gJ-qQ5" firstAttribute="top" secondItem="eqx-ju-6oY" secondAttribute="top" id="lQh-ws-Sjm"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="c69-Fv-WbJ" id="HJ3-Nh-3MC"/>
+                                    <outlet property="delegate" destination="c69-Fv-WbJ" id="yO2-HX-gLv"/>
+                                    <outlet property="presentingView" destination="ygV-z4-IFM" id="aQT-Ez-jrL"/>
+                                </connections>
+                            </view>
+                            <color key="tintColor" red="0.43448412419999999" green="0.62057143449999996" blue="0.86661547419999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="chatMessageInput" destination="q2f-FD-IRD" id="YXp-3f-sAq"/>
                         <outlet property="chatTable" destination="Vrp-pK-tCK" id="oTP-or-pkf"/>
                         <outlet property="mainScrollView" destination="HTT-MW-AJb" id="rN3-5K-kKP"/>
+                        <outlet property="menuContainerBarItem" destination="Y70-ar-vEN" id="VNk-dH-Qbt"/>
+                        <outlet property="menuView" destination="eqx-ju-6oY" id="joI-pg-KWQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="edt-TR-PNL" userLabel="First Responder" sceneMemberID="firstResponder"/>

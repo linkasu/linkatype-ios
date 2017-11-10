@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		115AE6418C6469E470D86A2D /* Pods_distype.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B828E612DF264B458E78242 /* Pods_distype.framework */; };
 		749240B11D749D5100A371F8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B01D749D5100A371F8 /* main.m */; };
 		749240BA1D749D5100A371F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 749240B81D749D5100A371F8 /* Main.storyboard */; };
 		749240BD1D749D5100A371F8 /* distype.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 749240BB1D749D5100A371F8 /* distype.xcdatamodeld */; };
@@ -26,10 +25,13 @@
 		9E163A0F1DF0770500C242C5 /* AMMessageTextFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E163A041DF0770500C242C5 /* AMMessageTextFieldView.m */; };
 		9E163A101DF0779C00C242C5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 749240B31D749D5100A371F8 /* AppDelegate.m */; };
 		9E163A161DF1683500C242C5 /* AMDBController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E163A151DF1683500C242C5 /* AMDBController.m */; };
+		9E42D2911FB5F29C0032343B /* AMChooseCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E42D2901FB5F29C0032343B /* AMChooseCategoryViewController.m */; };
+		9E42D2931FB5F2B70032343B /* AMChooseCategoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E42D2921FB5F2B70032343B /* AMChooseCategoryViewController.storyboard */; };
+		AF7CBE28753B7DA284EDFDB6 /* libPods-distype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 505FEBD11EB37E0C3DB0AB05 /* libPods-distype.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2B828E612DF264B458E78242 /* Pods_distype.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_distype.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		505FEBD11EB37E0C3DB0AB05 /* libPods-distype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-distype.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		749240AC1D749D5100A371F8 /* distype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = distype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		749240B01D749D5100A371F8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		749240B21D749D5100A371F8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -62,6 +64,9 @@
 		9E163A041DF0770500C242C5 /* AMMessageTextFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMMessageTextFieldView.m; sourceTree = "<group>"; };
 		9E163A141DF1683500C242C5 /* AMDBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMDBController.h; sourceTree = "<group>"; };
 		9E163A151DF1683500C242C5 /* AMDBController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMDBController.m; sourceTree = "<group>"; };
+		9E42D28F1FB5F29C0032343B /* AMChooseCategoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AMChooseCategoryViewController.h; sourceTree = "<group>"; };
+		9E42D2901FB5F29C0032343B /* AMChooseCategoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AMChooseCategoryViewController.m; sourceTree = "<group>"; };
+		9E42D2921FB5F2B70032343B /* AMChooseCategoryViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AMChooseCategoryViewController.storyboard; sourceTree = "<group>"; };
 		DB4D9D930C836901AF75E2A5 /* Pods-distype.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-distype.release.xcconfig"; path = "Pods/Target Support Files/Pods-distype/Pods-distype.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				115AE6418C6469E470D86A2D /* Pods_distype.framework in Frameworks */,
+				AF7CBE28753B7DA284EDFDB6 /* libPods-distype.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +94,7 @@
 		3A11F39A451703051072F940 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2B828E612DF264B458E78242 /* Pods_distype.framework */,
+				505FEBD11EB37E0C3DB0AB05 /* libPods-distype.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -179,6 +184,7 @@
 		9E1639EE1DF0770500C242C5 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				9E42D28E1FB5F2300032343B /* ChooseCategory */,
 				9E1639EF1DF0770500C242C5 /* ActiveChat */,
 				9E1639F21DF0770500C242C5 /* ChatList */,
 			);
@@ -285,6 +291,16 @@
 			path = DBController;
 			sourceTree = "<group>";
 		};
+		9E42D28E1FB5F2300032343B /* ChooseCategory */ = {
+			isa = PBXGroup;
+			children = (
+				9E42D28F1FB5F29C0032343B /* AMChooseCategoryViewController.h */,
+				9E42D2901FB5F29C0032343B /* AMChooseCategoryViewController.m */,
+				9E42D2921FB5F2B70032343B /* AMChooseCategoryViewController.storyboard */,
+			);
+			path = ChooseCategory;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -314,11 +330,12 @@
 		749240A41D749D5100A371F8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = aacidov;
 				TargetAttributes = {
 					749240AB1D749D5100A371F8 = {
 						CreatedOnToolsVersion = 7.3.1;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -347,6 +364,7 @@
 			files = (
 				9E163A0E1DF0770500C242C5 /* AMChatTextInputView.xib in Resources */,
 				749240C21D749D5100A371F8 /* LaunchScreen.storyboard in Resources */,
+				9E42D2931FB5F2B70032343B /* AMChooseCategoryViewController.storyboard in Resources */,
 				749240BF1D749D5100A371F8 /* Images.xcassets in Resources */,
 				9E163A0C1DF0770500C242C5 /* AMWordCollectionViewCell.xib in Resources */,
 				749240BA1D749D5100A371F8 /* Main.storyboard in Resources */,
@@ -362,13 +380,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-distype-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		18031D8B5595EC0389B24722 /* [CP] Embed Pods Frameworks */ = {
@@ -377,9 +398,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-distype/Pods-distype-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/LGAlertView/LGAlertView.framework",
+				"${BUILT_PRODUCTS_DIR}/MKDropdownMenu/MKDropdownMenu.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/TBDropdownMenu/TBDropdownMenu.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LGAlertView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MKDropdownMenu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TBDropdownMenu.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -420,6 +450,7 @@
 				9E163A061DF0770500C242C5 /* AMChatMessageModel.m in Sources */,
 				9E163A0D1DF0770500C242C5 /* AMChatTextInputView.m in Sources */,
 				9E163A071DF0770500C242C5 /* AMConversationModel.m in Sources */,
+				9E42D2911FB5F29C0032343B /* AMChooseCategoryViewController.m in Sources */,
 				749240B11D749D5100A371F8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,14 +486,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -502,14 +539,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -538,11 +581,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7CEE2547E1977FACADE7C090 /* Pods-distype.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = distype/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aacidov.distype;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -550,11 +597,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DB4D9D930C836901AF75E2A5 /* Pods-distype.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = distype/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.aacidov.distype;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

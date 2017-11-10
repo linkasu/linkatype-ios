@@ -104,6 +104,15 @@
     return [realm commitWriteTransaction:nil];
 }
 
+- (BOOL)deleteCategory:(AMCategoryModel*)category
+{
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [realm beginWriteTransaction];
+    [realm deleteObject:category];
+    
+    return [realm commitWriteTransaction:nil];
+}
+
 #pragma mark - Creations
 - (BOOL)createChatWithTitle:(NSString *)title
 {

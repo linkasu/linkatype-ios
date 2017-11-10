@@ -5,7 +5,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2015 Grigory Lutkov <Friend.LGA@gmail.com>
+//  Copyright © 2015 Grigory Lutkov <Friend.LGA@gmail.com>
 //  (https://github.com/Friend-LGA/LGAlertView)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,69 +28,44 @@
 //
 
 #import "LGAlertViewTextField.h"
-#import "LGAlertViewShared.h"
+#import "LGAlertViewHelper.h"
 
 @implementation LGAlertViewTextField
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.f];
-        self.textColor = [UIColor blackColor];
-        self.font = [UIFont systemFontOfSize:16.f];
-        self.clearButtonMode = UITextFieldViewModeAlways;
-    }
-    return self;
-}
+- (CGRect)textRectForBounds:(CGRect)bounds {
+    bounds.origin.x += LGAlertViewPaddingWidth;
+    bounds.size.width -= LGAlertViewPaddingWidth * 2.0;
 
-- (CGRect)textRectForBounds:(CGRect)bounds
-{
-    bounds.origin.x += kLGAlertViewPaddingW;
-    bounds.size.width -= kLGAlertViewPaddingW*2;
-
-    if ([UIDevice currentDevice].systemVersion.floatValue < 7.0)
-    {
-        bounds.origin.y = self.frame.size.height/2-self.font.lineHeight/2;
-        bounds.size.height = self.font.lineHeight;
+    if (self.leftView) {
+        bounds.origin.x += CGRectGetWidth(self.leftView.bounds) + LGAlertViewPaddingWidth;
+        bounds.size.width -= CGRectGetWidth(self.leftView.bounds) + LGAlertViewPaddingWidth;
     }
 
-    if (self.leftView)
-    {
-        bounds.origin.x += (self.leftView.frame.size.width+kLGAlertViewPaddingW);
-        bounds.size.width -= (self.leftView.frame.size.width+kLGAlertViewPaddingW);
+    if (self.rightView) {
+        bounds.size.width -= CGRectGetWidth(self.rightView.bounds) + LGAlertViewPaddingWidth;
     }
-
-    if (self.rightView)
-        bounds.size.width -= (self.rightView.frame.size.width+kLGAlertViewPaddingW);
-    else if (self.clearButtonMode == UITextFieldViewModeAlways)
-        bounds.size.width -= 20.f;
+    else if (self.clearButtonMode == UITextFieldViewModeAlways) {
+        bounds.size.width -= 20.0;
+    }
 
     return bounds;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)bounds
-{
-    bounds.origin.x += kLGAlertViewPaddingW;
-    bounds.size.width -= kLGAlertViewPaddingW*2;
+- (CGRect)editingRectForBounds:(CGRect)bounds {
+    bounds.origin.x += LGAlertViewPaddingWidth;
+    bounds.size.width -= LGAlertViewPaddingWidth * 2.0;
 
-    if ([UIDevice currentDevice].systemVersion.floatValue < 7.0)
-    {
-        bounds.origin.y = self.frame.size.height/2-self.font.lineHeight/2;
-        bounds.size.height = self.font.lineHeight;
+    if (self.leftView) {
+        bounds.origin.x += CGRectGetWidth(self.leftView.bounds) + LGAlertViewPaddingWidth;
+        bounds.size.width -= CGRectGetWidth(self.leftView.bounds) + LGAlertViewPaddingWidth;
     }
 
-    if (self.leftView)
-    {
-        bounds.origin.x += (self.leftView.frame.size.width+kLGAlertViewPaddingW);
-        bounds.size.width -= (self.leftView.frame.size.width+kLGAlertViewPaddingW);
+    if (self.rightView) {
+        bounds.size.width -= CGRectGetWidth(self.rightView.bounds) + LGAlertViewPaddingWidth;
     }
-
-    if (self.rightView)
-        bounds.size.width -= (self.rightView.frame.size.width+kLGAlertViewPaddingW);
-    else if (self.clearButtonMode == UITextFieldViewModeAlways)
-        bounds.size.width -= 20.f;
+    else if (self.clearButtonMode == UITextFieldViewModeAlways) {
+        bounds.size.width -= 20.0;
+    }
 
     return bounds;
 }

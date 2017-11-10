@@ -1,11 +1,9 @@
-ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
-EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
-FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/DropdownMenu" "$PODS_CONFIGURATION_BUILD_DIR/LGAlertView" "$PODS_CONFIGURATION_BUILD_DIR/Realm"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/DropdownMenu/DropdownMenu.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/LGAlertView/LGAlertView.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/Realm/Realm.framework/Headers"
-OTHER_LDFLAGS = $(inherited) -ObjC -framework "DropdownMenu" -framework "LGAlertView" -framework "Realm"
-OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/LGAlertView" "${PODS_ROOT}/Headers/Public/MKDropdownMenu" "${PODS_ROOT}/Headers/Public/Realm"
+LIBRARY_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/LGAlertView" "$PODS_CONFIGURATION_BUILD_DIR/MKDropdownMenu" "$PODS_CONFIGURATION_BUILD_DIR/Realm" "${PODS_ROOT}/Realm/core"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/LGAlertView" -isystem "${PODS_ROOT}/Headers/Public/MKDropdownMenu" -isystem "${PODS_ROOT}/Headers/Public/Realm"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"LGAlertView" -l"MKDropdownMenu" -l"Realm" -l"c++" -l"realmcore-ios" -l"z"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
 PODS_ROOT = ${SRCROOT}/Pods

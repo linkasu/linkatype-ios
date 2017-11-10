@@ -15,21 +15,29 @@
 #import "AMChatTextInputView.h"
 #import "AMWordCollectionViewCell.h"
 #import "AMActiveChatViewController.h"
+#import "MKDropdownMenu.h"
 
-@import DropdownMenu;
+//#import <TBDropdownMenu/TBDropdownMenu-Swift.h>
+//@import TBDropdownMenu;
+#import "AMChooseCategoryViewController.h"
 
+typedef NS_ENUM(NSUInteger, AMMenuType) {
+    MenuTypeUpper,
+    MenuTypeAllert,
+};
 
 @interface AMActiveChatViewController ()
 <
 UITableViewDelegate,
 UITableViewDataSource,
-UIPickerViewDelegate,
-UIPickerViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDataSource,
 AMChatTextInputViewDelegate,
 AMWordCollectionViewCellDelegate,
-DropdownMenuDelegate
+MKDropdownMenuDelegate,
+MKDropdownMenuDataSource,
+AMChooseCategoryDelegateProtocol,
+UIPopoverPresentationControllerDelegate
 >
 
 - (void)initialize;
@@ -39,7 +47,10 @@ DropdownMenuDelegate
 
 @property (nonatomic, strong) NSString *cellIdentifier;
 @property (nonatomic, assign) BOOL isNonStandartKeyboardUsed;
-@property (nonatomic, assign) NSInteger selectedRow;
+@property (nonatomic, assign) NSInteger selectedUpperMenuRow;
+@property (nonatomic, assign) NSInteger selectedAllertMenuRow;
+@property (nonatomic, assign) AMMenuType menuType;
+@property (nonatomic, strong) NSString *addedToCategoryMessage;
 
 @property (nonatomic, strong) RLMResults <AMChatMessageModel *> *wordsForCategory;
 @property (nonatomic, strong) AMChatMessageModel *temporaryMsg;
@@ -48,8 +59,9 @@ DropdownMenuDelegate
 
 @property (nonatomic, strong) LGAlertView *pickerActionSheet;
 @property (nonatomic, strong) UICollectionView *categoryWordCollection;
-@property (nonatomic, strong, nonatomic) DropdownMenu *menuView;
 
+@property (nonatomic, strong) IBOutlet MKDropdownMenu *menuView;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *menuContainerBarItem;
 @property (strong, nonatomic) IBOutlet UITableView *chatTable;
 @property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
 @property (strong, nonatomic) IBOutlet AMChatTextInputView *chatMessageInput;
@@ -59,8 +71,15 @@ DropdownMenuDelegate
 @implementation AMActiveChatViewController
 
 - (void)initialize {
-    self.selectedRow = 0;
+    self.selectedUpperMenuRow = 0;
     self.title = self.chat.conversationTitle;
+    self.categoryQueryResult = [self.db allCategories];
+    
+    [self.menuView setUseFullScreenWidth:YES];
+    [self.menuView setDisclosureIndicatorImage:[UIImage new]];
+    [self.menuView setDropdownBouncesScroll:YES];
+    [self.menuView setBackgroundDimmingOpacity:0.1];
+    [self.menuView closeAllComponentsAnimated:NO];
     
     self.chatMessages = [[NSMutableArray alloc] init];
     self.cellIdentifier = [NSUUID UUID].UUIDString;
@@ -110,6 +129,18 @@ DropdownMenuDelegate
     [self initialize];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.menuView closeAllComponentsAnimated:NO];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.menuView closeAllComponentsAnimated:NO];
+    [super viewWillDisappear:animated];
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -118,6 +149,7 @@ DropdownMenuDelegate
     self.isNonStandartKeyboardUsed = NO;
     self.chatMessageInput.hidden = NO;
     self.wordsForCategory = nil;
+    self.selectedUpperMenuRow = 0;
     
     [self.categoryWordCollection reloadSections:[NSIndexSet indexSetWithIndex:0]];
     
@@ -196,45 +228,55 @@ DropdownMenuDelegate
     return result;
 }
 
-- (void)showMenu
+- (void)reloadUpperMenu
 {
     self.categoryQueryResult = [self.db allCategories];
-    NSMutableArray *items = [NSMutableArray arrayWithCapacity:[self.categoryQueryResult count] + 1];
-    
-    DropdownItem *item = [[DropdownItem alloc] initWithImage:nil
-                                                       title:@"Standart keyboard"
-                                                       style:DropdownItemStyleDefault
-                                              accessoryImage:nil];
-    [items addObject:item];
-    
-    for (AMCategoryModel *category in self.categoryQueryResult)
-    {
-        item = [[DropdownItem alloc] initWithImage:nil
-                                             title:category.categoryTitle
-                                             style:DropdownItemStyleDefault
-                                    accessoryImage:nil];
-        [items addObject:item];
-    }
-    
-    self.menuView = [[DropdownMenu alloc] initWithNavigationController:self.navigationController
-                                                                 items:items
-                                                           selectedRow:self.selectedRow];
-    self.menuView.delegate = self;
-    [self.menuView showMenuWithIsOnNavigaitionView:YES];
+
+    [self.menuView reloadAllComponents];
+
+    self.menuType = MenuTypeUpper;
 }
 
-
-#pragma mark - Button events
-
-- (IBAction)changeKeyboardAction:(UIBarButtonItem *)sender
+- (void)showCategoryChoiceForMessage:(NSString *)message
 {
-//    if (self.isNonStandartKeyboardUsed == YES)
-//    {
-//        [self hideWordsKeyboard];
-//    } else
-//    {
-        [self showMenu];
-//    }
+    self.addedToCategoryMessage = message;
+
+    NSString *storyboardName = NSStringFromClass([AMChooseCategoryViewController class]);
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+    AMChooseCategoryViewController *vc = [storyboard instantiateInitialViewController];
+
+    [vc setCategories:[self categoriesNames]];
+    [vc setDelegate: self];
+
+    vc.parrentWidth = self.view.bounds.size.width;
+
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    vc.popoverPresentationController.barButtonItem = self.menuContainerBarItem;
+    vc.popoverPresentationController.permittedArrowDirections = 0;
+    vc.popoverPresentationController.delegate = self;
+
+    [self presentViewController:vc animated:YES completion:nil];}
+
+- (void)performAddText:(NSString *)text toCategory:(AMCategoryModel *)category
+{
+    if ([self isTextEmpty:text])
+    {
+        return;
+    }
+    
+    self.temporaryMsg = [AMChatMessageModel new];
+    self.temporaryMsg.text = text;
+    self.temporaryMsg.conversationUniqId = self.chat.conversationUniqId;
+    self.temporaryMsg.categoryUniqId = category.categoryUniqId;
+    
+    [self.db addMessage:self.temporaryMsg];
+}
+
+#pragma mark - UIStackView Buttons action
+- (void)touchCategoryButton:(UILabel *)sender
+{
+    AMCategoryModel *category = [self.db categoryWithTitle:sender.text];
+    [self performAddText:self.addedToCategoryMessage toCategory:category];
 }
 
 #pragma mark - Keyboard Events
@@ -279,45 +321,11 @@ DropdownMenuDelegate
 
 #pragma mark - AMChatTextInputViewDelegate
 
-- (void)needToAddToCategory:(NSString*)message {
+- (void)needToAddToCategory:(NSString*)message
+{
     [self.chatMessageInput hideKeyboard];
     
-    __weak typeof(self) weakSelf = self;
-    void (^addMessageToCategoryBlock)(LGAlertView *, NSString *, NSUInteger) = ^(LGAlertView *alertView,
-                                                                                 NSString *title,
-                                                                                 NSUInteger index)
-    {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        
-        UITextField *textField = [alertView.textFieldsArray objectAtIndex:index];
-        if ([strongSelf isTextEmpty:textField.text] == YES
-            || [strongSelf isTextEmpty:message] == YES) {
-            return;
-        }
-        
-        strongSelf.temporaryMsg = [AMChatMessageModel new];
-        strongSelf.temporaryMsg.text = message;
-        strongSelf.temporaryMsg.conversationUniqId = strongSelf.chat.conversationUniqId;
-        
-        AMCategoryModel *category = [strongSelf.db categoryWithTitle:textField.text];
-        strongSelf.temporaryMsg.categoryUniqId = category.categoryUniqId;
-
-        [strongSelf.db addMessage:strongSelf.temporaryMsg];
-    };
-    
-    LGAlertView *alertView = [[LGAlertView alloc] initWithTextFieldsAndTitle:@"Add word"
-                                                                     message:@"Type name of word category"
-                                                          numberOfTextFields:1
-                                                      textFieldsSetupHandler:nil
-                                                                buttonTitles:@[@"Add"]
-                                                           cancelButtonTitle:@"Cancel"
-                                                      destructiveButtonTitle:nil
-                                                               actionHandler:addMessageToCategoryBlock
-                                                               cancelHandler:nil
-                                                          destructiveHandler:nil];
-    alertView.cancelOnTouch = NO;
-    
-    [alertView showAnimated:YES completionHandler:nil];
+    [self showCategoryChoiceForMessage:message];
 }
 
 - (void)needToSendMessage:(NSString*)text {
@@ -380,24 +388,6 @@ DropdownMenuDelegate
     return cell;
 }
 
-#pragma mark - UIPickerViewDelegate
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    AMCategoryModel *categoryModel = [self.categoryQueryResult objectAtIndex:row];
-    
-    return categoryModel.categoryTitle;
-}
-
-#pragma mark - UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return self.categoryQueryResult.count;
-}
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -421,16 +411,50 @@ DropdownMenuDelegate
     return cell;
 }
 
-#pragma mark - DropdownMenuDelegate
-- (UITableViewCell * _Nullable)dropdownMenu:(DropdownMenu * _Nonnull)dropdownMenu cellForRowAt:(NSIndexPath * _Nonnull)indexPath
+#pragma mark - MKDropdownMenuDatasource
+
+- (NSInteger)numberOfComponentsInDropdownMenu:(MKDropdownMenu *)dropdownMenu
 {
-    return [[dropdownMenu tableView] cellForRowAtIndexPath:indexPath];
+    return 1;
 }
 
-- (void)dropdownMenu:(DropdownMenu * _Nonnull)dropdownMenu didSelectRowAt:(NSIndexPath * _Nonnull)indexPath
+- (NSInteger)dropdownMenu:(MKDropdownMenu *)dropdownMenu numberOfRowsInComponent:(NSInteger)component
 {
-    NSInteger row = [indexPath row];
-    self.selectedRow = row;
+    // we added row "StandartKeyboard" at Table, so correct index of category in array would be  n-1
+    return [self.categoryQueryResult count] + 1;
+}
+
+- (CGFloat)dropdownMenu:(MKDropdownMenu *)dropdownMenu rowHeightForComponent:(NSInteger)component {
+    return 50;
+}
+
+#pragma mark - MKDropdownMenuDelegate
+
+- (NSString *)dropdownMenu:(MKDropdownMenu *)dropdownMenu titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (row == 0)
+    {
+        return @"StandartKeyboard";
+    }
+    else
+    {
+    // we added row "StandartKeyboard" at Table, so correct index of category in array would be  n-1
+    AMCategoryModel *category = [self.categoryQueryResult objectAtIndex:row - 1];
+        return category.categoryTitle;
+    }
+}
+
+- (UIColor *)dropdownMenu:(MKDropdownMenu *)dropdownMenu backgroundColorForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [UIColor whiteColor];
+}
+
+- (UIColor *)dropdownMenu:(MKDropdownMenu *)dropdownMenu backgroundColorForHighlightedRowsInComponent:(NSInteger)component {
+    return [UIColor colorWithWhite:0.8 alpha:0.5];
+}
+
+- (void)dropdownMenu:(MKDropdownMenu *)dropdownMenu didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    self.selectedUpperMenuRow = row;
     
     if (row == 0)
     {
@@ -438,15 +462,55 @@ DropdownMenuDelegate
     }
     else
     {
-        // we added StandertKeyboard row at Table, so correct index og category in arra would be  n-1
+        // we added row "StandartKeyboard" at Table, so correct index of category in array would be  n-1
         AMCategoryModel *category = [self.categoryQueryResult objectAtIndex:row - 1];
         [self showWordsKeyboardForCategory:category.categoryUniqId];
     }
+    
+    delay(0.15, ^{
+        [dropdownMenu closeAllComponentsAnimated:YES];
+    });
 }
 
-- (void)dropdownMenuCancel:(DropdownMenu * _Nonnull)dropdownMenu
+#pragma mark - AMChooseCategoryDelegateProtocol
+
+- (void)didChooseCategoryName:(NSString *)categoryName
 {
+    AMCategoryModel *category = [self.db categoryWithTitle:categoryName];
+    [self performAddText:self.addedToCategoryMessage toCategory:category];
+    [self reloadUpperMenu];
+}
+
+- (void)deleteCategoryWithTitle:(NSString *)categoryName
+{
+    AMCategoryModel *category = [self.db categoryWithTitle:categoryName];
+    [self.db deleteCategory:category];
+    [self reloadUpperMenu];
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+{
+    return UIModalPresentationNone;
+}
+
+#pragma mark - Private
+
+static inline void delay(NSTimeInterval delay, dispatch_block_t block) {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), block);
+}
+
+- (NSArray <NSString *> *)categoriesNames
+{
+    self.categoryQueryResult = [self.db allCategories];
+    NSMutableArray <NSString *> *names = [NSMutableArray array];
     
+    for (AMCategoryModel *category in self.categoryQueryResult) {
+        [names addObject:[category categoryTitle]];
+    }
+
+    return names;
 }
 
 @end

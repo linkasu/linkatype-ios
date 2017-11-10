@@ -35,6 +35,8 @@ namespace sync {
 
 class Server {
 public:
+    class TokenExpirationClock;
+
     struct Config {
         Config() {}
 
@@ -42,6 +44,10 @@ public:
         /// concurrently by this server. The server keeps a cache of open Realm
         /// files for efficiency reasons.
         long max_open_files = 256;
+
+        /// An optional custom clock to be used for token expiration checks. If
+        /// no clock is specified, the server will use the system clock.
+        TokenExpirationClock* token_expiration_clock = nullptr;
 
         /// An optional logger to be used by the server. If no logger is
         /// specified, the server will use an instance of util::StderrLogger
@@ -52,34 +58,13 @@ public:
         util::Logger* logger = nullptr;
 
         /// An optional sink for recording metrics about the internal operation
-        /// of the server. Below is a list of counters and gauges that are
-        /// updated by the server. The server may or may not update additional
-        /// counters and gauges.
-        ///
-        ///     Statistics counters         Incremented when
-        ///     ------------------------------------------------------------------------
-        ///     server.started              The server was started
-        ///     connection.started          A new client connection was established
-        ///     connection.terminated       A client connection was terminated
-        ///     session.started             A new session was started
-        ///     session.terminated          A session was terminated
-        ///     connection.read.failed      A connection was closed due to read error
-        ///     connection.write.failed     A connection was closed due to write error
-        ///     protocol.upload.received    An UPLOAD message was received
-        ///     protocol.download.sent      A DOWNLOAD message was sent
-        ///     protocol.connection.errored Connection level protocol error occurred
-        ///     protocol.session.errored    Session level protocol error occurred
-        ///
-        ///     Statistics gauges           Continuously updated to reflect
-        ///     --------------------------------------------------------------------------
-        ///     connection.opened           The current total number of connections
-        ///     session.opened              The current total number of sessions
-        ///
+        /// of the server. For the list of counters and gauges see
+        /// "doc/monitoring.md".
         Metrics* metrics = nullptr;
 
-        /// FIXME: This seems to be related to the dashboard feature, but it
-        /// would be nice with some additional explanation (Sebastian).
-        const char* stats_db = nullptr;
+        /// A unique id of this server. Used in the backup protocol to tell
+        /// slaves apart.
+        std::string id = "unknown";
 
         /// The address at which the listening socket is bound.
         /// The address can be a name or on numerical form.
@@ -114,9 +99,98 @@ public:
         ///
         /// This option is ignore if `ssl` is false.
         std::string ssl_certificate_key_path;
+
+        // A connection which has not been sending any messages or pings for
+        // `idle_timeout_ms` is considered idle and will be dropped by the server.
+        uint_fast64_t idle_timeout_ms = 1800000;
+
+        // How often the server scans through the connection list to drop idle ones.
+        uint_fast64_t drop_period_ms = 60000;
+
+        /// @{ \brief The operating mode of the Sync worker.
+        ///
+        /// MasterWithNoSlave is a standard Sync worker without backup.
+        /// If a backup slave attempts to contact a MasterNoBackup server,
+        /// the slave will be rejected.
+        ///
+        /// MasterWithAsynchronousSlave represents a Sync worker that operates
+        /// independently of a backup slave. If a slave connects to the
+        /// MasterAsynchronousSlave server, the server will accept the connection
+        /// and send backup information to the slave. This type of master server
+        /// will never wait for the slave, however.
+        ///
+        /// MasterWithSynchronousSlave represents a Sync worker that works in
+        /// coordination with a slave. The master will send all updates to the
+        /// slave and wait for acknowledgment before the master sends its own
+        /// acknowledgment to the clients. This mode of operation is the safest
+        /// type of backup, but it generally will have higher latency than the previous
+        /// two types of server.
+        ///
+        /// Slave represents a backup server. A slave is used to backup a master.
+        /// The slave connects to the master and reconnects in case a network fallout.
+        /// The slave receives updates from the master and acknowledges them.
+        /// A slave rejects all connections from Sync clients.
+        enum class OperatingMode {
+            MasterWithNoSlave,
+            MasterWithAsynchronousSlave,
+            MasterWithSynchronousSlave,
+            Slave
+        };
+        OperatingMode operating_mode = OperatingMode::MasterWithNoSlave;
+        /// @}
+
+        /// @{ \brief Adress of master sync work.
+        ///
+        /// master_address and master_port are only meaningful in Slave mode.
+        /// The parameters represent the address of the master from which this
+        /// slave obtains Realm updates.
+        std::string master_address;
+        std::string master_port;
+        /// @}
+
+        /// @{ \brief SSL for master slave communication.
+        ///
+        /// The master and slave communicate over a SSL connection if
+        /// master_slave_ssl is set to true(default = false). The certificate of the
+        /// master is verified if master_verify_ssl_certificate is set to true.
+        /// The certificate verification attempts to use the default trust store of the
+        /// instance if master_ssl_trust_certificate_path is none(default), otherwise
+        /// the certificate at the master_ssl_trust_certificate_path is used for
+        /// verification.
+        bool master_slave_ssl = false;
+        bool master_verify_ssl_certificate = true;
+        util::Optional<std::string> master_ssl_trust_certificate_path = util::none;
+        /// @}
+
+        /// A master Sync server will only accept a backup connection from a slave
+        /// that can present the correct master_slave_shared_secret.
+        /// The configuration of the master and the slave must contain the same
+        /// secret string.
+        /// The secret is sent in a HTTP header and must be a valid HTTP header value.
+        std::string master_slave_shared_secret = "replace-this-string-with-a-secret";
+
+        /// A callback which gets called by the backup master every time the slave
+        /// changes its status to up-to-date or back. The arguments carry the
+        /// slave's id (string) and its up-to-dateness state (bool).
+        std::function<void(std::string, bool)> slave_status_callback;
+
+        /// The feature token is used by the server to gate access to various
+        /// features.
+        util::Optional<std::string> feature_token;
+
+        /// The server can try to eliminate redundant instructions from
+        /// changesets before sending them to clients, minimizing download sizes
+        /// at the expense of server CPU usage.
+        bool enable_download_log_compaction = true;
+
+        /// Set the `TCP_NODELAY` option on all TCP/IP sockets. This disables
+        /// the Nagle algorithm. Disabling it, can in some cases be used to
+        /// decrease latencies, but possibly at the expense of scalability. Be
+        /// sure to research the subject before you enable this option.
+        bool tcp_no_delay = false;
     };
 
-    Server(const std::string& root_dir, util::Optional<PKey> public_key, Config = Config());
+    Server(const std::string& root_dir, util::Optional<PKey> public_key, Config = {});
     Server(Server&&) noexcept;
     ~Server() noexcept;
 
@@ -149,15 +223,28 @@ public:
     /// Must not be called while run() is executing.
     uint_fast64_t errors_seen() const noexcept;
 
-    /// Initialise the directory structure as required for correct operation of
-    /// the server. This is a static function, as it should be run on the \a
-    /// root_path prior to instantiating the \c Server object.
-    static void init_directory_structure(const std::string& root_path, util::Logger& logger);
+    /// A connection which has not been sending any messages or pings for
+    /// `idle_timeout_ms` is considered idle and will be dropped by the server.
+    void set_idle_timeout_ms(uint_fast64_t idle_timeout_ms);
 
+    /// Close all connections with error code ProtocolError::connection_closed.
+    ///
+    /// This function exists mainly for debugging purposes.
+    void close_connections();
 
 private:
     class Implementation;
     std::unique_ptr<Implementation> m_impl;
+};
+
+
+class Server::TokenExpirationClock {
+public:
+    /// Number of seconds since the Epoch. The Epoch is the epoch of
+    /// std::chrono::system_clock.
+    virtual std::int_fast64_t now() noexcept = 0;
+
+    virtual ~TokenExpirationClock() {}
 };
 
 } // namespace sync

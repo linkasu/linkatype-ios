@@ -99,9 +99,9 @@ static CGFloat headerHeight = 50.;
 {
     __weak typeof(self) weakSelf = self;
     
-    void (^createChatBlock)(LGAlertView *, NSString *, NSUInteger) = ^(LGAlertView *alertView,
-                                                                       NSString *title,
-                                                                       NSUInteger index)
+    void (^createChatBlock)(LGAlertView *, NSUInteger, NSString *) = ^(LGAlertView *alertView,
+                                                                       NSUInteger index,
+                                                                       NSString *title)
     {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         

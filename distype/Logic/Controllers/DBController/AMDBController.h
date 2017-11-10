@@ -26,5 +26,6 @@
 
 - (BOOL)deleteChat:(AMConversationModel *)conversation;
 - (BOOL)deleteWord:(AMChatMessageModel *)message;
+- (BOOL)deleteCategory:(AMCategoryModel*)category;
 
 @end

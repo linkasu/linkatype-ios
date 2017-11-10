@@ -23,8 +23,10 @@
 
 #include <random>
 #include <system_error>
+#include <map>
 
 #include <realm/util/logger.hpp>
+#include <realm/util/http.hpp>
 
 
 namespace realm {
@@ -59,30 +61,39 @@ public:
     /// websocket_handshake_completion_handler() is called when the websocket is connected, .i.e.
     /// after the handshake is done. It is not allowed to send messages on the socket before the
     /// handshake is done. No message_received callbacks will be called before the handshake is done.
-    virtual void websocket_handshake_completion_handler() = 0;
+    virtual void websocket_handshake_completion_handler(const HTTPHeaders&) = 0;
 
-
+    //@{
     /// websocket_read_error_handler() and websocket_write_error_handler() are called when an
     /// error occurs on the underlying stream given by the async_read and async_write functions above.
     /// The error_code is passed through.
+    /// websocket_handshake_error_handler() will be called when there is an error in the handshake
+    /// such as "404 Not found".
     /// websocket_protocol_error_handler() is called when there is an protocol error in the incoming
-    /// messages.
+    /// websocket messages.
     /// After calling any of these error callbacks, the Socket will move into the stopped state, and
     /// no more messages should be sent, or will be received.
+    /// It is safe to destroy the WebSocket object in these handlers.
     virtual void websocket_read_error_handler(std::error_code) = 0;
     virtual void websocket_write_error_handler(std::error_code) = 0;
-    virtual void websocket_protocol_error_handler() = 0;
+    virtual void websocket_handshake_error_handler(std::error_code, const HTTPHeaders&) = 0;
+    virtual void websocket_protocol_error_handler(std::error_code) = 0;
+    //@}
 
-
+    //@{
     /// The five callback functions below are called whenever a full message has arrived.
     /// The Socket defragments fragmented messages internally and delivers a full message.
     /// The message is delivered in the buffer \param data of size \param size.
     /// The buffer is only valid until the function returns.
-    virtual void websocket_text_message_received(const char* data, size_t size);
-    virtual void websocket_binary_message_received(const char* data, size_t size);
-    virtual void websocket_close_message_received(const char* data, size_t size);
-    virtual void websocket_ping_message_received(const char* data, size_t size);
-    virtual void websocket_pong_message_received(const char* data, size_t size);
+    /// The return value designates whether the WebSocket object should continue
+    /// processing messages. The normal return value is true. False must be returned if the
+    /// websocket object is destroyed during execution of the function.
+    virtual bool websocket_text_message_received(const char* data, size_t size);
+    virtual bool websocket_binary_message_received(const char* data, size_t size);
+    virtual bool websocket_close_message_received(const char* data, size_t size);
+    virtual bool websocket_ping_message_received(const char* data, size_t size);
+    virtual bool websocket_pong_message_received(const char* data, size_t size);
+    //@}
 };
 
 
@@ -98,26 +109,41 @@ enum class Opcode {
 
 class Socket {
 public:
-
     Socket(Config&);
     Socket(Socket&&) noexcept;
     ~Socket() noexcept;
 
-    /// initiate_client_handshake() starts the Socket in client mode. The Socket will send
-    /// the HTTP request that initiates the WebSocket protocol and wait for the HTTP response
-    /// from the server. The HTTP request will contain the \param request_uri in the
-    /// HTTP request line. The \param host will be sent as the value in a HTTP Host header line.
-    /// When the server responds with a valid HTTP response, the callback function
-    /// websocket_handshake_completion_handler() is called. Messages can only be sent and
-    /// received after the handshake has completed.
-    void initiate_client_handshake(std::string request_uri, std::string host);
+    /// initiate_client_handshake() starts the Socket in client mode. The Socket
+    /// will send the HTTP request that initiates the WebSocket protocol and
+    /// wait for the HTTP response from the server. The HTTP request will
+    /// contain the \param request_uri in the HTTP request line. The \param host
+    /// will be sent as the value in a HTTP Host header line.
+    /// \param sec_websocket_protocol will be set as header value for
+    /// Sec-WebSocket-Protocol. Extra HTTP headers can be provided in \a headers.
+    ///
+    /// When the server responds with a valid HTTP response, the callback
+    /// function websocket_handshake_completion_handler() is called. Messages
+    /// can only be sent and received after the handshake has completed.
+    void initiate_client_handshake(const std::string& request_uri,
+                                   const std::string& host,
+                                   const std::string& sec_websocket_protocol,
+                                   HTTPHeaders headers = HTTPHeaders{});
 
-    /// initiate_server_handshake() starts the Socket in server mode. It will wait for a
-    /// HTTP request from a client and respond with a HTTP response. After sending a HTTP
-    /// response, websocket_handshake_completion_handler() is called. Messages can only be sent and
-    /// received after the handshake has completed.
+    /// initiate_server_handshake() starts the Socket in server mode. It will
+    /// wait for a HTTP request from a client and respond with a HTTP response.
+    /// After sending a HTTP response, websocket_handshake_completion_handler()
+    /// is called. Messages can only be sent and received after the handshake
+    /// has completed.
     void initiate_server_handshake();
 
+    /// initiate_server_websocket_after_handshake() starts the Socket in a state
+    /// where it will read and write WebSocket messages but it will expect the
+    /// handshake to have been completed by the caller. The use of this
+    /// function is to perform HTTP routing externally and then start the
+    /// WebSocket in case the HTTP request is an Upgrade to WebSocket.
+    /// Typically, the caller will have used make_http_response() to send the
+    /// HTTP response itself.
+    void initiate_server_websocket_after_handshake();
 
     /// The async_write_* functions send frames. Only one frame should be sent at a time,
     /// meaning that the user must wait for the handler to be called before sending the next frame.
@@ -152,8 +178,46 @@ private:
     std::unique_ptr<Impl> m_impl;
 };
 
+
+/// read_sec_websocket_protocol() returns the value of the
+/// header Sec-WebSocket-Protocol in the http request \a request.
+/// None is returned if the header Sec-WebSocket-Protocol is absent
+/// in the request.
+util::Optional<std::string> read_sec_websocket_protocol(const HTTPRequest& request);
+
+/// make_http_response() takes \a request as a WebSocket handshake request,
+/// validates it, and makes a HTTP response. If the request is invalid, the
+/// return value is None, and ec is set to Error::bad_handshake_request.
+util::Optional<HTTPResponse> make_http_response(const HTTPRequest& request,
+                                                const std::string& sec_websocket_protocol,
+                                                std::error_code& ec);
+
+enum class Error {
+    bad_request_header_upgrade            = 1,
+    bad_request_header_connection         = 2,
+    bad_request_header_websocket_version  = 3,
+    bad_request_header_websocket_key      = 4,
+    bad_handshake_request                 = 5,
+    bad_handshake_response                = 6,
+    bad_handshake_response_404_not_found  = 7,
+    bad_message                           = 8
+
+};
+
+const std::error_category& error_category() noexcept;
+
+std::error_code make_error_code(Error) noexcept;
+
 } // namespace websocket
 } // namespace util
 } // namespace realm
+
+namespace std {
+
+template<> struct is_error_code_enum<realm::util::websocket::Error> {
+    static const bool value = true;
+};
+
+} // namespace std
 
 #endif // REALM_UTIL_WEBSOCKET_HPP

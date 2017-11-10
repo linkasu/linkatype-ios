@@ -1,4 +1,4 @@
-/*************************************************************************
+﻿/*************************************************************************
  *
  * Copyright 2016 Realm Inc.
  *
@@ -26,7 +26,6 @@
 #include <realm/util/features.h>
 #include <realm/util/terminate.hpp>
 #include <realm/util/assert.hpp>
-#include <realm/util/safe_int_ops.hpp>
 
 namespace realm {
 
@@ -80,8 +79,6 @@ private:
 /// \sa SlabAlloc
 class Allocator {
 public:
-    static constexpr int CURRENT_FILE_FORMAT_VERSION = 6;
-
     /// The specified size must be divisible by 8, and must not be
     /// zero.
     ///
@@ -121,6 +118,10 @@ public:
 
     virtual ~Allocator() noexcept;
 
+    // Disable copying. Copying an allocator can produce double frees.
+    Allocator(const Allocator&) = delete;
+    Allocator& operator=(const Allocator&) = delete;
+
     virtual void verify() const = 0;
 
 #ifdef REALM_DEBUG
@@ -137,85 +138,10 @@ public:
 
     Replication* get_replication() noexcept;
 
-    /// \brief The version of the format of the the node structure (in file or
-    /// in memory) in use by Realm objects associated with this allocator.
-    ///
-    /// Every allocator contains a file format version field, which is returned
-    /// by this function. In some cases (as mentioned below) the file format can
-    /// change.
-    ///
-    /// A value of zero means the the file format is not yet decided. This is
-    /// only possible for empty Realms where top-ref is zero.
-    ///
-    /// For the default allocator (get_default()), the file format version field
-    /// can never change, is never zero, and is set to whatever
-    /// Group::get_target_file_format_version_for_session() would return if the
-    /// original file format version was undecided and the request history type
-    /// was Replication::hist_None.
-    ///
-    /// For the slab allocator (AllocSlab), the file format version field is set
-    /// to the file format version specified by the attached file (or attached
-    /// memory buffer) at the time of attachment. If no file (or buffer) is
-    /// currently attached, the returned value has no meaning. If the Realm file
-    /// format is later upgraded, the file format version filed must be updated
-    /// to reflect that fact.
-    ///
-    /// In shared mode (when a Realm file is opened via a SharedGroup instance)
-    /// it can happen that the file format is upgraded asyncronously (via
-    /// another SharedGroup instance), and in that case the file format version
-    /// field of the allocator can get out of date, but only for a short
-    /// while. It is always garanteed to be, and remain up to date after the
-    /// opening process completes (when SharedGroup::do_open() returns).
-    ///
-    /// An empty Realm file (one whose top-ref is zero) may specify a file
-    /// format version of zero to indicate that the format is not yet
-    /// decided. In that case, this function will return zero immediately after
-    /// AllocSlab::attach_file() returns. It shall be guaranteed, however, that
-    /// the zero is changed to a proper file format version before the opening
-    /// process completes (Group::open() or SharedGroup::open()). It is the duty
-    /// of the caller of AllocSlab::attach_file() to ensure this.
-    ///
-    /// File format versions:
-    ///
-    ///   1 Initial file format version
-    ///
-    ///   2 Various changes.
-    ///
-    ///   3 Supporting null on string columns broke the file format in following
-    ///     way: Index appends an 'X' character to all strings except the null
-    ///     string, to be able to distinguish between null and empty
-    ///     string. Bumped to 3 because of null support of String columns and
-    ///     because of new format of index.
-    ///
-    ///   4 Introduction of optional in-Realm history of changes (additional
-    ///     entries in Group::m_top). Since this change is not forward
-    ///     compatible, the file format version had to be bumped. This change is
-    ///     implemented in a way that achieves backwards compatibility with
-    ///     version 3 (and in turn with version 2).
-    ///
-    ///   5 Introduced the new Timestamp column type that replaces DateTime.
-    ///     When opening an older database file, all DateTime columns will be
-    ///     automatically upgraded Timestamp columns.
-    ///
-    ///   6 Introduced a new structure for the StringIndex. Moved the commit
-    ///     logs into the Realm file. Changes to the transaction log format
-    ///     including reshuffling instructions. This is the format used in
-    ///     milestone 2.0.0.
-    ///
-    /// IMPORTANT: When introducing a new file format version, be sure to review
-    /// the file validity checks in AllocSlab::validate_buffer(), the file
-    /// format selection logic in
-    /// Group::get_target_file_format_version_for_session(), and the file format
-    /// upgrade logic in Group::upgrade_file_format().
-    int get_file_format_version() const noexcept;
-
 protected:
     size_t m_baseline = 0; // Separation line between immutable and mutable refs.
 
     Replication* m_replication = nullptr;
-
-    /// See get_file_format_version().
-    int m_file_format_version = 0;
 
     ref_type m_debug_watch = 0;
 
@@ -223,7 +149,7 @@ protected:
     /// zero.
     ///
     /// \throw std::bad_alloc If insufficient memory was available.
-    virtual MemRef do_alloc(size_t size) = 0;
+    virtual MemRef do_alloc(const size_t size) = 0;
 
     /// The specified size must be divisible by 8, and must not be
     /// zero.
@@ -261,7 +187,7 @@ protected:
     /// Bump the global version counter. This method should be called when
     /// version bumping is initiated. Then following calls to should_propagate_version()
     /// can be used to prune the version bumping.
-    uint_fast64_t bump_global_version() noexcept;
+    void bump_global_version() noexcept;
 
     /// Determine if the "local_version" is out of sync, so that it should
     /// be updated. In that case: also update it. Called from Table::bump_version
@@ -272,10 +198,9 @@ protected:
     friend class Group;
 };
 
-inline uint_fast64_t Allocator::bump_global_version() noexcept
+inline void Allocator::bump_global_version() noexcept
 {
-    ++m_table_versioning_counter;
-    return m_table_versioning_counter;
+    m_table_versioning_counter += 1;
 }
 
 
@@ -312,9 +237,9 @@ inline ref_type to_ref(int_fast64_t v) noexcept
 
     // C++11 standard, paragraph 4.7.2 [conv.integral]:
     // If the destination type is unsigned, the resulting value is the least unsigned integer congruent to the source
-    // integer (modulo 2n where n is the number of bits used to represent the unsigned type). [ Note: In a two’s
+    // integer (modulo 2n where n is the number of bits used to represent the unsigned type). [ Note: In a two's
     // complement representation, this conversion is conceptual and there is no change in the bit pattern (if there is
-    // no truncation). — end note ]
+    // no truncation). - end note ]
     static_assert(std::is_unsigned<ref_type>::value,
                   "If ref_type changes, from_ref and to_ref should probably be updated");
     return ref_type(v);
@@ -443,12 +368,6 @@ inline Replication* Allocator::get_replication() noexcept
 {
     return m_replication;
 }
-
-inline int Allocator::get_file_format_version() const noexcept
-{
-    return m_file_format_version;
-}
-
 
 } // namespace realm
 

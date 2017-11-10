@@ -5,7 +5,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2015 Grigory Lutkov <Friend.LGA@gmail.com>
+//  Copyright © 2015 Grigory Lutkov <Friend.LGA@gmail.com>
 //  (https://github.com/Friend-LGA/LGAlertView)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,4 +27,7 @@
 //  SOFTWARE.
 //
 
-static CGFloat const kLGAlertViewPaddingW = 10.f;
+typedef NS_ENUM(NSUInteger, LGAlertViewButtonIconPosition) {
+    LGAlertViewButtonIconPositionLeft  = 0,
+    LGAlertViewButtonIconPositionRight = 1
+};
