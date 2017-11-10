@@ -24,27 +24,14 @@
  */
 
 //
-//  AMChatTextInputView.h
+//  AMConversationModel.m
 //  distype
 //
-//  Created by amakushkin on 13.09.16.
+//  Created by amakushkin on 14.09.16.
 //
 
-#import <UIKit/UIKit.h>
+#import "AMConversationModel.h"
 
-@protocol AMChatTextInputViewDelegate <NSObject>
-
-@optional
-
-- (void)needToAddToCategory:(NSString*)message;
-- (void)needToSendMessage:(NSString*)message;
-
-@end
-
-@interface AMChatTextInputView : UIView
-
-- (void)hideKeyboard;
-
-@property (weak) id<AMChatTextInputViewDelegate> delegate;
+@implementation AMConversationModel
 
 @end
