@@ -11,7 +11,7 @@ protocol HomeDelegate {
     func finish()
 }
 
-class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOutput {
+class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOutput, ChatCollectionDelegate {
     var finishFlow: ((Any) -> Void)?
     
     fileprivate let router: Router
@@ -38,4 +38,10 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     func finish() {
         finishFlow!("sss")
     }
+    // MARK: - ChatCollectionDelegate
+    func didSelect(_ chat: Chat) {
+        print("\(chat.name) selected")
+    }
+    
+
 }

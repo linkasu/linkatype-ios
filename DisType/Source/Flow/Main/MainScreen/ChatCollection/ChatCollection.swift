@@ -9,13 +9,19 @@
 import Foundation
 import UIKit
 
+protocol ChatCollectionDelegate {
+    func didSelect(_ chat:Chat)
+}
+
 class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
-    override init() {
+    let delegate:ChatCollectionDelegate
+    
+    init(with _delegate:ChatCollectionDelegate) {
+        delegate = _delegate
         super.init()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
         return DB.chats.count
     }
     
@@ -23,6 +29,10 @@ class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSo
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier:ChatCell.id, for: indexPath) as? ChatCell else { return UICollectionViewCell()}
         cell.title.text = DB.chats[indexPath.row].name
         
-        return UICollectionViewCell()
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate.didSelect(DB.chats[indexPath.row])
     }
 }
