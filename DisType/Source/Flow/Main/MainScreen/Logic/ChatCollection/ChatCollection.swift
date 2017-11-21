@@ -10,39 +10,46 @@ import Foundation
 import UIKit
 
 protocol ChatCollectionDelegate {
-    func willUnSelect(_ chat:Chat)
     func didSelect(_ chat:Chat)
 }
 
 class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
     let delegate:ChatCollectionDelegate
-    var selectedIndex:Int = 0 {
-        willSet{
-            delegate.willUnSelect(DB.chats[selectedIndex])
-        }
-        
-        didSet {
-            delegate.didSelect(DB.chats[selectedIndex])
-        }
+    
+    var selectedIndexPath:IndexPath {
+        didSet { selectedIndex = selectedIndexPath.row }
     }
     
-    init(with _delegate:ChatCollectionDelegate) {
-        delegate = _delegate
+    var selectedIndex:Int = 0 {
+        didSet { delegate.didSelect(DB.chats[selectedIndex]) }
+    }
+    
+    init(delegate:ChatCollectionDelegate) {
+        self.delegate = delegate
+        selectedIndexPath = IndexPath(row:0, section:0)
         super.init()
     }
     
+    // MARK: - Public
+    func selectCell(at collectionView:UICollectionView) {
+        collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredVertically)
+    }
+    
+    // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return DB.chats.count
+        let chatsCount =  DB.chats.count
+        if selectedIndex >= chatsCount { selectedIndexPath = IndexPath(row:chatsCount - 1, section:0) }
+        return chatsCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier:ChatCell.id, for: indexPath) as? ChatCell else { return UICollectionViewCell()}
         cell.title.text = DB.chats[indexPath.row].name
-        
+        cell.isSelected = (selectedIndexPath == indexPath)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedIndex = indexPath.row
+        selectedIndexPath = indexPath
     }
 }

@@ -10,9 +10,8 @@ import Foundation
 
 class AssemblyScreen {
     
-    func mainScreen(delegate:MainCoordinator) -> MainScreen {
+    func mainScreen(delegate:MainCoordinator, chatCollection:ChatCollection) -> MainScreen {
         let vc = MainScreen.instantiateFromStoryboard()
-        let chatCollection = ChatCollection(with:delegate)
         vc.chatDelegate = chatCollection
         vc.delegate = delegate
         return vc

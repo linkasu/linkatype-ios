@@ -9,9 +9,10 @@
 import Foundation
 import UIKit
 
+
 class MainScreen: UIViewController, UITextViewDelegate {
     var delegate:HomeDelegate?
-    var chatDelegate:ChatCollection?
+    var chatDelegate:ChatCollection!
     var currentChat: Chat {
         let index = chatCollectionView.indexPathsForSelectedItems![0].row
         return DB.chats[index]
@@ -39,6 +40,7 @@ class MainScreen: UIViewController, UITextViewDelegate {
     fileprivate func setupChatCollectionView() {
         chatCollectionView.delegate = chatDelegate
         chatCollectionView.dataSource = chatDelegate
+        chatDelegate.selectCell(at: chatCollectionView)
     }
 
     fileprivate func setupSayButton() {
@@ -59,11 +61,17 @@ class MainScreen: UIViewController, UITextViewDelegate {
     
     // MARK: - Actions
     @IBAction func deleteChatAction(_ sender: UIBarButtonItem) {
+        delegate?.deleteCurrentChat()
+        chatCollectionView.reloadData()
+        chatDelegate.selectCell(at: chatCollectionView)
     }
     @IBAction func addChatAction(_ sender: UIBarButtonItem) {
+        delegate?.addNewChat()
+        chatCollectionView.reloadData()
+        chatDelegate.selectCell(at: chatCollectionView)
     }
-    
     @IBAction func clearInputAction(_ sender: UIBarButtonItem) {
+        inputTextView.text = ""
     }
     
     @IBAction func toneSignalAction(_ sender: UIBarButtonItem) {
@@ -71,10 +79,15 @@ class MainScreen: UIViewController, UITextViewDelegate {
     @IBAction func menuAction(_ sender: Any) {
     }
     @IBAction func speakInputAction(_ sender: Any) {
+        guard let text = inputTextView.text else {return}
+        let languageCode = inputTextView.textInputMode?.primaryLanguage
+        delegate?.speak(text, with:languageCode)
     }
     
     // MARK: - UITextViewDelegate
     func textViewDidChange(_ textView: UITextView) {
+        let text = textView.text
+        delegate?.updateCurrentChat(text)
     }
 
     // MARK: - Observations

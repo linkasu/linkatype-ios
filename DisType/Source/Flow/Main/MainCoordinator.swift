@@ -7,8 +7,17 @@
 //
 
 import Foundation
+import AVFoundation
+import UIKit
+
 protocol HomeDelegate {
     func didEntered(_ text:String)
+    func speak(_ text:String, with languageCode:String?)
+    func addNewChat()
+    func addNewCategory()
+    func addNewMessage(to category:Category)
+    func updateCurrentChat(_ _text:String?)
+    func deleteCurrentChat()
     func finish()
 }
 
@@ -19,8 +28,13 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     fileprivate let assembly:AssemblyCoordinator
     fileprivate let screenAssembly: AssemblyScreen
     
+    fileprivate lazy var chatCollection:ChatCollection = {
+        let chatCollection = ChatCollection(delegate:self)
+        return chatCollection
+    }()
+    
     fileprivate lazy var mainVC:MainScreen = {
-        let vc = self.screenAssembly.mainScreen(delegate:self)
+        let vc = self.screenAssembly.mainScreen(delegate:self, chatCollection:chatCollection)
         return vc
     }()
     
@@ -39,18 +53,63 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     func didEntered(_ text:String) {
     }
     
+    func speak(_ text: String, with languageCode:String?) {
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: languageCode)
+        let synth = AVSpeechSynthesizer()
+        synth.speak(utterance)
+    }
+    
+    func addNewChat() {
+        DB.addNewChat()
+    }
+    
+    func addNewCategory() {
+        
+    }
+    
+    func addNewMessage(to category: Category) {
+        
+    }
+    
+    func updateCurrentChat(_ _text:String?) {
+        let text = _text ?? ""
+        currentChat().update(text:text)
+    }
+    
+    func deleteCurrentChat() {
+        let chat = currentChat()
+        guard let index = DB.chats.index(of:chat), index >= 3 else { return }
+        DB.delete(chat)
+    }
+    
     func finish() {
         finishFlow!("sss")
     }
+
     // MARK: - ChatCollectionDelegate
-    func willUnSelect(_ chat: Chat) {
-        guard let text = mainVC.inputTextView.text else { return }
-        chat.update(text:text)
-    }
-    
     func didSelect(_ chat: Chat) {
         print("\(chat.name) selected")
         let text = chat.text
         mainVC.set(inputText:text)
     }
+    
+    // MARK: - Private
+    func add(_ chat: Chat) {
+        
+    }
+    
+    func add(_ category: Category) {
+        
+    }
+    
+    func add(_ message: Message, to category: Category) {
+        
+    }
+    
+    func currentChat() -> Chat {
+        let index = chatCollection.selectedIndex
+        return DB.chats[index]
+    }
 }
+

@@ -22,7 +22,8 @@ class AssemblyCoordinator {
 //    }()
 //    
     lazy var mainCoordinator: MainCoordinator = {
-        return MainCoordinator(router, assembly:self, screenAssembly:screenAssembly)
+        let coordinator = MainCoordinator(router, assembly:self, screenAssembly:screenAssembly)
+        return coordinator
     }()
     
     init(_ router:Router) {

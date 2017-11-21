@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E451B351FC44CF30068FC9F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E451B341FC44CF30068FC9F /* String.swift */; };
+		9E451B371FC481C10068FC9F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E451B361FC481C10068FC9F /* UIColor.swift */; };
 		9E99892B1FBF63C400659960 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E99892A1FBF63C400659960 /* AppDelegate.swift */; };
 		9E9989321FBF63C400659960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E9989311FBF63C400659960 /* Assets.xcassets */; };
 		9E9989351FBF63C400659960 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E9989331FBF63C400659960 /* LaunchScreen.storyboard */; };
@@ -35,6 +37,8 @@
 
 /* Begin PBXFileReference section */
 		8B653E083D40EF122FF79BA7 /* Pods-DisType.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DisType.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DisType/Pods-DisType.debug.xcconfig"; sourceTree = "<group>"; };
+		9E451B341FC44CF30068FC9F /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		9E451B361FC481C10068FC9F /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		9E9989271FBF63C400659960 /* DisType.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DisType.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E99892A1FBF63C400659960 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9E9989311FBF63C400659960 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -188,7 +192,9 @@
 			isa = PBXGroup;
 			children = (
 				9E99894F1FBF670000659960 /* ViewController.swift */,
+				9E451B361FC481C10068FC9F /* UIColor.swift */,
 				9E9989511FBF671900659960 /* View.swift */,
+				9E451B341FC44CF30068FC9F /* String.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -408,6 +414,7 @@
 				9E9989661FBF7BC600659960 /* PhraseTable.swift in Sources */,
 				9E99895E1FBF773300659960 /* CategoryTable.swift in Sources */,
 				9E9BCCB51FC3651D00AC9B7F /* Chat.swift in Sources */,
+				9E451B371FC481C10068FC9F /* UIColor.swift in Sources */,
 				9E9989451FBF655000659960 /* AssemblyCoordinator.swift in Sources */,
 				9E9989491FBF659C00659960 /* BaseCoordinator.swift in Sources */,
 				9E9989521FBF671900659960 /* View.swift in Sources */,
@@ -419,6 +426,7 @@
 				9E99892B1FBF63C400659960 /* AppDelegate.swift in Sources */,
 				9E9989431FBF650500659960 /* Coordinator.swift in Sources */,
 				9E99894B1FBF65BC00659960 /* AppCoordinator.swift in Sources */,
+				9E451B351FC44CF30068FC9F /* String.swift in Sources */,
 				9E9BCCBB1FC36D1B00AC9B7F /* DataBase.swift in Sources */,
 				9E99894D1FBF666C00659960 /* AssemblyScreen.swift in Sources */,
 			);

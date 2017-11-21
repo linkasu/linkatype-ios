@@ -13,9 +13,6 @@ enum AppState {
 }
 
 final class AppCoordinator: BaseCoordinator, Coordinator {
-    let minChatCount = 3
-    let chatName = "ЧАТ"
-    
     fileprivate let router: Router
     fileprivate let assembly: AssemblyCoordinator
     
@@ -27,23 +24,7 @@ final class AppCoordinator: BaseCoordinator, Coordinator {
         state = .main
     }
     
-    // MARK: - Private
-    fileprivate func initDB() {
-        let chatsCount = DB.chats.count
-        if chatsCount < minChatCount {
-            var count = chatsCount + 1
-            while count <= minChatCount {
-                let chat = Chat()
-                chat.name = "\(chatName)\(count)"
-                DB.add(chat)
-                count += 1
-            }
-        }
-    }
-
     func start() {
-        initDB()
-        
         switch state {
         case .main:
             runMainFlow()
