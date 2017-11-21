@@ -35,5 +35,10 @@ import RealmSwift
 
 class Chat: Object {
     @objc dynamic var name = ""
+    @objc dynamic var text = ""
     @objc dynamic var id = NSUUID().uuidString
+    
+    func update(text:String) {
+        DB.update(self, text:text)
+    }    
 }

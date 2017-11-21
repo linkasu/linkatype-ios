@@ -10,11 +10,21 @@ import Foundation
 import UIKit
 
 protocol ChatCollectionDelegate {
+    func willUnSelect(_ chat:Chat)
     func didSelect(_ chat:Chat)
 }
 
 class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
     let delegate:ChatCollectionDelegate
+    var selectedIndex:Int = 0 {
+        willSet{
+            delegate.willUnSelect(DB.chats[selectedIndex])
+        }
+        
+        didSet {
+            delegate.didSelect(DB.chats[selectedIndex])
+        }
+    }
     
     init(with _delegate:ChatCollectionDelegate) {
         delegate = _delegate
@@ -33,6 +43,6 @@ class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate.didSelect(DB.chats[indexPath.row])
+        selectedIndex = indexPath.row
     }
 }

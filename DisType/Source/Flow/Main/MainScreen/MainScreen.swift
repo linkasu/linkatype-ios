@@ -12,6 +12,10 @@ import UIKit
 class MainScreen: UIViewController, UITextViewDelegate {
     var delegate:HomeDelegate?
     var chatDelegate:ChatCollection?
+    var currentChat: Chat {
+        let index = chatCollectionView.indexPathsForSelectedItems![0].row
+        return DB.chats[index]
+    }
     
     lazy var singleInputTextLineHeight: CGFloat = {
         return inputTextHeight.constant
@@ -28,11 +32,11 @@ class MainScreen: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         setupSayButton()
         setupTextView()
-        setupChatBar()
+        setupChatCollectionView()
     }
     
     // MARK: - Setup
-    fileprivate func setupChatBar() {
+    fileprivate func setupChatCollectionView() {
         chatCollectionView.delegate = chatDelegate
         chatCollectionView.dataSource = chatDelegate
     }
@@ -46,6 +50,13 @@ class MainScreen: UIViewController, UITextViewDelegate {
         inputTextView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
     }
 
+    // MARK: - Public
+    func set(inputText:String) {
+        UIView.animate(withDuration: 0.2) {
+            self.inputTextView.text = inputText
+        }
+    }
+    
     // MARK: - Actions
     @IBAction func deleteChatAction(_ sender: UIBarButtonItem) {
     }
@@ -77,8 +88,6 @@ class MainScreen: UIViewController, UITextViewDelegate {
         var topCorrect = (inputBarHeight - contentHeight * textView.zoomScale) / 2.0;
         topCorrect = ( topCorrect < 0.0 ? 0.0 : topCorrect );
         textView.contentOffset = CGPoint(x: 0, y: -topCorrect)
-        
-        
         inputTextHeight.constant = textView.contentSize.height;
         
         UIView.animate(withDuration: 0.2) { [weak self] in

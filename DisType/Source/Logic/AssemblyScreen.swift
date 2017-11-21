@@ -12,9 +12,9 @@ class AssemblyScreen {
     
     func mainScreen(delegate:MainCoordinator) -> MainScreen {
         let vc = MainScreen.instantiateFromStoryboard()
-        vc.delegate = delegate
         let chatCollection = ChatCollection(with:delegate)
         vc.chatDelegate = chatCollection
+        vc.delegate = delegate
         return vc
     }
     

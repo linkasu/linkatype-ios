@@ -29,6 +29,7 @@ class DataBase {
 //        })
     }
     
+    // MARK: - Add
     func add(_ chat:Chat) {
         realm.beginWrite()
         realm.add(chat)
@@ -44,6 +45,13 @@ class DataBase {
     func add(_ message:Message) {
         realm.beginWrite()
         realm.add(message)
+        try! realm.commitWrite()
+    }
+    
+    // MARK: - Update
+    func update(_ chat:Chat, text:String) {
+        realm.beginWrite()
+        chat.text = text
         try! realm.commitWrite()
     }
 }

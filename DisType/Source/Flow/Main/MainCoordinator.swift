@@ -8,6 +8,7 @@
 
 import Foundation
 protocol HomeDelegate {
+    func didEntered(_ text:String)
     func finish()
 }
 
@@ -35,13 +36,21 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     }
     
     // MARK: - HomeDelegate
+    func didEntered(_ text:String) {
+    }
+    
     func finish() {
         finishFlow!("sss")
     }
     // MARK: - ChatCollectionDelegate
-    func didSelect(_ chat: Chat) {
-        print("\(chat.name) selected")
+    func willUnSelect(_ chat: Chat) {
+        guard let text = mainVC.inputTextView.text else { return }
+        chat.update(text:text)
     }
     
-
+    func didSelect(_ chat: Chat) {
+        print("\(chat.name) selected")
+        let text = chat.text
+        mainVC.set(inputText:text)
+    }
 }

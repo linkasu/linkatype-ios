@@ -93,6 +93,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9E451B321FC4260C0068FC9F /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				9E9BCCBC1FC3793C00AC9B7F /* ChatCell */,
+				9E9989591FBF692600659960 /* MainScreen.storyboard */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		9E451B331FC426210068FC9F /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				9E9989621FBF7AAD00659960 /* ChatCollection */,
+				9E99895F1FBF782E00659960 /* Toolbar */,
+				9E99895B1FBF764A00659960 /* CategoryTable */,
+				9E99895C1FBF76FA00659960 /* PhraseTable */,
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
 		9E99891E1FBF63C400659960 = {
 			isa = PBXGroup;
 			children = (
@@ -185,13 +205,9 @@
 		9E9989561FBF68A800659960 /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
-				9E9BCCBC1FC3793C00AC9B7F /* ChatCell */,
 				9E9989571FBF68E100659960 /* MainScreen.swift */,
-				9E9989591FBF692600659960 /* MainScreen.storyboard */,
-				9E9989621FBF7AAD00659960 /* ChatCollection */,
-				9E99895F1FBF782E00659960 /* Toolbar */,
-				9E99895B1FBF764A00659960 /* CategoryTable */,
-				9E99895C1FBF76FA00659960 /* PhraseTable */,
+				9E451B331FC426210068FC9F /* Logic */,
+				9E451B321FC4260C0068FC9F /* UI */,
 			);
 			path = MainScreen;
 			sourceTree = "<group>";
