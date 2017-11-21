@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_distypeVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_distypeVersionString[];
+FOUNDATION_EXPORT double Pods_DisTypeVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_DisTypeVersionString[];
 
