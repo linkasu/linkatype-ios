@@ -15,6 +15,7 @@ protocol ChatCollectionDelegate {
 
 class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
     let delegate:ChatCollectionDelegate
+    var collectionView:UICollectionView?
     
     var selectedIndexPath:IndexPath {
         didSet { selectedIndex = selectedIndexPath.row }
@@ -31,10 +32,10 @@ class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     // MARK: - Public
-    func updateLastCell(at collectionView:UICollectionView) {
+    func updateLastCell() {
         let indexPath = IndexPath(row: DB.chats.count - 1, section: 0)
-        collectionView.performBatchUpdates({
-            collectionView.insertItems(at: [indexPath])
+        collectionView?.performBatchUpdates({
+            collectionView?.insertItems(at: [indexPath])
         }, completion: nil)
     }
     
@@ -46,6 +47,7 @@ class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSo
     
     // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        self.collectionView = collectionView
         let chatsCount =  DB.chats.count
         if selectedIndex >= chatsCount { selectedIndexPath = IndexPath(row:chatsCount - 1, section:0) }
         return chatsCount

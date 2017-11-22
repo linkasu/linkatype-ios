@@ -13,6 +13,9 @@ import UIKit
 class MainScreen: UIViewController, UITextViewDelegate {
     var delegate:HomeDelegate?
     var chatDelegate:ChatCollection!
+    var categoryDelegate:CategoryManager!
+    var messageDelegate:MessageManager!
+    
     var currentChat: Chat {
         let index = chatCollectionView.indexPathsForSelectedItems![0].row
         return DB.chats[index]
@@ -24,19 +27,33 @@ class MainScreen: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var chatCollectionView: UICollectionView!
     @IBOutlet weak var sayButton: UIButton!
+    
     @IBOutlet weak var inputTextView: UITextView!
-    @IBOutlet weak var categoryTableView: UITableView!
-    @IBOutlet weak var phraseTableView: UITableView!
     @IBOutlet weak var inputTextHeight: NSLayoutConstraint!
+
+    @IBOutlet weak var categoryTableView: UITableView!
+    @IBOutlet weak var messageTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSayButton()
         setupTextView()
         setupChatCollectionView()
+        setupCategoryTableView()
+        setupMessageTableView()
     }
     
     // MARK: - Setup
+    fileprivate func setupMessageTableView() {
+        messageTableView.delegate = messageDelegate
+        messageTableView.dataSource = messageDelegate
+    }
+
+    fileprivate func setupCategoryTableView() {
+        categoryTableView.delegate = categoryDelegate
+        categoryTableView.dataSource = categoryDelegate
+    }
+
     fileprivate func setupChatCollectionView() {
         chatCollectionView.delegate = chatDelegate
         chatCollectionView.dataSource = chatDelegate
@@ -60,16 +77,15 @@ class MainScreen: UIViewController, UITextViewDelegate {
     
     // MARK: - Actions
     @IBAction func deleteChatAction(_ sender: UIBarButtonItem) {
-        delegate?.deleteCurrentChat {
+        delegate?.deleteCurrentChat { newSelectedIndexPath in
             guard let collection = self.chatCollectionView else { return }
             guard let indexPathes = collection.indexPathsForSelectedItems else {return}
             collection.deleteItems(at: indexPathes)
-            collection.reloadItems(at: [self.chatDelegate.selectedIndexPath])
+            collection.reloadItems(at: [newSelectedIndexPath])
         }
     }
     @IBAction func addChatAction(_ sender: UIBarButtonItem) {
         delegate?.addNewChat()
-        chatDelegate.updateLastCell(at: chatCollectionView)
     }
 
     @IBAction func clearInputAction(_ sender: UIBarButtonItem) {

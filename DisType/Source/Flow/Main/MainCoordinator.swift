@@ -17,11 +17,12 @@ protocol HomeDelegate {
     func addNewCategory()
     func addNewMessage(to category:Category)
     func updateCurrentChat(_ _text:String?)
-    func deleteCurrentChat(_ complition: @escaping ()->())
+    func deleteCurrentChat(_ complition: @escaping (IndexPath)->())
     func finish()
 }
 
-class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOutput, ChatCollectionDelegate {
+class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOutput, ChatCollectionDelegate, CategoryManagerDelegate, MessageManagerDelegate {
+
     var finishFlow: ((Any) -> Void)?
     
     fileprivate let router: Router
@@ -32,9 +33,20 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         let chatCollection = ChatCollection(delegate:self)
         return chatCollection
     }()
-    
+    fileprivate lazy var categoryManager: CategoryManager = {
+        let categoryManager = CategoryManager(delegate:self)
+        return categoryManager
+    }()
+    fileprivate lazy var messageManager: MessageManager = {
+        let messageManager = MessageManager(delegate:self)
+        return messageManager
+    }()
+
     fileprivate lazy var mainVC:MainScreen = {
-        let vc = self.screenAssembly.mainScreen(delegate:self, chatCollection:chatCollection)
+        let vc = self.screenAssembly.mainScreen(delegate:self,
+                                                chatCollection:chatCollection,
+                                                categoryManager:categoryManager,
+                                                messageManager:messageManager)
         return vc
     }()
     
@@ -53,7 +65,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     func didEntered(_ text:String) {
     }
     
-    func speak(_ text: String, with languageCode:String?) {
+    func speak(_ text: String, with languageCode:String? = "ru_RU") {
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: languageCode)
         let synth = AVSpeechSynthesizer()
@@ -62,6 +74,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     
     func addNewChat() {
         DB.addNewChat()
+        chatCollection.updateLastCell()
     }
     
     func addNewCategory() {
@@ -77,11 +90,11 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         currentChat().update(text:text)
     }
     
-    func deleteCurrentChat(_ complition: @escaping ()->()) {
+    func deleteCurrentChat(_ complition: @escaping (IndexPath)->()) {
         let chat = currentChat()
         guard let index = DB.chats.index(of:chat), index >= 3 else { return }
         DB.delete(chat)
-        complition()
+        complition(chatCollection.selectedIndexPath)
     }
     
     func finish() {
@@ -94,7 +107,18 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         let text = chat.text
         mainVC.set(inputText:text)
     }
+    // MARK: - CategoryManagerDelegate
+    func didSelect(_ message: Category) {
+    }
+    // MARK: - MessageManagerDelegate
+    func currentCategory() -> Category {
+        return categoryManager.currentCategory
+    }
     
+    func didSelect(_ message: Message) {
+        self.speak(message.text)
+    }
+
     // MARK: - Private
     func add(_ category: Category) {
         

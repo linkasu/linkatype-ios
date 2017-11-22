@@ -12,6 +12,8 @@ import RealmSwift
 let DB = DataBase()
 
 class DataBase {
+    let minCategoriesCount = 1
+    let categoryName = "Без категории"
     let minChatCount = 3
     let chatName = "ЧАТ"
     
@@ -25,6 +27,24 @@ class DataBase {
     }
     
     fileprivate func initDB() {
+        initChats()
+        initCategories()
+    }
+    
+    fileprivate func initCategories() {
+        let categotiesCount = categories.count
+        if categotiesCount < minCategoriesCount {
+            var count = categotiesCount + 1
+            while count <= minCategoriesCount {
+                let category = Category()
+                category.name = categoryName
+                self.add(category)
+                count += 1
+            }
+        }
+    }
+    
+    fileprivate func initChats() {
         let chatsCount = self.chats.count
         if chatsCount < minChatCount {
             var count = chatsCount + 1
@@ -46,7 +66,9 @@ class DataBase {
     }
     
     func messages(for category:Category) -> Results<Message> {
-        return realm.objects(Message.self).filter("category = \(category)").sorted(byKeyPath: #keyPath(Message.text))
+        let messagesAll = realm.objects(Message.self)
+        let messages = messagesAll.filter("%K = %@", #keyPath(Message.categoryId), category.id)
+        return messages.sorted(byKeyPath: #keyPath(Message.text))
 //            { (message) -> Bool in
 //            message.category == category
 //        })

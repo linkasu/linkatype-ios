@@ -23,10 +23,10 @@
 		9E9989551FBF688600659960 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9989541FBF688600659960 /* MainCoordinator.swift */; };
 		9E9989581FBF68E100659960 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9989571FBF68E100659960 /* MainScreen.swift */; };
 		9E99895A1FBF692600659960 /* MainScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E9989591FBF692600659960 /* MainScreen.storyboard */; };
-		9E99895E1FBF773300659960 /* CategoryTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E99895D1FBF773300659960 /* CategoryTable.swift */; };
+		9E99895E1FBF773300659960 /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E99895D1FBF773300659960 /* CategoryManager.swift */; };
 		9E9989611FBF784300659960 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9989601FBF784300659960 /* Toolbar.swift */; };
 		9E9989641FBF7ADA00659960 /* ChatCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9989631FBF7ADA00659960 /* ChatCollection.swift */; };
-		9E9989661FBF7BC600659960 /* PhraseTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9989651FBF7BC600659960 /* PhraseTable.swift */; };
+		9E9989661FBF7BC600659960 /* MessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9989651FBF7BC600659960 /* MessageManager.swift */; };
 		9E9BCCB51FC3651D00AC9B7F /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9BCCB41FC3651D00AC9B7F /* Chat.swift */; };
 		9E9BCCB71FC365BC00AC9B7F /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9BCCB61FC365BC00AC9B7F /* Category.swift */; };
 		9E9BCCB91FC3661800AC9B7F /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9BCCB81FC3661800AC9B7F /* Message.swift */; };
@@ -55,10 +55,10 @@
 		9E9989541FBF688600659960 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		9E9989571FBF68E100659960 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		9E9989591FBF692600659960 /* MainScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainScreen.storyboard; sourceTree = "<group>"; };
-		9E99895D1FBF773300659960 /* CategoryTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTable.swift; sourceTree = "<group>"; };
+		9E99895D1FBF773300659960 /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
 		9E9989601FBF784300659960 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		9E9989631FBF7ADA00659960 /* ChatCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollection.swift; sourceTree = "<group>"; };
-		9E9989651FBF7BC600659960 /* PhraseTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhraseTable.swift; sourceTree = "<group>"; };
+		9E9989651FBF7BC600659960 /* MessageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageManager.swift; sourceTree = "<group>"; };
 		9E9BCCB41FC3651D00AC9B7F /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		9E9BCCB61FC365BC00AC9B7F /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		9E9BCCB81FC3661800AC9B7F /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -101,7 +101,6 @@
 			isa = PBXGroup;
 			children = (
 				9E9BCCBC1FC3793C00AC9B7F /* ChatCell */,
-				9E9989591FBF692600659960 /* MainScreen.storyboard */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -111,8 +110,8 @@
 			children = (
 				9E9989621FBF7AAD00659960 /* ChatCollection */,
 				9E99895F1FBF782E00659960 /* Toolbar */,
-				9E99895B1FBF764A00659960 /* CategoryTable */,
-				9E99895C1FBF76FA00659960 /* PhraseTable */,
+				9E99895B1FBF764A00659960 /* CategoryManager */,
+				9E99895C1FBF76FA00659960 /* MessageManager */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -212,26 +211,27 @@
 			isa = PBXGroup;
 			children = (
 				9E9989571FBF68E100659960 /* MainScreen.swift */,
+				9E9989591FBF692600659960 /* MainScreen.storyboard */,
 				9E451B331FC426210068FC9F /* Logic */,
 				9E451B321FC4260C0068FC9F /* UI */,
 			);
 			path = MainScreen;
 			sourceTree = "<group>";
 		};
-		9E99895B1FBF764A00659960 /* CategoryTable */ = {
+		9E99895B1FBF764A00659960 /* CategoryManager */ = {
 			isa = PBXGroup;
 			children = (
-				9E99895D1FBF773300659960 /* CategoryTable.swift */,
+				9E99895D1FBF773300659960 /* CategoryManager.swift */,
 			);
-			path = CategoryTable;
+			path = CategoryManager;
 			sourceTree = "<group>";
 		};
-		9E99895C1FBF76FA00659960 /* PhraseTable */ = {
+		9E99895C1FBF76FA00659960 /* MessageManager */ = {
 			isa = PBXGroup;
 			children = (
-				9E9989651FBF7BC600659960 /* PhraseTable.swift */,
+				9E9989651FBF7BC600659960 /* MessageManager.swift */,
 			);
-			path = PhraseTable;
+			path = MessageManager;
 			sourceTree = "<group>";
 		};
 		9E99895F1FBF782E00659960 /* Toolbar */ = {
@@ -411,8 +411,8 @@
 				9E9989641FBF7ADA00659960 /* ChatCollection.swift in Sources */,
 				9E9989611FBF784300659960 /* Toolbar.swift in Sources */,
 				9E9BCCB91FC3661800AC9B7F /* Message.swift in Sources */,
-				9E9989661FBF7BC600659960 /* PhraseTable.swift in Sources */,
-				9E99895E1FBF773300659960 /* CategoryTable.swift in Sources */,
+				9E9989661FBF7BC600659960 /* MessageManager.swift in Sources */,
+				9E99895E1FBF773300659960 /* CategoryManager.swift in Sources */,
 				9E9BCCB51FC3651D00AC9B7F /* Chat.swift in Sources */,
 				9E451B371FC481C10068FC9F /* UIColor.swift in Sources */,
 				9E9989451FBF655000659960 /* AssemblyCoordinator.swift in Sources */,
