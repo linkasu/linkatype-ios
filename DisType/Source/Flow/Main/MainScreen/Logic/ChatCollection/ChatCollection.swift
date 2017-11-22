@@ -31,8 +31,14 @@ class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     // MARK: - Public
-    func selectCell(at collectionView:UICollectionView) {
+    func updateSelectedCell() {
+        
+    }
+    
+    // MARK: - Private
+    fileprivate func selectCell(at collectionView:UICollectionView) {
         collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredVertically)
+        delegate.didSelect(DB.chats[selectedIndex])
     }
     
     // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -46,6 +52,9 @@ class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSo
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier:ChatCell.id, for: indexPath) as? ChatCell else { return UICollectionViewCell()}
         cell.title.text = DB.chats[indexPath.row].name
         cell.isSelected = (selectedIndexPath == indexPath)
+        if (selectedIndexPath == indexPath) {
+            selectCell(at: collectionView)
+        }
         return cell
     }
     

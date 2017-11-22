@@ -40,7 +40,7 @@ class MainScreen: UIViewController, UITextViewDelegate {
     fileprivate func setupChatCollectionView() {
         chatCollectionView.delegate = chatDelegate
         chatCollectionView.dataSource = chatDelegate
-        chatDelegate.selectCell(at: chatCollectionView)
+//        chatDelegate.selectCell(at: chatCollectionView)
     }
 
     fileprivate func setupSayButton() {
@@ -61,14 +61,19 @@ class MainScreen: UIViewController, UITextViewDelegate {
     
     // MARK: - Actions
     @IBAction func deleteChatAction(_ sender: UIBarButtonItem) {
-        delegate?.deleteCurrentChat()
-        chatCollectionView.reloadData()
-        chatDelegate.selectCell(at: chatCollectionView)
+        delegate?.deleteCurrentChat {
+            guard let collection = self.chatCollectionView else { return }
+            guard let indexPathes = collection.indexPathsForSelectedItems else {return}
+            collection.deleteItems(at: indexPathes)
+            collection.reloadItems(at: [self.chatDelegate.selectedIndexPath])
+        }
+//        chatCollectionView.reloadData()
+//        chatDelegate.selectCell(at: chatCollectionView)
     }
     @IBAction func addChatAction(_ sender: UIBarButtonItem) {
         delegate?.addNewChat()
         chatCollectionView.reloadData()
-        chatDelegate.selectCell(at: chatCollectionView)
+//        chatDelegate.selectCell(at: chatCollectionView)
     }
     @IBAction func clearInputAction(_ sender: UIBarButtonItem) {
         inputTextView.text = ""

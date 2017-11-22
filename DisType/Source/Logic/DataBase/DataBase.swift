@@ -15,9 +15,12 @@ class DataBase {
     let minChatCount = 3
     let chatName = "ЧАТ"
     
-    let realm = try! Realm()
+    var realm :Realm { return try! Realm()}
 
     init() {
+        let config = Realm.Configuration(schemaVersion: try! schemaVersionAtURL(Realm.Configuration.defaultConfiguration.fileURL!) + 1)
+        Realm.Configuration.defaultConfiguration = config
+        
         initDB()
     }
     
@@ -35,15 +38,15 @@ class DataBase {
     }
 
     var chats: Results<Chat> {
-        return realm.objects(Chat.self)
+        return realm.objects(Chat.self).sorted(byKeyPath: #keyPath(Chat.name))
     }
     
     var categories: Results<Category> {
-        return realm.objects(Category.self)
+        return realm.objects(Category.self).sorted(byKeyPath: #keyPath(Category.name))
     }
     
     func messages(for category:Category) -> Results<Message> {
-        return realm.objects(Message.self).filter("category = \(category)")
+        return realm.objects(Message.self).filter("category = \(category)").sorted(byKeyPath: #keyPath(Message.text))
 //            { (message) -> Bool in
 //            message.category == category
 //        })

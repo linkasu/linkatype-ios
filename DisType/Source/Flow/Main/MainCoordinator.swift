@@ -17,7 +17,7 @@ protocol HomeDelegate {
     func addNewCategory()
     func addNewMessage(to category:Category)
     func updateCurrentChat(_ _text:String?)
-    func deleteCurrentChat()
+    func deleteCurrentChat(_ complition: @escaping ()->())
     func finish()
 }
 
@@ -77,10 +77,11 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         currentChat().update(text:text)
     }
     
-    func deleteCurrentChat() {
+    func deleteCurrentChat(_ complition: @escaping ()->()) {
         let chat = currentChat()
         guard let index = DB.chats.index(of:chat), index >= 3 else { return }
         DB.delete(chat)
+        complition()
     }
     
     func finish() {
@@ -95,10 +96,6 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     }
     
     // MARK: - Private
-    func add(_ chat: Chat) {
-        
-    }
-    
     func add(_ category: Category) {
         
     }
@@ -107,7 +104,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         
     }
     
-    func currentChat() -> Chat {
+    fileprivate func currentChat() -> Chat {
         let index = chatCollection.selectedIndex
         return DB.chats[index]
     }
