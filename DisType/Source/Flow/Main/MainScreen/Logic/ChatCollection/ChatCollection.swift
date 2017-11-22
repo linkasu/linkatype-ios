@@ -31,8 +31,11 @@ class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     // MARK: - Public
-    func updateSelectedCell() {
-        
+    func updateLastCell(at collectionView:UICollectionView) {
+        let indexPath = IndexPath(row: DB.chats.count - 1, section: 0)
+        collectionView.performBatchUpdates({
+            collectionView.insertItems(at: [indexPath])
+        }, completion: nil)
     }
     
     // MARK: - Private
