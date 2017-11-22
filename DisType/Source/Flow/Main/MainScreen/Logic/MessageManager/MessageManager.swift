@@ -26,6 +26,7 @@ enum StaticMessageCells:Int {
 protocol MessageManagerDelegate {
     func currentCategory() -> Category
     func didSelect(_ message:Message)
+    func addNewMessage()
 }
 
 class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
@@ -40,6 +41,10 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     var messagesCount:Int {
         return messages.count + StaticMessageCells.total.rawValue
+    }
+    
+    var lastIndex:Int {
+        return messagesCount - 1
     }
     
     init(delegate:MessageManagerDelegate) {
@@ -57,13 +62,25 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         
         let text:String
         let index = indexPath.row
-        if index == messages.count {
+
+        switch index {
+        case lastIndex:
             text = StaticMessageCells.addMessage.text
-        } else {
+        default:
             text = messages[index].text
         }
         
         cell.textLabel?.text = text
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case lastIndex :
+            delegate.addNewMessage()
+        default:
+            let message = messages[indexPath.row]
+            delegate.didSelect(message)
+        }
     }
 }

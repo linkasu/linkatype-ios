@@ -14,8 +14,6 @@ protocol HomeDelegate {
     func didEntered(_ text:String)
     func speak(_ text:String, with languageCode:String?)
     func addNewChat()
-    func addNewCategory()
-    func addNewMessage(to category:Category)
     func updateCurrentChat(_ _text:String?)
     func deleteCurrentChat(_ complition: @escaping (IndexPath)->())
     func finish()
@@ -77,14 +75,6 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         chatCollection.updateLastCell()
     }
     
-    func addNewCategory() {
-        
-    }
-    
-    func addNewMessage(to category: Category) {
-        
-    }
-    
     func updateCurrentChat(_ _text:String?) {
         let text = _text ?? ""
         currentChat().update(text:text)
@@ -107,8 +97,18 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         let text = chat.text
         mainVC.set(inputText:text)
     }
+
+    func addNewCategory() {
+        mainVC.showGetNewCategoryName {
+            let category = Category()
+            category.name = $0
+            DB.add(category)
+            self.categoryManager.updateLastRow()
+        }
+    }
+    
     // MARK: - CategoryManagerDelegate
-    func didSelect(_ message: Category) {
+    func didSelect(_ category: Category) {
     }
     // MARK: - MessageManagerDelegate
     func currentCategory() -> Category {
@@ -119,6 +119,10 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         self.speak(message.text)
     }
 
+    func addNewMessage() {
+        
+    }
+    
     // MARK: - Private
     func add(_ category: Category) {
         

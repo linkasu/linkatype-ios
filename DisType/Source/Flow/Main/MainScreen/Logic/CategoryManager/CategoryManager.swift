@@ -23,7 +23,8 @@ enum StaticCategoryCells:Int {
 }
 
 protocol CategoryManagerDelegate {
-    func didSelect(_ message:Category)
+    func didSelect(_ category:Category)
+    func addNewCategory()
 }
 
 class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
@@ -43,6 +44,14 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         self.delegate = delegate
         selectedIndexPath = IndexPath(row:0, section:0)
         super.init()
+    }
+    
+    // MARK: - Public
+    func updateLastRow() {
+        let indexPath = IndexPath(row: categoriesCount - 1, section: 0)
+//        tableView?.performBatchUpdates({
+            tableView?.insertRows(at: [indexPath], with: .fade)
+//        }, completion: nil)
     }
     
     // MARK: - UITableViewDelegate, UITableViewDataSource

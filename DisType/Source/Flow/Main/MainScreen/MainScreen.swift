@@ -75,6 +75,14 @@ class MainScreen: UIViewController, UITextViewDelegate {
         }
     }
     
+    func showGetNewCategoryName(_ block:@escaping (String)->()) {
+        let allertController = UIAlertController(title: "Введите имя новой категории", message: nil, preferredStyle: .actionSheet)
+        allertController.addTextField { (textField) in
+            guard let text = textField.text else { return }
+            block(text)
+        }
+        present(allertController, animated: true, completion: nil)
+    }
     // MARK: - Actions
     @IBAction func deleteChatAction(_ sender: UIBarButtonItem) {
         delegate?.deleteCurrentChat { newSelectedIndexPath in
