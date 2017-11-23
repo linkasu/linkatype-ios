@@ -115,7 +115,9 @@ class DataBase {
     }
 
     func delete(_ category:Category) {
+        let messages = self.messages(for: category)
         realm.beginWrite()
+        realm.delete(messages)
         realm.delete(category)
         try! realm.commitWrite()
     }

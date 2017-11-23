@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		9E451B351FC44CF30068FC9F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E451B341FC44CF30068FC9F /* String.swift */; };
 		9E451B371FC481C10068FC9F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E451B361FC481C10068FC9F /* UIColor.swift */; };
+		9E4AA1C81FC6E36000F26C35 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4AA1C71FC6E36000F26C35 /* CategoryCell.swift */; };
+		9E4AA1CB1FC6E8B100F26C35 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4AA1CA1FC6E8B100F26C35 /* MessageCell.swift */; };
+		9E4AA1CD1FC6EA9100F26C35 /* MainCoordinatorProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4AA1CC1FC6EA9100F26C35 /* MainCoordinatorProtocols.swift */; };
 		9E99892B1FBF63C400659960 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E99892A1FBF63C400659960 /* AppDelegate.swift */; };
 		9E9989321FBF63C400659960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E9989311FBF63C400659960 /* Assets.xcassets */; };
 		9E9989351FBF63C400659960 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E9989331FBF63C400659960 /* LaunchScreen.storyboard */; };
@@ -39,6 +42,9 @@
 		8B653E083D40EF122FF79BA7 /* Pods-DisType.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DisType.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DisType/Pods-DisType.debug.xcconfig"; sourceTree = "<group>"; };
 		9E451B341FC44CF30068FC9F /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		9E451B361FC481C10068FC9F /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		9E4AA1C71FC6E36000F26C35 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		9E4AA1CA1FC6E8B100F26C35 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		9E4AA1CC1FC6EA9100F26C35 /* MainCoordinatorProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinatorProtocols.swift; sourceTree = "<group>"; };
 		9E9989271FBF63C400659960 /* DisType.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DisType.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E99892A1FBF63C400659960 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9E9989311FBF63C400659960 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -100,6 +106,8 @@
 		9E451B321FC4260C0068FC9F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				9E4AA1C91FC6E8A400F26C35 /* MessageCell */,
+				9E4AA1C61FC6E33E00F26C35 /* CategoryCell */,
 				9E9BCCBC1FC3793C00AC9B7F /* ChatCell */,
 			);
 			path = UI;
@@ -114,6 +122,22 @@
 				9E99895C1FBF76FA00659960 /* MessageManager */,
 			);
 			path = Logic;
+			sourceTree = "<group>";
+		};
+		9E4AA1C61FC6E33E00F26C35 /* CategoryCell */ = {
+			isa = PBXGroup;
+			children = (
+				9E4AA1C71FC6E36000F26C35 /* CategoryCell.swift */,
+			);
+			path = CategoryCell;
+			sourceTree = "<group>";
+		};
+		9E4AA1C91FC6E8A400F26C35 /* MessageCell */ = {
+			isa = PBXGroup;
+			children = (
+				9E4AA1CA1FC6E8B100F26C35 /* MessageCell.swift */,
+			);
+			path = MessageCell;
 			sourceTree = "<group>";
 		};
 		9E99891E1FBF63C400659960 = {
@@ -202,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				9E9989541FBF688600659960 /* MainCoordinator.swift */,
+				9E4AA1CC1FC6EA9100F26C35 /* MainCoordinatorProtocols.swift */,
 				9E9989561FBF68A800659960 /* MainScreen */,
 			);
 			path = Main;
@@ -407,6 +432,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E4AA1C81FC6E36000F26C35 /* CategoryCell.swift in Sources */,
 				9E9989581FBF68E100659960 /* MainScreen.swift in Sources */,
 				9E9989641FBF7ADA00659960 /* ChatCollection.swift in Sources */,
 				9E9989611FBF784300659960 /* Toolbar.swift in Sources */,
@@ -423,6 +449,8 @@
 				9E9BCCB71FC365BC00AC9B7F /* Category.swift in Sources */,
 				9E9BCCBE1FC3795600AC9B7F /* ChatCell.swift in Sources */,
 				9E9989471FBF657800659960 /* Router.swift in Sources */,
+				9E4AA1CB1FC6E8B100F26C35 /* MessageCell.swift in Sources */,
+				9E4AA1CD1FC6EA9100F26C35 /* MainCoordinatorProtocols.swift in Sources */,
 				9E99892B1FBF63C400659960 /* AppDelegate.swift in Sources */,
 				9E9989431FBF650500659960 /* Coordinator.swift in Sources */,
 				9E99894B1FBF65BC00659960 /* AppCoordinator.swift in Sources */,

@@ -22,15 +22,16 @@ enum StaticCategoryCells:Int {
     }
 }
 
-protocol CategoryManagerDelegate {
-    func didSelect(_ category:Category)
-    func addNewCategory()
-}
 
 class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     fileprivate let delegate:CategoryManagerDelegate
-    fileprivate var selectedIndexPath:IndexPath
     fileprivate var tableView:UITableView?
+
+    fileprivate var selectedIndexPath:IndexPath {
+        didSet {
+            performSelection()
+        }
+    }
     
     var currentCategory:Category {
         return DB.categories[selectedIndexPath.row]
@@ -40,18 +41,51 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         return DB.categories.count + StaticCategoryCells.total.rawValue
     }
     
+    var lastIndex:Int {
+        return categoriesCount - 1
+    }
+    
     init(delegate:CategoryManagerDelegate) {
         self.delegate = delegate
         selectedIndexPath = IndexPath(row:0, section:0)
+        
         super.init()
     }
+
+    fileprivate func performSelection() {
+        switch selectedIndexPath.row {
+        case lastIndex :
+            delegate.addNewCategory()
+        default:
+            let category = DB.categories[selectedIndexPath.row]
+            delegate.didSelect(category)
+        }
+    }
+
+    fileprivate func delete(row:Int) {
+        guard UIMenuController.shared.isMenuVisible else { return }
+        let category = DB.categories[row]
+        DB.delete(category)
+        tableView?.deleteRows(at: [IndexPath(row:row, section:0)], with: .fade)
+        if selectedIndexPath.row == categoriesCount {
+            selectedIndexPath = IndexPath(row:lastIndex, section:0)
+        }
+        
+        performSelection()
+    }
     
+    fileprivate func rename(row:Int){
+        guard UIMenuController.shared.isMenuVisible else { return }
+        let category = DB.categories[row]
+        tableView?.reloadRows(at: [IndexPath(row:row, section:0)], with: .fade)
+        delegate.didRename(category)
+    }
+
     // MARK: - Public
-    func updateLastRow() {
-        let indexPath = IndexPath(row: categoriesCount - 1, section: 0)
-//        tableView?.performBatchUpdates({
-            tableView?.insertRows(at: [indexPath], with: .fade)
-//        }, completion: nil)
+    func update(_ category:Category) {
+        guard let index = DB.categories.index(of: category) else { return }
+        let indexPath = IndexPath(row: index, section: 0)
+        tableView?.insertRows(at: [indexPath], with: .fade)
     }
     
     // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -61,7 +95,7 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.id, for: indexPath)
         
         let text:String
         let index = indexPath.row
@@ -71,9 +105,35 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         } else {
             text = DB.categories[index].name
         }
-//        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        
+        if (selectedIndexPath == indexPath) {
+            cell.isSelected = true
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            self.tableView(tableView, didSelectRowAt: indexPath)
+        }
+
         cell.textLabel?.text = text
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedIndexPath = indexPath
+    }
+    
+    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.row < lastIndex - 1
+    }
+    
+    func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        if action == #selector(CategoryCell.delete(row:)) {
+            delete(row: indexPath.row)
+        } else if action == #selector(CategoryCell.rename(row:)) {
+            rename(row: indexPath.row)
+        } else { return false}
+        
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
+    }
 }

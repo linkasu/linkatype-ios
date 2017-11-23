@@ -141,7 +141,7 @@
                                 <rect key="frame" x="0.0" y="204" width="488" height="564"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryCell" textLabel="BGj-tT-j0Q" style="IBUITableViewCellStyleDefault" id="wdN-mC-IgD">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryCell" textLabel="BGj-tT-j0Q" style="IBUITableViewCellStyleDefault" id="wdN-mC-IgD" customClass="CategoryCell" customModule="DisType" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="1" width="488" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wdN-mC-IgD" id="Y0o-Do-uDE">
@@ -164,7 +164,7 @@
                                 <rect key="frame" x="368" y="204" width="489.5" height="564"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" textLabel="dLX-vA-2sU" style="IBUITableViewCellStyleDefault" id="ryW-1G-g5s">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MessageCell" textLabel="dLX-vA-2sU" style="IBUITableViewCellStyleDefault" id="ryW-1G-g5s" customClass="MessageCell" customModule="DisType" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="1" width="489.5" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ryW-1G-g5s" id="u5M-GY-IDB">

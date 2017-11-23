@@ -10,17 +10,10 @@ import Foundation
 import AVFoundation
 import UIKit
 
-protocol HomeDelegate {
-    func didEntered(_ text:String)
-    func speak(_ text:String, with languageCode:String?)
-    func addNewChat()
-    func updateCurrentChat(_ _text:String?)
-    func deleteCurrentChat(_ complition: @escaping (IndexPath)->())
-    func finish()
-}
 
 class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOutput, ChatCollectionDelegate, CategoryManagerDelegate, MessageManagerDelegate {
-
+    
+    let systemSoundID: SystemSoundID = 1070
     var finishFlow: ((Any) -> Void)?
     
     fileprivate let router: Router
@@ -87,6 +80,10 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         complition(chatCollection.selectedIndexPath)
     }
     
+    func beepSound() {
+        AudioServicesPlayAlertSound(systemSoundID)
+    }
+    
     func finish() {
         finishFlow!("sss")
     }
@@ -98,18 +95,26 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         mainVC.set(inputText:text)
     }
 
+    // MARK: - CategoryManagerDelegate
     func addNewCategory() {
-        mainVC.showGetNewCategoryName {
+        mainVC.showGetNewCategoryName { name in
             let category = Category()
-            category.name = $0
+            category.name = name
             DB.add(category)
-            self.categoryManager.updateLastRow()
+            self.categoryManager.update(category)
         }
     }
     
-    // MARK: - CategoryManagerDelegate
     func didSelect(_ category: Category) {
+        messageManager.category = category
     }
+    func didDelete(_ category:Category) {
+    }
+    
+    func didRename(_ category:Category) {
+        
+    }
+    
     // MARK: - MessageManagerDelegate
     func currentCategory() -> Category {
         return categoryManager.currentCategory
@@ -119,10 +124,21 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         self.speak(message.text)
     }
 
-    func addNewMessage() {
-        
+    func addNewMessage(for category:Category) {
+        mainVC.showGetNewMessageName { text in
+            let message = Message()
+            message.text = text
+            message.categoryId = category.id
+            DB.add(message)
+            self.messageManager.update(message)
+        }
     }
     
+    func didDelete(_ message:Message) {
+    }
+    func didRename(_ message:Message) {
+        
+    }
     // MARK: - Private
     func add(_ category: Category) {
         

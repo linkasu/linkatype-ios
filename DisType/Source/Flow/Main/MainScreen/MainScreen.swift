@@ -11,6 +11,8 @@ import UIKit
 
 
 class MainScreen: UIViewController, UITextViewDelegate {
+    var alertVC: UIAlertController?
+
     var delegate:HomeDelegate?
     var chatDelegate:ChatCollection!
     var categoryDelegate:CategoryManager!
@@ -23,6 +25,10 @@ class MainScreen: UIViewController, UITextViewDelegate {
     
     lazy var singleInputTextLineHeight: CGFloat = {
         return inputTextHeight.constant
+    }()
+
+    lazy var allertCloseGesture: UITapGestureRecognizer = {
+        return UITapGestureRecognizer(target: self, action: #selector(hideAlert))
     }()
 
     @IBOutlet weak var chatCollectionView: UICollectionView!
@@ -41,9 +47,18 @@ class MainScreen: UIViewController, UITextViewDelegate {
         setupChatCollectionView()
         setupCategoryTableView()
         setupMessageTableView()
+        setupTableMenu()
     }
     
     // MARK: - Setup
+    fileprivate func setupTableMenu() {
+        let deleteMenuItem = UIMenuItem(title: "Удалить", action: #selector(CategoryCell.delete(row:)))
+        let renameMenuItem = UIMenuItem(title: "Переименовать", action: #selector(CategoryCell.rename(row:)))
+        UIMenuController.shared.menuItems = [deleteMenuItem, renameMenuItem]
+        UIMenuController.shared.update()
+    }
+    
+
     fileprivate func setupMessageTableView() {
         messageTableView.delegate = messageDelegate
         messageTableView.dataSource = messageDelegate
@@ -68,6 +83,31 @@ class MainScreen: UIViewController, UITextViewDelegate {
         inputTextView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
     }
 
+    fileprivate func showAllert(named name:String, block:@escaping (String)->()) {
+        alertVC = UIAlertController(title: name, message: nil, preferredStyle: .alert)
+        alertVC?.addTextField(configurationHandler: nil)
+//        alertVC?.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: { alertAction in
+//            self.hideAlert()
+//        }))
+        alertVC?.addAction(UIAlertAction(title: "Добавить", style: .default, handler: { (action) in
+            self.hideAlert()
+            guard
+                let textField = self.alertVC?.textFields?[0],
+                let text = textField.text
+                else { return }
+            
+            block(text)
+        }))
+        present(alertVC!, animated: true, completion: {
+            self.alertVC?.view.superview?.addGestureRecognizer(self.allertCloseGesture)
+        })
+    }
+    
+    @objc fileprivate func hideAlert() {
+        alertVC?.view.superview?.removeGestureRecognizer(self.allertCloseGesture)
+        alertVC?.dismiss(animated: true, completion: nil)
+    }
+
     // MARK: - Public
     func set(inputText:String) {
         UIView.animate(withDuration: 0.2) {
@@ -76,13 +116,13 @@ class MainScreen: UIViewController, UITextViewDelegate {
     }
     
     func showGetNewCategoryName(_ block:@escaping (String)->()) {
-        let allertController = UIAlertController(title: "Введите имя новой категории", message: nil, preferredStyle: .actionSheet)
-        allertController.addTextField { (textField) in
-            guard let text = textField.text else { return }
-            block(text)
-        }
-        present(allertController, animated: true, completion: nil)
+        showAllert(named: "Введите имя новой категории", block: block)
     }
+    
+    func showGetNewMessageName(_ block:@escaping (String)->()) {
+        showAllert(named: "Введите новое высказывание", block: block)
+    }
+    
     // MARK: - Actions
     @IBAction func deleteChatAction(_ sender: UIBarButtonItem) {
         delegate?.deleteCurrentChat { newSelectedIndexPath in
@@ -101,6 +141,7 @@ class MainScreen: UIViewController, UITextViewDelegate {
     }
     
     @IBAction func toneSignalAction(_ sender: UIBarButtonItem) {
+        delegate?.beepSound()
     }
     @IBAction func menuAction(_ sender: Any) {
     }
