@@ -96,13 +96,8 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     }
 
     // MARK: - CategoryManagerDelegate
-    func addNewCategory() {
-        mainVC.showGetNewCategoryName { name in
-            let category = Category()
-            category.name = name
-            DB.add(category)
-            self.categoryManager.update(category)
-        }
+    func willAddNewCategory(_ complition: @escaping (String)->()) {
+        mainVC.showGetNewCategoryName(complition)
     }
     
     func didSelect(_ category: Category) {
@@ -112,9 +107,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     }
     
     func willRename(_ category:Category, complition: @escaping (String)->()) {
-        mainVC.showRename(category) { name in
-            complition(name)
-        }
+        mainVC.showRename(category, block: complition)
     }
     
     // MARK: - MessageManagerDelegate
@@ -126,22 +119,14 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         self.speak(message.text)
     }
 
-    func addNewMessage(for category:Category) {
-        mainVC.showGetNewMessageName { text in
-            let message = Message()
-            message.text = text
-            message.categoryId = category.id
-            DB.add(message)
-            self.messageManager.update(message)
-        }
+    func willAddNewMessage(for category:Category, complition: @escaping (String)->()) {
+        mainVC.showGetNewMessageName(complition)
     }
     
     func didDelete(_ message:Message) {
     }
     func willRename(_ message:Message, complition: @escaping (String)->()) {
-        mainVC.showRename(message) { name in
-            complition(name)
-        }
+        mainVC.showRename(message, block: complition)
     }
     
     // MARK: - Private

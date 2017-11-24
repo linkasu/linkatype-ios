@@ -52,14 +52,23 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         super.init()
     }
 
+    // MARK: - Private
     fileprivate func performSelection() {
         switch selectedIndexPath.row {
         case lastIndex :
-            delegate.addNewCategory()
+            delegate.willAddNewCategory { self.addCategory(named: $0) }
         default:
             let category = DB.categories[selectedIndexPath.row]
             delegate.didSelect(category)
+            tableView?.reloadRows(at: [selectedIndexPath], with: .fade)
         }
+    }
+
+    fileprivate func addCategory(named name:String) {
+        let category = Category()
+        category.name = name
+        DB.add(category)
+        update(category)
     }
 
     fileprivate func delete(row:Int) {
@@ -70,8 +79,6 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         if selectedIndexPath.row == categoriesCount {
             selectedIndexPath = IndexPath(row:lastIndex, section:0)
         }
-        
-        performSelection()
     }
     
     fileprivate func rename(row:Int){
@@ -83,8 +90,7 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
     }
 
-    // MARK: - Public
-    func update(_ category:Category) {
+    fileprivate func update(_ category:Category) {
         guard let index = DB.categories.index(of: category) else { return }
         let indexPath = IndexPath(row: index, section: 0)
         tableView?.insertRows(at: [indexPath], with: .fade)

@@ -52,15 +52,24 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         category = delegate.currentCategory()
         super.init()
     }
-   
+    
+    // MARK: - Private
+    fileprivate func addMessage(with text:String) {
+        let message = Message()
+        message.text = text
+        message.categoryId = category.id
+        DB.add(message)
+        update(message)
+    }
+
     fileprivate func delete(row:Int) {
         guard UIMenuController.shared.isMenuVisible,
             let message = messages?[row]
             else { return }
         DB.delete(message)
         tableView?.deleteRows(at: [IndexPath(row:row, section:0)], with: .fade)
-//        delegate.didDelete(message)
     }
+    
     fileprivate func rename(row:Int){
         guard UIMenuController.shared.isMenuVisible,
             let message = messages?[row]
@@ -71,8 +80,7 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    // MARK: - Public
-    func update(_ message:Message) {
+    fileprivate func update(_ message:Message) {
         guard let index = messages?.index(of: message) else { return }
         let indexPath = IndexPath(row: index, section: 0)
         tableView?.insertRows(at: [indexPath], with: .fade)
@@ -104,7 +112,7 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case lastIndex :
-            delegate.addNewMessage(for:category)
+            delegate.willAddNewMessage(for:category) { self.addMessage(with: $0) }
         default:
             guard let message = messages?[indexPath.row] else { return }
             delegate.didSelect(message)

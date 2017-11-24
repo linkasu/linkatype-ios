@@ -20,7 +20,7 @@ protocol HomeDelegate {
 
 protocol CategoryManagerDelegate {
     func didSelect(_ category:Category)
-    func addNewCategory()
+    func willAddNewCategory(_ complition: @escaping (String)->())
     func didDelete(_ category:Category)
     func willRename(_ category:Category, complition: @escaping (String)->())
 }
@@ -28,7 +28,7 @@ protocol CategoryManagerDelegate {
 protocol MessageManagerDelegate {
     func currentCategory() -> Category
     func didSelect(_ message:Message)
-    func addNewMessage(for category:Category)
+    func willAddNewMessage(for category:Category, complition: @escaping (String)->())
     func didDelete(_ message:Message)
     func willRename(_ message:Message, complition: @escaping (String)->())
 }

@@ -83,7 +83,7 @@ class MainScreen: UIViewController, UITextViewDelegate {
         inputTextView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
     }
 
-    fileprivate func showAllert(named name:String, with text:String = "", block:@escaping (String)->()) {
+    fileprivate func showAllert(named name:String, withPreFilled text:String = "", buttonText:String = "", block:@escaping (String)->()) {
         alertVC = UIAlertController(title: name, message: nil, preferredStyle: .alert)
         alertVC?.addTextField(configurationHandler: { textField in
             guard text != "" else { return }
@@ -93,7 +93,7 @@ class MainScreen: UIViewController, UITextViewDelegate {
 //        alertVC?.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: { alertAction in
 //            self.hideAlert()
 //        }))
-        alertVC?.addAction(UIAlertAction(title: "Добавить", style: .default, handler: { (action) in
+        alertVC?.addAction(UIAlertAction(title: buttonText, style: .default, handler: { (action) in
             self.hideAlert()
             guard
                 let textField = self.alertVC?.textFields?[0],
@@ -120,19 +120,25 @@ class MainScreen: UIViewController, UITextViewDelegate {
     }
     
     func showGetNewCategoryName(_ block:@escaping (String)->()) {
-        showAllert(named: "Введите имя новой категории", block: block)
+        showAllert(named: "Введите имя новой категории", buttonText:"Добавить", block: block)
     }
     
     func showGetNewMessageName(_ block:@escaping (String)->()) {
-        showAllert(named: "Введите новое высказывание", block: block)
+        showAllert(named: "Введите новое высказывание",  buttonText:"Добавить", block: block)
     }
 
     func showRename(_ category:Category, block:@escaping (String)->()) {
-        showAllert(named: "Переименуйте категорию", with:category.name, block: block)
+        showAllert(named: "Переименуйте категорию",
+                   withPreFilled:category.name,
+                   buttonText:"Обновить",
+                   block: block)
     }
     
     func showRename(_ message:Message, block:@escaping (String)->()) {
-        showAllert(named: "Переименуйте высказывание", with:message.text,block: block)
+        showAllert(named: "Переименуйте высказывание",
+                   withPreFilled:message.text,
+                   buttonText:"Обновить",
+                   block: block)
     }
     
     // MARK: - Actions
