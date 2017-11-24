@@ -22,7 +22,7 @@ protocol CategoryManagerDelegate {
     func didSelect(_ category:Category)
     func addNewCategory()
     func didDelete(_ category:Category)
-    func didRename(_ category:Category)
+    func willRename(_ category:Category, complition: @escaping (String)->())
 }
 
 protocol MessageManagerDelegate {
@@ -30,5 +30,5 @@ protocol MessageManagerDelegate {
     func didSelect(_ message:Message)
     func addNewMessage(for category:Category)
     func didDelete(_ message:Message)
-    func didRename(_ message:Message)
+    func willRename(_ message:Message, complition: @escaping (String)->())
 }

@@ -111,8 +111,10 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     func didDelete(_ category:Category) {
     }
     
-    func didRename(_ category:Category) {
-        
+    func willRename(_ category:Category, complition: @escaping (String)->()) {
+        mainVC.showRename(category) { name in
+            complition(name)
+        }
     }
     
     // MARK: - MessageManagerDelegate
@@ -136,9 +138,12 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     
     func didDelete(_ message:Message) {
     }
-    func didRename(_ message:Message) {
-        
+    func willRename(_ message:Message, complition: @escaping (String)->()) {
+        mainVC.showRename(message) { name in
+            complition(name)
+        }
     }
+    
     // MARK: - Private
     func add(_ category: Category) {
         

@@ -77,8 +77,10 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     fileprivate func rename(row:Int){
         guard UIMenuController.shared.isMenuVisible else { return }
         let category = DB.categories[row]
-        tableView?.reloadRows(at: [IndexPath(row:row, section:0)], with: .fade)
-        delegate.didRename(category)
+        delegate.willRename(category) { name in
+            DB.update(category, text: name)
+            self.tableView?.reloadRows(at: [IndexPath(row:row, section:0)], with: .fade)
+        }
     }
 
     // MARK: - Public

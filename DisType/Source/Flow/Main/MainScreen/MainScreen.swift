@@ -83,9 +83,13 @@ class MainScreen: UIViewController, UITextViewDelegate {
         inputTextView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
     }
 
-    fileprivate func showAllert(named name:String, block:@escaping (String)->()) {
+    fileprivate func showAllert(named name:String, with text:String = "", block:@escaping (String)->()) {
         alertVC = UIAlertController(title: name, message: nil, preferredStyle: .alert)
-        alertVC?.addTextField(configurationHandler: nil)
+        alertVC?.addTextField(configurationHandler: { textField in
+            guard text != "" else { return }
+            textField.text = text
+            textField.selectAll(nil)
+        })
 //        alertVC?.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: { alertAction in
 //            self.hideAlert()
 //        }))
@@ -121,6 +125,14 @@ class MainScreen: UIViewController, UITextViewDelegate {
     
     func showGetNewMessageName(_ block:@escaping (String)->()) {
         showAllert(named: "Введите новое высказывание", block: block)
+    }
+
+    func showRename(_ category:Category, block:@escaping (String)->()) {
+        showAllert(named: "Переименуйте категорию", with:category.name, block: block)
+    }
+    
+    func showRename(_ message:Message, block:@escaping (String)->()) {
+        showAllert(named: "Переименуйте высказывание", with:message.text,block: block)
     }
     
     // MARK: - Actions

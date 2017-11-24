@@ -65,8 +65,10 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         guard UIMenuController.shared.isMenuVisible,
             let message = messages?[row]
             else { return }
-        tableView?.reloadRows(at: [IndexPath(row:row, section:0)], with: .fade)
-        delegate.didRename(message)
+        delegate.willRename(message) { name in
+            DB.update(message, text: name)
+            self.tableView?.reloadRows(at: [IndexPath(row:row, section:0)], with: .fade)
+        }
     }
     
     // MARK: - Public

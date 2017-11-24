@@ -34,7 +34,7 @@ class DataBase {
     fileprivate func initCategories() {
         let categotiesCount = categories.count
         if categotiesCount < minCategoriesCount {
-            var count = categotiesCount + 1
+            var count = categotiesCount + minCategoriesCount
             while count <= minCategoriesCount {
                 let category = Category()
                 category.name = categoryName
@@ -105,7 +105,17 @@ class DataBase {
         chat.text = text
         try! realm.commitWrite()
     }
-    
+    func update(_ category:Category, text:String) {
+        realm.beginWrite()
+        category.name = text
+        try! realm.commitWrite()
+    }
+    func update(_ message:Message, text:String) {
+        realm.beginWrite()
+        message.text = text
+        try! realm.commitWrite()
+    }
+
     // MARK: - Delete
     func delete(_ chat:Chat) {
         guard let index = DB.chats.index(of: chat), index > 2 else { return }
