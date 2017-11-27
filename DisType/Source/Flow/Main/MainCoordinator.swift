@@ -10,6 +10,7 @@ import Foundation
 import AVFoundation
 import UIKit
 
+typealias allertReturn = (String)->()
 
 class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOutput, ChatCollectionDelegate, CategoryManagerDelegate, MessageManagerDelegate {
     
@@ -95,7 +96,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     }
 
     // MARK: - CategoryManagerDelegate
-    func willAddNewCategory(_ complition: @escaping (String)->()) {
+    func willAddNewCategory(_ complition: @escaping allertReturn) {
         mainVC.showGetNewCategoryName(complition)
     }
     
@@ -105,7 +106,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     func didDelete(_ category:Category) {
     }
     
-    func willRename(_ category:Category, complition: @escaping (String)->()) {
+    func willRename(_ category:Category, complition: @escaping allertReturn) {
         mainVC.showRename(category, block: complition)
     }
     
@@ -118,13 +119,13 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         self.speak(message.text)
     }
 
-    func willAddNewMessage(for category:Category, complition: @escaping (String)->()) {
+    func willAddNewMessage(for category:Category, complition: @escaping allertReturn) {
         mainVC.showGetNewMessageName(complition)
     }
     
     func didDelete(_ message:Message) {
     }
-    func willRename(_ message:Message, complition: @escaping (String)->()) {
+    func willRename(_ message:Message, complition: @escaping allertReturn) {
         mainVC.showRename(message, block: complition)
     }
     

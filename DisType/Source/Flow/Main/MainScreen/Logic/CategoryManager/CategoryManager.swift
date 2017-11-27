@@ -34,9 +34,6 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
     
     var currentCategory:Category
-//    {
-//        return DB.categories[selectedIndexPath.row]
-//    }
     
     var rowsCount:Int {
         return DB.categories.count + StaticCategoryCells.total.rawValue
@@ -59,7 +56,11 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     fileprivate func performSelection() {
         switch selectedIndexPath.row {
         case lastRowIndex :
-            delegate.willAddNewCategory { self.addCategory(named: $0) }
+            delegate.willAddNewCategory {
+                guard $0 == "" else { self.addCategory(named: $0); return }
+                guard let index = DB.categories.index(of: self.currentCategory) else { return }
+                self.selectedIndexPath = IndexPath(row:index, section:0)
+            }
         default:
             let category = DB.categories[selectedIndexPath.row]
             delegate.didSelect(category)
@@ -76,6 +77,13 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         addTableRow(with:currentCategory)
     }
 
+    fileprivate func addTableRow(with category:Category) {
+        guard let index = DB.categories.index(of: category) else { assertionFailure("Category dissapeared!!");return }
+        let indexPath = IndexPath(row: index, section: 0)
+        tableView?.insertRows(at: [indexPath], with: .fade)
+        selectedIndexPath = indexPath
+    }
+    
     fileprivate func delete(row:Int) {
         guard UIMenuController.shared.isMenuVisible else { return }
         let deleteCategory = DB.categories[row]
@@ -103,13 +111,6 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
     }
 
-    fileprivate func addTableRow(with category:Category) {
-        guard let index = DB.categories.index(of: category) else { assertionFailure("Category dissapeared!!");return }
-        let indexPath = IndexPath(row: index, section: 0)
-        tableView?.insertRows(at: [indexPath], with: .fade)
-        selectedIndexPath = indexPath
-    }
-    
     // MARK: - UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         self.tableView = tableView
