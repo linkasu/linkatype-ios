@@ -12,36 +12,56 @@ import RealmSwift
 let DB = DataBase()
 
 class DataBase {
-    let minCategoriesCount = 1
-    let categoryName = "Без категории"
-    let minChatCount = 3
-    let chatName = "ЧАТ"
+    fileprivate static let noCategoryCategoryName = "Без категории"
     
-    var realm :Realm { return try! Realm()}
+    fileprivate let minChatCount = 3
+    fileprivate let chatName = "ЧАТ"
 
+    fileprivate let noCategoryCategory:Category
+
+    fileprivate var realm :Realm { return try! Realm() }
+
+    var chats: Results<Chat> {
+        return realm.objects(Chat.self).sorted(byKeyPath: #keyPath(Chat.name))
+    }
+    
+    var categories = List<Category>()
+    
+    // MARK: - INIT
     init() {
         let config = Realm.Configuration(schemaVersion: try! schemaVersionAtURL(Realm.Configuration.defaultConfiguration.fileURL!) + 1)
         Realm.Configuration.defaultConfiguration = config
         
-        initDB()
-    }
-    
-    fileprivate func initDB() {
-        initChats()
-        initCategories()
-    }
-    
-    fileprivate func initCategories() {
-        let categotiesCount = categories.count
-        if categotiesCount < minCategoriesCount {
-            var count = categotiesCount + minCategoriesCount
-            while count <= minCategoriesCount {
-                let category = Category()
-                category.name = categoryName
-                self.add(category)
-                count += 1
-            }
+        let realm = try! Realm()
+        let categories = realm.objects(Category.self)
+        
+        if !categories.isEmpty,
+            let category = categories.first(where:{ $0.id == DataBase.noCategoryCategoryName}) {
+            noCategoryCategory = category
+        } else {
+            noCategoryCategory = Category()
+            noCategoryCategory.name = DataBase.noCategoryCategoryName
+            noCategoryCategory.id = DataBase.noCategoryCategoryName
+            self.add(noCategoryCategory)
         }
+
+        updateCategoriesList()
+        initChats()
+    }
+    
+    fileprivate func updateCategoriesList() {
+        let firstIndex = 0
+        let categories = List<Category>()
+        let objs = realm.objects(Category.self)
+        objs.forEach {categories.append($0)}
+        
+        if !categories.isEmpty,
+            let index = categories.index(of: noCategoryCategory),
+            index != firstIndex {
+            categories.move(from: index, to:firstIndex)
+        }
+        
+        self.categories = categories
     }
     
     fileprivate func initChats() {
@@ -56,24 +76,8 @@ class DataBase {
             }
         }
     }
-
-    var chats: Results<Chat> {
-        return realm.objects(Chat.self).sorted(byKeyPath: #keyPath(Chat.name))
-    }
     
-    var categories: Results<Category> {
-        return realm.objects(Category.self).sorted(byKeyPath: #keyPath(Category.name))
-    }
-    
-    func messages(for category:Category) -> Results<Message> {
-        let messagesAll = realm.objects(Message.self)
-        let messages = messagesAll.filter("%K = %@", #keyPath(Message.categoryId), category.id)
-        return messages.sorted(byKeyPath: #keyPath(Message.text))
-//            { (message) -> Bool in
-//            message.category == category
-//        })
-    }
-    
+    // MARK: - Public
     // MARK: - Add
     func addNewChat() {
         let chat = Chat()
@@ -91,11 +95,12 @@ class DataBase {
         realm.beginWrite()
         realm.add(category)
         try! realm.commitWrite()
+        updateCategoriesList()
     }
     
-    func add(_ message:Message) {
+    func add(_ message:Message, to category:Category) {
         realm.beginWrite()
-        realm.add(message)
+        category.messages.append(message)
         try! realm.commitWrite()
     }
     
@@ -105,10 +110,11 @@ class DataBase {
         chat.text = text
         try! realm.commitWrite()
     }
-    func update(_ category:Category, text:String) {
+    func update(_ category:Category, name:String) {
         realm.beginWrite()
-        category.name = text
+        category.name = name
         try! realm.commitWrite()
+        updateCategoriesList()
     }
     func update(_ message:Message, text:String) {
         realm.beginWrite()
@@ -125,11 +131,10 @@ class DataBase {
     }
 
     func delete(_ category:Category) {
-        let messages = self.messages(for: category)
         realm.beginWrite()
-        realm.delete(messages)
         realm.delete(category)
         try! realm.commitWrite()
+        updateCategoriesList()
     }
 
     func delete(_ message:Message) {

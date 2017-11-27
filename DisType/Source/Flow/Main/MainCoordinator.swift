@@ -90,7 +90,6 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
 
     // MARK: - ChatCollectionDelegate
     func didSelect(_ chat: Chat) {
-        print("\(chat.name) selected")
         let text = chat.text
         mainVC.set(inputText:text)
     }
@@ -130,14 +129,6 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     }
     
     // MARK: - Private
-    func add(_ category: Category) {
-        
-    }
-    
-    func add(_ message: Message, to category: Category) {
-        
-    }
-    
     fileprivate func currentChat() -> Chat {
         let index = chatCollection.selectedIndex
         return DB.chats[index]

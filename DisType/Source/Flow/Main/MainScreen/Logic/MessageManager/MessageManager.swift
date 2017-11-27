@@ -29,17 +29,17 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     var tableView:UITableView?
     var category:Category {
         didSet {
-            messages = DB.messages(for: category)
+            messages = category.messages
             UIView.animate(withDuration: 0.1) {
                 self.tableView?.reloadData()
             }
         }
     }
     
-    var messages: Results<Message>?
+    var messages = List<Message>()
     
     var messagesCount:Int {
-        let count = (messages?.count == nil) ? 0 : messages!.count
+        let count = messages.count
         return count + StaticMessageCells.total.rawValue
     }
     
@@ -57,23 +57,22 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     fileprivate func addMessage(with text:String) {
         let message = Message()
         message.text = text
-        message.categoryId = category.id
-        DB.add(message)
+        DB.add(message, to:category)
         update(message)
     }
 
     fileprivate func delete(row:Int) {
-        guard UIMenuController.shared.isMenuVisible,
-            let message = messages?[row]
+        guard UIMenuController.shared.isMenuVisible
             else { return }
+        let message = messages[row]
         DB.delete(message)
         tableView?.deleteRows(at: [IndexPath(row:row, section:0)], with: .fade)
     }
     
     fileprivate func rename(row:Int){
-        guard UIMenuController.shared.isMenuVisible,
-            let message = messages?[row]
+        guard UIMenuController.shared.isMenuVisible
             else { return }
+        let message = messages[row]
         delegate.willRename(message) { name in
             DB.update(message, text: name)
             self.tableView?.reloadRows(at: [IndexPath(row:row, section:0)], with: .fade)
@@ -81,7 +80,7 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
     
     fileprivate func update(_ message:Message) {
-        guard let index = messages?.index(of: message) else { return }
+        guard let index = messages.index(of: message) else { return }
         let indexPath = IndexPath(row: index, section: 0)
         tableView?.insertRows(at: [indexPath], with: .fade)
     }
@@ -102,7 +101,7 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         case lastIndex:
             text = StaticMessageCells.addMessage.text
         default:
-            text = messages?[index].text ?? ""
+            text = messages[index].text
         }
         
         cell.textLabel?.text = text
@@ -114,7 +113,7 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         case lastIndex :
             delegate.willAddNewMessage(for:category) { self.addMessage(with: $0) }
         default:
-            guard let message = messages?[indexPath.row] else { return }
+            let message = messages[indexPath.row]
             delegate.didSelect(message)
         }
     }

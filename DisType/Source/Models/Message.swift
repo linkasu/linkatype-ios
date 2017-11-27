@@ -35,5 +35,5 @@ import RealmSwift
 
 class Message: Object {
     @objc dynamic var text = ""
-    @objc dynamic var categoryId : String = ""
+//    @objc dynamic var categoryId : String = ""
 }
