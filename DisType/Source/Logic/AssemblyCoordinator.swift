@@ -12,17 +12,20 @@ import UIKit
 class AssemblyCoordinator {
     fileprivate let router: Router
     fileprivate let screenAssembly = AssemblyScreen()
+    fileprivate let appPreference = AppSettingsManager()
+
     
     lazy var appCoordinator: AppCoordinator = {
         return AppCoordinator(router, self)
     }()
     
-//    lazy var authCoordinator: AuthCoordinator = {
-//        return AuthCoordinator(router, assembly:self, screenAssembly:screenAssembly, loginManager:LoginManager())
-//    }()
-//    
     lazy var mainCoordinator: MainCoordinator = {
-        let coordinator = MainCoordinator(router, assembly:self, screenAssembly:screenAssembly)
+        let coordinator = MainCoordinator(router, assembly:self, screenAssembly:screenAssembly, appPreference:appPreference)
+        return coordinator
+    }()
+    
+    lazy var menuCoordinator: MenuCoordinator = {
+        let coordinator = MenuCoordinator(router, assembly:self, screenAssembly:screenAssembly, appPreference:appPreference, sourceView:mainCoordinator.sourceView)
         return coordinator
     }()
     

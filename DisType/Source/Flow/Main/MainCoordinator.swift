@@ -16,10 +16,18 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     
     let systemSoundID: SystemSoundID = 1070
     var finishFlow: ((Any) -> Void)?
+    var barButtonItem: UIBarButtonItem {
+        return mainVC.menuButton
+    }
+    var sourceView: UIView {
+        return mainVC.menuSourceView
+    }
+
     
     fileprivate let router: Router
     fileprivate let assembly:AssemblyCoordinator
     fileprivate let screenAssembly: AssemblyScreen
+    fileprivate let appPreference: AppSettingsManager
     
     fileprivate lazy var chatCollection:ChatCollection = {
         let chatCollection = ChatCollection(delegate:self)
@@ -42,10 +50,11 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         return vc
     }()
     
-    init(_ router: Router, assembly: AssemblyCoordinator, screenAssembly:AssemblyScreen) {
+    init(_ router: Router, assembly:AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager) {
         self.router = router
         self.assembly = assembly
         self.screenAssembly = screenAssembly
+        self.appPreference = appPreference
     }
 
     // MARK: - Public
@@ -83,6 +92,27 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     
     func beepSound() {
         AudioServicesPlayAlertSound(systemSoundID)
+    }
+    
+    func showMenu() {
+        let menuCoordinator = assembly.menuCoordinator
+        addDependency(menuCoordinator)
+        
+        menuCoordinator.finishFlow = { result in
+            self.removeDependency(menuCoordinator)
+            guard let selection = result as? MenuSelection else { return }
+            
+            switch selection {
+            case .saveVoice:
+                ()
+            case .sendFeedback:
+                ()
+            case .selectVoice:
+                ()
+            }
+        }
+        
+        menuCoordinator.start()
     }
     
     func finish() {

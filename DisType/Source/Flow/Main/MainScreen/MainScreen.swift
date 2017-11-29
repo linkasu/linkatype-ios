@@ -33,8 +33,10 @@ class MainScreen: UIViewController, UITextViewDelegate {
         return UITapGestureRecognizer(target: self, action: #selector(hideAlert))
     }()
 
+    @IBOutlet weak var menuSourceView: UIView!
     @IBOutlet weak var chatCollectionView: UICollectionView!
     @IBOutlet weak var sayButton: UIButton!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     
     @IBOutlet weak var inputTextView: UITextView!
     @IBOutlet weak var inputTextHeight: NSLayoutConstraint!
@@ -93,9 +95,6 @@ class MainScreen: UIViewController, UITextViewDelegate {
             textField.text = text
             textField.selectAll(nil)
         })
-//        alertVC?.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: { alertAction in
-//            self.hideAlert()
-//        }))
         alertVC?.addAction(UIAlertAction(title: buttonText, style: .default, handler: { (action) in
             self.hideAlert()
             guard
@@ -105,6 +104,7 @@ class MainScreen: UIViewController, UITextViewDelegate {
             
             block(text)
         }))
+        
         present(alertVC!, animated: true, completion: {
             self.alertVC?.view.superview?.addGestureRecognizer(self.allertCloseGesture)
         })
@@ -167,8 +167,11 @@ class MainScreen: UIViewController, UITextViewDelegate {
     @IBAction func toneSignalAction(_ sender: UIBarButtonItem) {
         delegate?.beepSound()
     }
+    
     @IBAction func menuAction(_ sender: Any) {
+        delegate?.showMenu()
     }
+    
     @IBAction func speakInputAction(_ sender: Any) {
         guard let text = inputTextView.text else {return}
         let languageCode = inputTextView.textInputMode?.primaryLanguage

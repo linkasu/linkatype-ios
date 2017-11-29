@@ -15,6 +15,7 @@ protocol HomeDelegate {
     func updateCurrentChat(_ _text:String?)
     func deleteCurrentChat(_ complition: @escaping (IndexPath)->())
     func beepSound()
+    func showMenu()
     func finish()
 }
 

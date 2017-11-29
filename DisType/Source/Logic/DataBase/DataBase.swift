@@ -21,6 +21,15 @@ class DataBase {
 
     fileprivate var realm :Realm { return try! Realm() }
 
+    var settings: Settings {
+        guard let settings = realm.objects(Settings.self).first
+            else {
+                initSettings()
+                return self.settings
+        }
+        return settings
+    }
+    
     var chats: Results<Chat> {
         return realm.objects(Chat.self).sorted(byKeyPath: #keyPath(Chat.name))
     }
@@ -29,8 +38,10 @@ class DataBase {
     
     // MARK: - INIT
     init() {
-        let config = Realm.Configuration(schemaVersion: try! schemaVersionAtURL(Realm.Configuration.defaultConfiguration.fileURL!) + 1)
-        Realm.Configuration.defaultConfiguration = config
+        if let version = try? schemaVersionAtURL(Realm.Configuration.defaultConfiguration.fileURL!) {
+            let config = Realm.Configuration(schemaVersion: version + 1)
+            Realm.Configuration.defaultConfiguration = config
+        }
         
         let realm = try! Realm()
         let categories = realm.objects(Category.self)
@@ -47,6 +58,7 @@ class DataBase {
 
         updateCategoriesList()
         initChats()
+        initSettings()
     }
     
     fileprivate func updateCategoriesList() {
@@ -77,6 +89,14 @@ class DataBase {
         }
     }
     
+    fileprivate func initSettings() {
+        guard realm.objects(Settings.self).first == nil else { return }
+        let settings = Settings()
+        realm.beginWrite()
+        realm.add(settings)
+        try! realm.commitWrite()
+    }
+
     // MARK: - Public
     // MARK: - Add
     func addNewChat() {
@@ -122,6 +142,17 @@ class DataBase {
         try! realm.commitWrite()
     }
 
+    func update(useInternet:Bool) {
+        realm.beginWrite()
+        settings.isUseInternet = useInternet
+        try! realm.commitWrite()
+    }
+    
+    func update(speakEveryWord:Bool) {
+        realm.beginWrite()
+        settings.isSpeakEveryWord = speakEveryWord
+        try! realm.commitWrite()
+    }
     // MARK: - Delete
     func delete(_ chat:Chat) {
         guard let index = DB.chats.index(of: chat), index > 2 else { return }

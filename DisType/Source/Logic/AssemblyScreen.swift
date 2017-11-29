@@ -22,4 +22,11 @@ class AssemblyScreen {
         return vc
     }
     
+    
+    func menuScreen(delegate:MenuCoordinator) -> MenuScreen {
+        let vc = MenuScreen.instantiateFromStoryboard()
+        vc.delegate = delegate
+        return vc
+    }
+
 }
