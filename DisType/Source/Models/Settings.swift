@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 
 class Settings:Object {
+    @objc dynamic var voiceId: String = ""
     @objc dynamic var isUseInternet: Bool = false
     @objc dynamic var isSpeakEveryWord: Bool = false
 }

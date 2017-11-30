@@ -23,11 +23,11 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         return mainVC.menuSourceView
     }
 
-    
     fileprivate let router: Router
     fileprivate let assembly:AssemblyCoordinator
     fileprivate let screenAssembly: AssemblyScreen
     fileprivate let appPreference: AppSettingsManager
+    fileprivate let ttsManager: TTSManager
     
     fileprivate lazy var chatCollection:ChatCollection = {
         let chatCollection = ChatCollection(delegate:self)
@@ -50,11 +50,12 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         return vc
     }()
     
-    init(_ router: Router, assembly:AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager) {
+    init(_ router: Router, assembly:AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager, ttsManager: TTSManager) {
         self.router = router
         self.assembly = assembly
         self.screenAssembly = screenAssembly
         self.appPreference = appPreference
+        self.ttsManager = ttsManager
     }
 
     // MARK: - Public
@@ -67,10 +68,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     }
     
     func speak(_ text: String, with languageCode:String? = "ru_RU") {
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: languageCode)
-        let synth = AVSpeechSynthesizer()
-        synth.speak(utterance)
+        ttsManager.speak(text)
     }
     
     func addNewChat() {
@@ -108,11 +106,25 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
             case .sendFeedback:
                 ()
             case .selectVoice:
-                ()
+                self.showSelectVoice()
             }
         }
         
         menuCoordinator.start()
+    }
+    
+    func showSelectVoice() {
+        let selectVoiceCoordinator = assembly.selectVoiceCoordinator
+        addDependency(selectVoiceCoordinator)
+        
+        selectVoiceCoordinator.finishFlow = { result in
+            self.removeDependency(selectVoiceCoordinator)
+            guard let selection = result as? String else { return }
+            
+            self.ttsManager.select(voice: selection)
+        }
+        
+        selectVoiceCoordinator.start()
     }
     
     func finish() {

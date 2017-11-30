@@ -21,6 +21,7 @@ class MenuCoordinator: BaseCoordinator, MenuScreenDelegate {
     fileprivate let assembly:AssemblyCoordinator
     fileprivate let screenAssembly: AssemblyScreen
     fileprivate let appPreference: AppSettingsManager
+    fileprivate let ttsManager: TTSManager
     fileprivate let sourceView: UIView?
     fileprivate let barButtonitem: UIBarButtonItem?
 
@@ -32,13 +33,14 @@ class MenuCoordinator: BaseCoordinator, MenuScreenDelegate {
         return vc
     }()
     
-    init(_ router: Router, assembly: AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager, sourceView: UIView? = nil, barButtonitem:UIBarButtonItem? = nil) {
+    init(_ router: Router, assembly: AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager, ttsManager: TTSManager, sourceView: UIView? = nil, barButtonitem:UIBarButtonItem? = nil) {
         self.router = router
         self.assembly = assembly
         self.screenAssembly = screenAssembly
         self.appPreference = appPreference
         self.sourceView = sourceView
         self.barButtonitem = barButtonitem
+        self.ttsManager = ttsManager
     }
     
     // MARK: - Public
@@ -55,18 +57,18 @@ class MenuCoordinator: BaseCoordinator, MenuScreenDelegate {
     }
     
     func saveVoice() {
-        finishFlow?(MenuSelection.saveVoice)
         menuVC.dismiss(animated: true, completion: nil)
+        finishFlow?(MenuSelection.saveVoice)
     }
     
     func sendFeedback() {
-        finishFlow?(MenuSelection.sendFeedback)
         menuVC.dismiss(animated: true, completion: nil)
+        finishFlow?(MenuSelection.sendFeedback)
     }
     
     func selectVoice() {
-        finishFlow?(MenuSelection.selectVoice)
         menuVC.dismiss(animated: true, completion: nil)
+        finishFlow?(MenuSelection.selectVoice)
     }
     
     func useInternetToggle(_ value:Bool) {

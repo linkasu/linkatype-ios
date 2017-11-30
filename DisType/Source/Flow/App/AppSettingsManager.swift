@@ -8,8 +8,9 @@
 
 import Foundation
 import RealmSwift
+
 class AppSettingsManager {
-        
+    var voiceId:String { return DB.settings.voiceId}
     var isUseInternet:Bool { return DB.settings.isUseInternet }
     var isSpeakEveryWord:Bool { return DB.settings.isSpeakEveryWord }
 
@@ -20,5 +21,9 @@ class AppSettingsManager {
     }
     func speakEveryWord(_ value:Bool) {
         DB.update(speakEveryWord: value)
+    }
+
+    func voiceId(_ _id:String) {
+        DB.update(voiceId: _id)
     }
 }

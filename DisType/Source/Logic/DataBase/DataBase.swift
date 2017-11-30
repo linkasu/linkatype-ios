@@ -153,6 +153,11 @@ class DataBase {
         settings.isSpeakEveryWord = speakEveryWord
         try! realm.commitWrite()
     }
+    func update(voiceId:String) {
+        realm.beginWrite()
+        settings.voiceId = voiceId
+        try! realm.commitWrite()
+    }
     // MARK: - Delete
     func delete(_ chat:Chat) {
         guard let index = DB.chats.index(of: chat), index > 2 else { return }

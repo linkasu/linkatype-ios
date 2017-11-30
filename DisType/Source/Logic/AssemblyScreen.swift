@@ -29,4 +29,9 @@ class AssemblyScreen {
         return vc
     }
 
+    func selectVoiceScreen(delegate:SelectVoiceCoordinator) -> SelectVoiceScreen {
+        let vc = SelectVoiceScreen.instantiateFromStoryboard()
+        vc.delegate = delegate
+        return vc
+    }
 }
