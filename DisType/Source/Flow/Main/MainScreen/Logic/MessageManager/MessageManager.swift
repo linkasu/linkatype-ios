@@ -29,14 +29,15 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     var tableView:UITableView?
     var category:Category {
         didSet {
-            messages = category.messages
             UIView.animate(withDuration: 0.1) {
                 self.tableView?.reloadData()
             }
         }
     }
     
-    var messages = List<Message>()
+    var messages: List<Message> {
+        return category.messages
+    }
     
     var messagesCount:Int {
         let count = messages.count
