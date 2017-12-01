@@ -181,7 +181,7 @@ class MainScreen: UIViewController, UITextViewDelegate {
     // MARK: - UITextViewDelegate
     func textViewDidChange(_ textView: UITextView) {
         let text = textView.text
-        delegate?.updateCurrentChat(text)
+        delegate?.chatTextDidChanged(text)
     }
 
     // MARK: - Observations

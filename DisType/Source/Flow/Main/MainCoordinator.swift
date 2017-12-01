@@ -76,9 +76,18 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         chatCollection.updateLastCell()
     }
     
-    func updateCurrentChat(_ _text:String?) {
+    func chatTextDidChanged(_ _text:String?) {
+        let spaceChar = Character(" ")
         let text = _text ?? ""
         currentChat().update(text:text)
+        
+        guard
+            appPreference.isSpeakEveryWord,
+            let lastChar = text.last,
+            lastChar == spaceChar,
+            let lastWord = text.split(separator: spaceChar).map({String($0)}).last
+            else { return }
+        speak(lastWord)
     }
     
     func deleteCurrentChat(_ complition: @escaping (IndexPath)->()) {

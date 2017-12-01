@@ -12,7 +12,7 @@ protocol HomeDelegate {
     func didEntered(_ text:String)
     func speak(_ text:String, with languageCode:String?)
     func addNewChat()
-    func updateCurrentChat(_ _text:String?)
+    func chatTextDidChanged(_ _text:String?)
     func deleteCurrentChat(_ complition: @escaping (IndexPath)->())
     func beepSound()
     func showMenu()
