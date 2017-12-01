@@ -9,10 +9,13 @@
 import Foundation
 import AVFoundation
 import UIKit
+import MessageUI
 
 typealias allertReturn = (String)->()
 
-class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOutput, ChatCollectionDelegate, CategoryManagerDelegate, MessageManagerDelegate {
+extension MainCoordinator: ChatCollectionDelegate, CategoryManagerDelegate, MessageManagerDelegate {}
+
+class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOutput {
     
     let systemSoundID: SystemSoundID = 1070
     var finishFlow: ((Any) -> Void)?
@@ -94,6 +97,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         let chat = currentChat()
         guard let index = DB.chats.index(of:chat), index >= 3 else { return }
         DB.delete(chat)
+        chatCollection.updateSelectedIndex()
         complition(chatCollection.selectedIndexPath)
     }
     
@@ -113,7 +117,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
             case .saveVoice:
                 ()
             case .sendFeedback:
-                ()
+                self.showSendFeedback()
             case .selectVoice:
                 self.showSelectVoice()
             }
@@ -122,7 +126,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         menuCoordinator.start()
     }
     
-    func showSelectVoice() {
+    fileprivate func showSelectVoice() {
         let selectVoiceCoordinator = assembly.selectVoiceCoordinator
         addDependency(selectVoiceCoordinator)
         
@@ -136,6 +140,11 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         selectVoiceCoordinator.start()
     }
     
+    fileprivate func showSendFeedback() {
+        guard let screen = screenAssembly.sendFeedback() else { return }
+        router.push(screen)
+    }
+
     func finish() {
         finishFlow!("sss")
     }

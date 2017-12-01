@@ -39,6 +39,13 @@ class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSo
         }, completion: nil)
     }
     
+    func updateSelectedIndex() {
+        let chatsCount = DB.chats.count
+        guard selectedIndex >= chatsCount  else { return }
+        
+        selectedIndexPath = IndexPath(row:chatsCount - 1, section:0)
+    }
+    
     // MARK: - Private
     fileprivate func selectCell(at collectionView:UICollectionView) {
         collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .centeredVertically)
@@ -49,7 +56,7 @@ class ChatCollection: NSObject, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         self.collectionView = collectionView
         let chatsCount =  DB.chats.count
-        if selectedIndex >= chatsCount { selectedIndexPath = IndexPath(row:chatsCount - 1, section:0) }
+        updateSelectedIndex()
         return chatsCount
     }
     

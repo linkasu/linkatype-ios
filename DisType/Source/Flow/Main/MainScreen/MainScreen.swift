@@ -149,9 +149,10 @@ class MainScreen: UIViewController, UITextViewDelegate {
     
     // MARK: - Actions
     @IBAction func deleteChatAction(_ sender: UIBarButtonItem) {
+        guard let collection = self.chatCollectionView else { return }
+        guard let indexPathes = collection.indexPathsForSelectedItems else { return }
+
         delegate?.deleteCurrentChat { newSelectedIndexPath in
-            guard let collection = self.chatCollectionView else { return }
-            guard let indexPathes = collection.indexPathsForSelectedItems else {return}
             collection.deleteItems(at: indexPathes)
             collection.reloadItems(at: [newSelectedIndexPath])
         }

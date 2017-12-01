@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MessageUI
 
 class AssemblyScreen {
     
@@ -33,5 +34,21 @@ class AssemblyScreen {
         let vc = SelectVoiceScreen.instantiateFromStoryboard()
         vc.delegate = delegate
         return vc
+    }
+    
+    func sendFeedback() -> MFMailComposeViewController? {
+        guard
+            MFMailComposeViewController.canSendMail()
+            else {
+                print("Mail services are not available")
+                return nil
+        }
+        
+        let composeVC = MFMailComposeViewController()
+        
+        // Configure the fields of the interface.
+        composeVC.setSubject("DisType-Pro feedback")
+        
+        return composeVC
     }
 }
