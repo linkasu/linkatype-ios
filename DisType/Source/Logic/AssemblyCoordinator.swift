@@ -37,19 +37,25 @@ class AssemblyCoordinator {
     fileprivate let screenAssembly = AssemblyScreen()
     fileprivate let appPreference = AppSettingsManager()
     fileprivate let ttsManager: TTSManager
+    fileprivate let metrica: Metrica
 
-    
+    init(_ router:Router, metrica:Metrica) {
+        self.router = router
+        self.metrica = metrica
+        ttsManager = TTSManager(appPreference:appPreference)
+    }
+
     lazy var appCoordinator: AppCoordinator = {
         return AppCoordinator(router, self)
     }()
     
     lazy var mainCoordinator: MainCoordinator = {
-        let coordinator = MainCoordinator(router, assembly:self, screenAssembly:screenAssembly, appPreference:appPreference, ttsManager:ttsManager)
+        let coordinator = MainCoordinator(router, assembly:self, screenAssembly:screenAssembly, appPreference:appPreference, ttsManager:ttsManager, metrica:metrica)
         return coordinator
     }()
     
     lazy var menuCoordinator: MenuCoordinator = {
-        let coordinator = MenuCoordinator(router, assembly:self, screenAssembly:screenAssembly, appPreference:appPreference, ttsManager:ttsManager , sourceView:mainCoordinator.sourceView)
+        let coordinator = MenuCoordinator(router, assembly:self, screenAssembly:screenAssembly, appPreference:appPreference, ttsManager:ttsManager, metrica:metrica, sourceView:mainCoordinator.sourceView)
         return coordinator
     }()
     
@@ -58,8 +64,4 @@ class AssemblyCoordinator {
         return coordinator
     }()
     
-    init(_ router:Router) {
-        self.router = router
-        ttsManager = TTSManager(appPreference:appPreference)
-    }
 }

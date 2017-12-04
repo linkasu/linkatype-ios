@@ -80,7 +80,12 @@ class CategoryManager: NSObject, UITableViewDelegate, UITableViewDataSource {
         switch selectedIndexPath.row {
         case lastRowIndex :
             delegate.willAddNewCategory {
-                guard $0 == "" else { self.addCategory(named: $0); return }
+                guard $0 == ""
+                    else {
+                        self.delegate.didAddNewCategory()
+                        self.addCategory(named: $0)
+                        return
+                }
                 guard let index = DB.categories.index(of: self.currentCategory) else { return }
                 self.selectedIndexPath = IndexPath(row:index, section:0)
             }

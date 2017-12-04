@@ -54,6 +54,16 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     fileprivate let screenAssembly: AssemblyScreen
     fileprivate let appPreference: AppSettingsManager
     fileprivate let ttsManager: TTSManager
+    fileprivate let metrica: Metrica
+    
+    init(_ router: Router, assembly:AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager, ttsManager: TTSManager, metrica: Metrica) {
+        self.router = router
+        self.assembly = assembly
+        self.screenAssembly = screenAssembly
+        self.appPreference = appPreference
+        self.ttsManager = ttsManager
+        self.metrica = metrica
+    }
     
     fileprivate lazy var chatCollection:ChatCollection = {
         let chatCollection = ChatCollection(delegate:self)
@@ -76,14 +86,6 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         return vc
     }()
     
-    init(_ router: Router, assembly:AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager, ttsManager: TTSManager) {
-        self.router = router
-        self.assembly = assembly
-        self.screenAssembly = screenAssembly
-        self.appPreference = appPreference
-        self.ttsManager = ttsManager
-    }
-
     // MARK: - Public
     func start() {
         router.push(mainVC)
@@ -94,6 +96,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     }
     
     func speak(_ text: String, with languageCode:String? = "ru_RU") {
+        metrica.saidEvent()
         ttsManager.speak(text)
     }
     
@@ -183,7 +186,12 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         mainVC.showGetNewCategoryName(complition)
     }
     
+    func didAddNewCategory() {
+        metrica.categoryCreateEvent()
+    }
+    
     func didSelect(_ category: Category) {
+        metrica.categoryChangeEvent()
         messageManager.category = category
     }
     func didDelete(_ category:Category) {
@@ -204,6 +212,10 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
 
     func willAddNewMessage(for category:Category, complition: @escaping allertReturn) {
         mainVC.showGetNewMessageName(complition)
+    }
+    
+    func didAddNewMessage() {
+        metrica.messageCreateEvent()
     }
     
     func didDelete(_ message:Message) {

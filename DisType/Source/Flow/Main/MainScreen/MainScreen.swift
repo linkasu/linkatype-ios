@@ -119,13 +119,13 @@ class MainScreen: UIViewController, UITextViewDelegate {
             textField.selectAll(nil)
         })
         alertVC?.addAction(UIAlertAction(title: buttonText, style: .default, handler: { (action) in
-            self.hideAlert()
             guard
                 let textField = self.alertVC?.textFields?[0],
                 let text = textField.text
-                else { return }
+                else { self.hideAlert(); return }
             
             block(text)
+            self.hideAlert()
         }))
         
         present(alertVC!, animated: true, completion: {

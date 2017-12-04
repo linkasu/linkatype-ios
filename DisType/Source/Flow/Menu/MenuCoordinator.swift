@@ -45,18 +45,13 @@ class MenuCoordinator: BaseCoordinator, MenuScreenDelegate {
     fileprivate let screenAssembly: AssemblyScreen
     fileprivate let appPreference: AppSettingsManager
     fileprivate let ttsManager: TTSManager
+    fileprivate let metrica: Metrica
     fileprivate let sourceView: UIView?
     fileprivate let barButtonitem: UIBarButtonItem?
 
-
     fileprivate var menuSelection:MenuSelection?
 
-    fileprivate lazy var menuVC:MenuScreen = {
-        let vc = self.screenAssembly.menuScreen(delegate:self)
-        return vc
-    }()
-    
-    init(_ router: Router, assembly: AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager, ttsManager: TTSManager, sourceView: UIView? = nil, barButtonitem:UIBarButtonItem? = nil) {
+    init(_ router: Router, assembly: AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager, ttsManager: TTSManager, metrica: Metrica, sourceView: UIView? = nil, barButtonitem:UIBarButtonItem? = nil) {
         self.router = router
         self.assembly = assembly
         self.screenAssembly = screenAssembly
@@ -64,7 +59,13 @@ class MenuCoordinator: BaseCoordinator, MenuScreenDelegate {
         self.sourceView = sourceView
         self.barButtonitem = barButtonitem
         self.ttsManager = ttsManager
+        self.metrica = metrica
     }
+    
+    fileprivate lazy var menuVC:MenuScreen = {
+        let vc = self.screenAssembly.menuScreen(delegate:self)
+        return vc
+    }()
     
     // MARK: - Public
     func start() {
@@ -76,6 +77,7 @@ class MenuCoordinator: BaseCoordinator, MenuScreenDelegate {
         return appPreference.isUseInternet
     }
     func isSpeakEveryWord() -> Bool {
+        metrica.changeSayingAfterWordValueEvent()
         return appPreference.isSpeakEveryWord
     }
     

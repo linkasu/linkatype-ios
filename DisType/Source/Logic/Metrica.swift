@@ -23,40 +23,38 @@
  * SUCH DAMAGE.
  */
 //
-//  AppDelegate.swift
+//  Metrica.swift
 //  DisType
 //
-//  Created by Mike Kholomeev on 11/17/17.
+//  Created by Mike Kholomeev on 12/4/17.
 //
 
-import UIKit
+import Foundation
+import YandexMobileMetrica
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
-    var appCoordinator: Coordinator!
-    var coordinatorAssembly:AssemblyCoordinator!
+class Metrica {
     
-    fileprivate let metrica: Metrica = Metrica()
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
-        let rootViewController = UINavigationController();
-        rootViewController.isNavigationBarHidden = true
-        application.statusBarStyle = .lightContent
-
-        let router = Router(navController:rootViewController)
-        coordinatorAssembly = AssemblyCoordinator(router, metrica: metrica)
-        appCoordinator = coordinatorAssembly.appCoordinator
-        
-        window = UIWindow.init(frame:UIScreen.main.bounds);
-        window?.rootViewController = rootViewController
-        window?.makeKeyAndVisible()
-        
-        appCoordinator.start()
-        
-        return true
+    init() {
+        YMMYandexMetrica.activate(withApiKey: "74b3edb9-a12c-4ec6-96e2-817e75e03941")
+    }
+    
+    func saidEvent() {
+        YMMYandexMetrica.reportEvent("said", onFailure: nil)
+    }
+    
+    func categoryCreateEvent() {
+        YMMYandexMetrica.reportEvent("create category", onFailure: nil)
+    }
+    
+    func messageCreateEvent() {
+        YMMYandexMetrica.reportEvent("create statement", onFailure: nil)
+    }
+    
+    func categoryChangeEvent() {
+        YMMYandexMetrica.reportEvent("change category", onFailure: nil)
+    }
+    
+    func changeSayingAfterWordValueEvent() {
+        YMMYandexMetrica.reportEvent("say after word status", onFailure: nil)
     }
 }
-

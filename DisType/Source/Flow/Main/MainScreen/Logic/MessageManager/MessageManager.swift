@@ -79,6 +79,8 @@ class MessageManager: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Private
     fileprivate func addMessage(with text:String) {
+        guard text.count > 0 else { return }
+        delegate.didAddNewMessage()
         let message = Message()
         message.text = text
         DB.add(message, to:category)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E33CF1C1FD55D540070AB2A /* Metrica.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E33CF1B1FD55D540070AB2A /* Metrica.swift */; };
 		9E451B351FC44CF30068FC9F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E451B341FC44CF30068FC9F /* String.swift */; };
 		9E451B371FC481C10068FC9F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E451B361FC481C10068FC9F /* UIColor.swift */; };
 		9E4AA1C81FC6E36000F26C35 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4AA1C71FC6E36000F26C35 /* CategoryCell.swift */; };
@@ -48,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		8B653E083D40EF122FF79BA7 /* Pods-DisType.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DisType.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DisType/Pods-DisType.debug.xcconfig"; sourceTree = "<group>"; };
+		9E33CF1B1FD55D540070AB2A /* Metrica.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrica.swift; sourceTree = "<group>"; };
 		9E451B341FC44CF30068FC9F /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		9E451B361FC481C10068FC9F /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		9E4AA1C71FC6E36000F26C35 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				9E9989441FBF655000659960 /* AssemblyCoordinator.swift */,
 				9E99894C1FBF666C00659960 /* AssemblyScreen.swift */,
 				9E9989461FBF657800659960 /* Router.swift */,
+				9E33CF1B1FD55D540070AB2A /* Metrica.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -497,6 +500,7 @@
 				9E451B351FC44CF30068FC9F /* String.swift in Sources */,
 				9E9BCCBB1FC36D1B00AC9B7F /* DataBase.swift in Sources */,
 				9E99894D1FBF666C00659960 /* AssemblyScreen.swift in Sources */,
+				9E33CF1C1FD55D540070AB2A /* Metrica.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
