@@ -50,16 +50,16 @@ class MenuScreen: UIViewController {
     @IBOutlet weak var useInternetCheckBox: UIButton!
     @IBOutlet weak var speakAfterEveryWordButton: UIButton!
     @IBOutlet weak var speakAfterEveryWordCheckBox: UIButton!
+    @IBOutlet weak var screenHeightConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let width = UIApplication.shared.delegate?.window??.bounds.width
-        preferredContentSize = CGSize(width:width!, height:230)
+        preferredContentSize = CGSize(width:width!, height:screenHeightConstraint.constant)
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        useInternetCheckBox.isSelected = delegate!.isUseInternet()
         speakAfterEveryWordCheckBox.isSelected = delegate!.isSpeakEveryWord()
         super.viewWillAppear(animated)
     }
