@@ -208,6 +208,13 @@ class MainScreen: UIViewController, UITextViewDelegate {
         delegate?.chatTextDidChanged(text)
     }
 
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let result = text=="\n"
+        result ? speakInputAction(textView) : ()
+        
+        return true && !result
+    }
+    
     // MARK: - Observations
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard keyPath == "contentSize", let textView = object as? UITextView else { return }
