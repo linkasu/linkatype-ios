@@ -34,6 +34,7 @@ import UIKit
 
 class Router:NSObject, UIPopoverPresentationControllerDelegate {
     fileprivate let navController: UINavigationController
+    fileprivate var modalVC:UIViewController?
     
     init(navController:UINavigationController) {
         self.navController = navController
@@ -54,6 +55,7 @@ class Router:NSObject, UIPopoverPresentationControllerDelegate {
         }
         
         // present the popover
+        modalVC = vc
         navController.present(vc, animated: animated, completion: {
             vc.view.superview?.layer.cornerRadius = 4
         })
@@ -64,6 +66,10 @@ class Router:NSObject, UIPopoverPresentationControllerDelegate {
     }
     func dismissTopScreen(animated:Bool = true) {
         navController.popViewController(animated: animated)
+    }
+    
+    func dismissPopoverScreen(animated:Bool = true) {
+        navController.presentedViewController?.dismiss(animated: animated, completion: nil)
     }
     
     // MARK: - UIPopoverPresentationControllerDelegate

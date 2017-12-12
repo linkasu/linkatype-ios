@@ -36,6 +36,7 @@ protocol SelectVoiceScreenDelegate {
     func voices() -> [String]
     func selectedVoiceName() -> String
     func didSelect(_ voiceName:String)
+    func didCloseScreen()
 }
 
 class SelectVoiceScreen: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -51,6 +52,10 @@ class SelectVoiceScreen: UIViewController, UITableViewDelegate, UITableViewDataS
         selectedVoiceName = delegate?.selectedVoiceName() ?? ""
         
         preferredContentSize = CGSize(width: 400, height: 44 * voices.count)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        delegate?.didCloseScreen()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

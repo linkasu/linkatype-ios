@@ -59,19 +59,25 @@ class AssemblyScreen {
         return vc
     }
     
-    func sendFeedback() -> MFMailComposeViewController? {
-        guard
-            MFMailComposeViewController.canSendMail()
-            else {
-                print("Mail services are not available")
-                return nil
-        }
-        
-        let composeVC = MFMailComposeViewController()
-        
-        // Configure the fields of the interface.
-        composeVC.setSubject("DisType-Pro feedback")
-        
-        return composeVC
+    func feedbackScreen(delegate:FeedbackCoordinatorDelegate) -> FeedbackScreen {
+        let vc = FeedbackScreen.instantiateFromStoryboard()
+        vc.delegate = delegate
+        return vc
     }
+    
+//    func sendFeedback() -> MFMailComposeViewController? {
+//        guard
+//            MFMailComposeViewController.canSendMail()
+//            else {
+//                print("Mail services are not available")
+//                return nil
+//        }
+//        
+//        let composeVC = MFMailComposeViewController()
+//        
+//        // Configure the fields of the interface.
+//        composeVC.setSubject("DisType-Pro feedback")
+//        
+//        return composeVC
+//    }
 }

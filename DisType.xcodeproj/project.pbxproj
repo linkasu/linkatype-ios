@@ -45,6 +45,10 @@
 		9E9BCCBB1FC36D1B00AC9B7F /* DataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9BCCBA1FC36D1B00AC9B7F /* DataBase.swift */; };
 		9E9BCCBE1FC3795600AC9B7F /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9BCCBD1FC3795600AC9B7F /* ChatCell.swift */; };
 		9EC93654DB8ED406A94BD93A /* Pods_DisType.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5797004C8AB6C4F4A7BC1FF /* Pods_DisType.framework */; };
+		9EE8A9961FE0460C007A29B5 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE8A9951FE0460C007A29B5 /* Feedback.swift */; };
+		9EE8A9991FE04F51007A29B5 /* FeedbackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE8A9981FE04F51007A29B5 /* FeedbackCoordinator.swift */; };
+		9EE8A99B1FE050A6007A29B5 /* FeedbackScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE8A99A1FE050A6007A29B5 /* FeedbackScreen.swift */; };
+		9EE8A99D1FE050FA007A29B5 /* FeedbackScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EE8A99C1FE050FA007A29B5 /* FeedbackScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +92,10 @@
 		9E9BCCB81FC3661800AC9B7F /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		9E9BCCBA1FC36D1B00AC9B7F /* DataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBase.swift; sourceTree = "<group>"; };
 		9E9BCCBD1FC3795600AC9B7F /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		9EE8A9951FE0460C007A29B5 /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
+		9EE8A9981FE04F51007A29B5 /* FeedbackCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackCoordinator.swift; sourceTree = "<group>"; };
+		9EE8A99A1FE050A6007A29B5 /* FeedbackScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackScreen.swift; sourceTree = "<group>"; };
+		9EE8A99C1FE050FA007A29B5 /* FeedbackScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FeedbackScreen.storyboard; sourceTree = "<group>"; };
 		A5797004C8AB6C4F4A7BC1FF /* Pods_DisType.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DisType.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B41BFA56C4B28D988AF3C533 /* Pods-DisType.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DisType.release.xcconfig"; path = "Pods/Target Support Files/Pods-DisType/Pods-DisType.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -229,6 +237,7 @@
 				9E99894C1FBF666C00659960 /* AssemblyScreen.swift */,
 				9E9989461FBF657800659960 /* Router.swift */,
 				9E33CF1B1FD55D540070AB2A /* Metrica.swift */,
+				9EE8A9951FE0460C007A29B5 /* Feedback.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -240,6 +249,7 @@
 				9E9989531FBF687100659960 /* Main */,
 				9E52F4131FCECA43008BEDD4 /* Menu */,
 				9E52F42A1FD05002008BEDD4 /* SelectVoice */,
+				9EE8A9971FE04F1E007A29B5 /* Feedback */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -336,6 +346,16 @@
 			path = ChatCell;
 			sourceTree = "<group>";
 		};
+		9EE8A9971FE04F1E007A29B5 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				9EE8A9981FE04F51007A29B5 /* FeedbackCoordinator.swift */,
+				9EE8A99A1FE050A6007A29B5 /* FeedbackScreen.swift */,
+				9EE8A99C1FE050FA007A29B5 /* FeedbackScreen.storyboard */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -401,6 +421,7 @@
 				9E9989351FBF63C400659960 /* LaunchScreen.storyboard in Resources */,
 				9E52F41B1FCECBC8008BEDD4 /* MenuScreen.storyboard in Resources */,
 				9E99895A1FBF692600659960 /* MainScreen.storyboard in Resources */,
+				9EE8A99D1FE050FA007A29B5 /* FeedbackScreen.storyboard in Resources */,
 				9E9989321FBF63C400659960 /* Assets.xcassets in Resources */,
 				9E52F42E1FD050B3008BEDD4 /* SelectVoiceScreen.storyboard in Resources */,
 			);
@@ -431,11 +452,13 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DisType/Pods-DisType-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 			);
@@ -469,6 +492,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EE8A99B1FE050A6007A29B5 /* FeedbackScreen.swift in Sources */,
 				9E52F4221FCF020B008BEDD4 /* Settings.swift in Sources */,
 				9E4AA1C81FC6E36000F26C35 /* CategoryCell.swift in Sources */,
 				9E9989581FBF68E100659960 /* MainScreen.swift in Sources */,
@@ -480,6 +504,7 @@
 				9E99895E1FBF773300659960 /* CategoryManager.swift in Sources */,
 				9E9BCCB51FC3651D00AC9B7F /* Chat.swift in Sources */,
 				9E52F4191FCECBA7008BEDD4 /* MenuScreen.swift in Sources */,
+				9EE8A9991FE04F51007A29B5 /* FeedbackCoordinator.swift in Sources */,
 				9E451B371FC481C10068FC9F /* UIColor.swift in Sources */,
 				9E9989451FBF655000659960 /* AssemblyCoordinator.swift in Sources */,
 				9E9989491FBF659C00659960 /* BaseCoordinator.swift in Sources */,
@@ -495,6 +520,7 @@
 				9E99892B1FBF63C400659960 /* AppDelegate.swift in Sources */,
 				9E9989431FBF650500659960 /* Coordinator.swift in Sources */,
 				9E52F4151FCECA60008BEDD4 /* MenuCoordinator.swift in Sources */,
+				9EE8A9961FE0460C007A29B5 /* Feedback.swift in Sources */,
 				9E99894B1FBF65BC00659960 /* AppCoordinator.swift in Sources */,
 				9E52F42C1FD05030008BEDD4 /* SelectVoiceCoordinator.swift in Sources */,
 				9E451B351FC44CF30068FC9F /* String.swift in Sources */,

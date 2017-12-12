@@ -23,66 +23,51 @@
  * SUCH DAMAGE.
  */
 //
-//  SelectVoiceCoordinator.swift
+//  FeedbackCoordinator.swift
 //  DisType
 //
-//  Created by Mike Kholomeev on 11/30/17.
+//  Created by Mike Kholomeev on 12/12/17.
 //
 
 import Foundation
 import UIKit
 
-class SelectVoiceCoordinator: BaseCoordinator, Coordinator, CoordinatorOutput, SelectVoiceScreenDelegate {
-    
-    // MARK: - CoordinatorOutput
-    internal var finishFlow: ((Any) -> Void)?
+class FeedbackCoordinator: BaseCoordinator, Coordinator, CoordinatorOutput, FeedbackCoordinatorDelegate {
 
-    // MARK: - Init
+    var finishFlow: ((Any) -> Void)?
+    
     fileprivate let router: Router
     fileprivate let assembly:AssemblyCoordinator
     fileprivate let screenAssembly: AssemblyScreen
-    fileprivate let appPreference: AppSettingsManager
-    fileprivate let ttsManager: TTSManager
+    fileprivate let feedback: Feedback
     fileprivate let sourceView: UIView?
-    
-    
-    fileprivate var menuSelection:MenuSelection?
-    
-    fileprivate lazy var selectVoiceVC:SelectVoiceScreen = {
-        let vc = self.screenAssembly.selectVoiceScreen(delegate:self)
-        return vc
-    }()
-    
-    init(_ router: Router, assembly: AssemblyCoordinator, screenAssembly:AssemblyScreen, appPreference:AppSettingsManager, ttsManager: TTSManager, sourceView: UIView? = nil) {
+
+    init(_ router: Router, assembly: AssemblyCoordinator, screenAssembly: AssemblyScreen, feedback: Feedback, sourceView: UIView) {
         self.router = router
         self.assembly = assembly
         self.screenAssembly = screenAssembly
-        self.appPreference = appPreference
+        self.feedback = feedback
         self.sourceView = sourceView
-        self.ttsManager = ttsManager
+    }
+
+    fileprivate lazy var feedbackVC: FeedbackScreen = {
+        let vc = self.screenAssembly.feedbackScreen(delegate:self)
+        return vc
+    }()
+
+    func start() {
+        router.presentModaly(feedbackVC, sourceView:sourceView)
     }
     
-    // MARK: - Coordinator
-    internal func start() {
-        router.presentModaly(selectVoiceVC, sourceView: sourceView)
-    }
-    
-    // MARK: - SelectVoiceScreenDelegate
-    internal func voices() -> [String] {
-        return ttsManager.voicesNames()
-    }
-    
-    internal func selectedVoiceName() -> String {
-        guard let name = ttsManager.selectedVoice?.name else { return "" }
-        return name
-    }
-    
-    internal func didSelect(_ voiceName: String) {
-        ttsManager.select(voice: voiceName)
+    // MARK: - FeedbackCoordinatorDelegate
+    internal func didSend(text: String, to email: String?) {
+        guard let _email = email else { return }
+        feedback.send(text:text, to:_email)
+//        feedbackVC.dismiss(animated: true, completion: nil)
+        finishFlow?(true)
     }
     
     internal func didCloseScreen() {
-        finishFlow?("")
+        finishFlow?(false)
     }
 }
-

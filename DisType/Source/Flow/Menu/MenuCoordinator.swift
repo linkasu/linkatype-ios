@@ -82,17 +82,17 @@ class MenuCoordinator: BaseCoordinator, MenuScreenDelegate {
     }
     
     func saveVoice() {
-        menuVC.dismiss(animated: true, completion: nil)
+//        menuVC.dismiss(animated: true, completion: nil)
         finishFlow?(MenuSelection.saveVoice)
     }
     
     func sendFeedback() {
-        menuVC.dismiss(animated: true, completion: nil)
+//        menuVC.dismiss(animated: true, completion: nil)
         finishFlow?(MenuSelection.sendFeedback)
     }
     
     func selectVoice() {
-        menuVC.dismiss(animated: true, completion: nil)
+//        menuVC.dismiss(animated: true, completion: nil)
         finishFlow?(MenuSelection.selectVoice)
     }
     

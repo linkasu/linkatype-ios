@@ -38,6 +38,7 @@ class AssemblyCoordinator {
     fileprivate let appPreference = AppSettingsManager()
     fileprivate let ttsManager: TTSManager
     fileprivate let metrica: Metrica
+    fileprivate let feedback = Feedback()
 
     init(_ router:Router, metrica:Metrica) {
         self.router = router
@@ -61,6 +62,11 @@ class AssemblyCoordinator {
     
     lazy var selectVoiceCoordinator: SelectVoiceCoordinator = {
         let coordinator = SelectVoiceCoordinator(router, assembly:self, screenAssembly:screenAssembly, appPreference:appPreference, ttsManager:ttsManager, sourceView:mainCoordinator.sourceView)
+        return coordinator
+    }()
+    
+    lazy var feedbackCoordinator: FeedbackCoordinator = {
+        let coordinator = FeedbackCoordinator(router, assembly:self, screenAssembly:screenAssembly, feedback: feedback, sourceView:mainCoordinator.sourceView)
         return coordinator
     }()
     

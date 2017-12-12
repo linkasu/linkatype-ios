@@ -137,6 +137,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         
         menuCoordinator.finishFlow = { result in
             self.removeDependency(menuCoordinator)
+            self.router.dismissPopoverScreen()
             guard let selection = result as? MenuSelection else { return }
             
             switch selection {
@@ -157,18 +158,25 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
         addDependency(selectVoiceCoordinator)
         
         selectVoiceCoordinator.finishFlow = { result in
+            selectVoiceCoordinator.finishFlow = nil
             self.removeDependency(selectVoiceCoordinator)
-            guard let selection = result as? String else { return }
-            
-            self.ttsManager.select(voice: selection)
+            self.router.dismissPopoverScreen()
         }
         
         selectVoiceCoordinator.start()
     }
     
     fileprivate func showSendFeedback() {
-        guard let screen = screenAssembly.sendFeedback() else { return }
-        router.push(screen)
+        let feedbackCoordinator = assembly.feedbackCoordinator
+        addDependency(feedbackCoordinator)
+        
+        feedbackCoordinator.finishFlow = { result in
+            feedbackCoordinator.finishFlow = nil
+            self.removeDependency(feedbackCoordinator)
+            self.router.dismissPopoverScreen()
+        }
+        
+        feedbackCoordinator.start()
     }
 
     func finish() {
