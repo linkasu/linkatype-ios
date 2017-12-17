@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Feedback Screen-->
+        <scene sceneID="QyQ-7N-BHf">
+            <objects>
+                <viewController storyboardIdentifier="FeedbackScreen" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="overCurrentContext" id="S3X-1x-deT" customClass="FeedbackScreen" customModule="DisType" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="cVZ-y2-knn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="cQq-W9-ldn">
+                                <rect key="frame" x="5" y="5" width="365" height="290"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter email" textAlignment="natural" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="UBs-cB-mk7">
+                                        <rect key="frame" x="0.0" y="0.0" width="365" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feedback:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vM-0Z-cP3">
+                                        <rect key="frame" x="0.0" y="40" width="365" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" red="0.60392156860000001" green="0.58039215690000001" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="lrF-EN-bVt">
+                                        <rect key="frame" x="0.0" y="66" width="365" height="180"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="twitter"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WDm-Rf-NwI">
+                                        <rect key="frame" x="0.0" y="256" width="365" height="34"/>
+                                        <state key="normal" title="Send">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="send:" destination="S3X-1x-deT" eventType="touchUpInside" id="pS5-a0-VrX"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.77647058820000003" green="0.78039215689999997" blue="0.78823529410000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="cQq-W9-ldn" firstAttribute="centerY" secondItem="cVZ-y2-knn" secondAttribute="centerY" id="2BN-Kb-fwM"/>
+                            <constraint firstItem="cQq-W9-ldn" firstAttribute="centerX" secondItem="cVZ-y2-knn" secondAttribute="centerX" id="aOu-sY-Qw0"/>
+                            <constraint firstItem="cQq-W9-ldn" firstAttribute="top" secondItem="dKL-Qk-BHJ" secondAttribute="top" constant="5" id="eVw-y2-FyT"/>
+                            <constraint firstItem="dKL-Qk-BHJ" firstAttribute="trailing" secondItem="cQq-W9-ldn" secondAttribute="trailing" constant="5" id="yQn-si-kWT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="dKL-Qk-BHJ"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="375" height="300"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="300"/>
+                    <connections>
+                        <outlet property="emailTextField" destination="UBs-cB-mk7" id="x5i-iG-kg1"/>
+                        <outlet property="sendButton" destination="WDm-Rf-NwI" id="CEp-bY-5wV"/>
+                        <outlet property="textTextView" destination="lrF-EN-bVt" id="gmA-gi-dep"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K3a-aC-vlh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="45.600000000000001" y="186.20689655172416"/>
+        </scene>
+    </scenes>
+</document>
