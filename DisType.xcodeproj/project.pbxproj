@@ -49,6 +49,8 @@
 		9EE8A9991FE04F51007A29B5 /* FeedbackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE8A9981FE04F51007A29B5 /* FeedbackCoordinator.swift */; };
 		9EE8A99B1FE050A6007A29B5 /* FeedbackScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE8A99A1FE050A6007A29B5 /* FeedbackScreen.swift */; };
 		9EE8A99D1FE050FA007A29B5 /* FeedbackScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EE8A99C1FE050FA007A29B5 /* FeedbackScreen.storyboard */; };
+		C39F4E9E1FEC660A00C57471 /* alarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = C39F4E9D1FEC660A00C57471 /* alarm.wav */; };
+		C39F4EA11FEC663500C57471 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39F4EA01FEC663500C57471 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +100,8 @@
 		9EE8A99C1FE050FA007A29B5 /* FeedbackScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FeedbackScreen.storyboard; sourceTree = "<group>"; };
 		A5797004C8AB6C4F4A7BC1FF /* Pods_DisType.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DisType.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B41BFA56C4B28D988AF3C533 /* Pods-DisType.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DisType.release.xcconfig"; path = "Pods/Target Support Files/Pods-DisType/Pods-DisType.release.xcconfig"; sourceTree = "<group>"; };
+		C39F4E9D1FEC660A00C57471 /* alarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = alarm.wav; sourceTree = "<group>"; };
+		C39F4EA01FEC663500C57471 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				9E99893C1FBF63CC00659960 /* Source */,
+				C39F4E9C1FEC65F700C57471 /* Resources */,
 				9E99892A1FBF63C400659960 /* AppDelegate.swift */,
 				9E9989311FBF63C400659960 /* Assets.xcassets */,
 				9E9989331FBF63C400659960 /* LaunchScreen.storyboard */,
@@ -218,6 +223,7 @@
 		9E99893C1FBF63CC00659960 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C39F4E9F1FEC662000C57471 /* Miscellaneous */,
 				9E9BCCB31FC364F200AC9B7F /* Models */,
 				9E99893F1FBF641900659960 /* Flow */,
 				9E99893D1FBF63E000659960 /* Logic */,
@@ -356,6 +362,22 @@
 			path = Feedback;
 			sourceTree = "<group>";
 		};
+		C39F4E9C1FEC65F700C57471 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C39F4E9D1FEC660A00C57471 /* alarm.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C39F4E9F1FEC662000C57471 /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+				C39F4EA01FEC663500C57471 /* Constants.swift */,
+			);
+			path = Miscellaneous;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -424,6 +446,7 @@
 				9EE8A99D1FE050FA007A29B5 /* FeedbackScreen.storyboard in Resources */,
 				9E9989321FBF63C400659960 /* Assets.xcassets in Resources */,
 				9E52F42E1FD050B3008BEDD4 /* SelectVoiceScreen.storyboard in Resources */,
+				C39F4E9E1FEC660A00C57471 /* alarm.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +550,7 @@
 				9E9BCCBB1FC36D1B00AC9B7F /* DataBase.swift in Sources */,
 				9E99894D1FBF666C00659960 /* AssemblyScreen.swift in Sources */,
 				9E33CF1C1FD55D540070AB2A /* Metrica.swift in Sources */,
+				C39F4EA11FEC663500C57471 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

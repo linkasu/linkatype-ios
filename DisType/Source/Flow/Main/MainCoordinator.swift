@@ -48,6 +48,14 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     var sourceView: UIView {
         return mainVC.menuSourceView
     }
+    
+    let audioPlayer: AVAudioPlayer = {
+        // need crash here if there is no such resource.
+        let soundUrl = Bundle.main.url(forResource: Constants.Sounds.soundName,
+                                       withExtension: nil)!
+        let player = try! AVAudioPlayer(contentsOf: soundUrl)
+        return player
+    }()
 
     fileprivate let router: Router
     fileprivate let assembly:AssemblyCoordinator
@@ -128,7 +136,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     }
     
     func beepSound() {
-        AudioServicesPlayAlertSound(systemSoundID)
+        audioPlayer.play()
     }
     
     func showMenu() {
