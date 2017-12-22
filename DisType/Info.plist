@@ -28,7 +28,7 @@
 		<true/>
 	</dict>
 	<key>UILaunchStoryboardName</key>
-	<string>MainScreen</string>
+	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>MainScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

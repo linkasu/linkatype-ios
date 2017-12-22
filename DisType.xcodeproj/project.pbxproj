@@ -49,6 +49,7 @@
 		9EE8A9991FE04F51007A29B5 /* FeedbackCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE8A9981FE04F51007A29B5 /* FeedbackCoordinator.swift */; };
 		9EE8A99B1FE050A6007A29B5 /* FeedbackScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE8A99A1FE050A6007A29B5 /* FeedbackScreen.swift */; };
 		9EE8A99D1FE050FA007A29B5 /* FeedbackScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EE8A99C1FE050FA007A29B5 /* FeedbackScreen.storyboard */; };
+		C39F4EA51FEC6E6800C57471 /* app_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C39F4EA21FEC6E6700C57471 /* app_logo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +99,7 @@
 		9EE8A99C1FE050FA007A29B5 /* FeedbackScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FeedbackScreen.storyboard; sourceTree = "<group>"; };
 		A5797004C8AB6C4F4A7BC1FF /* Pods_DisType.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DisType.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B41BFA56C4B28D988AF3C533 /* Pods-DisType.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DisType.release.xcconfig"; path = "Pods/Target Support Files/Pods-DisType/Pods-DisType.release.xcconfig"; sourceTree = "<group>"; };
+		C39F4EA21FEC6E6700C57471 /* app_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_logo.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +210,7 @@
 			children = (
 				9E99893C1FBF63CC00659960 /* Source */,
 				9E99892A1FBF63C400659960 /* AppDelegate.swift */,
+				C39F4EA21FEC6E6700C57471 /* app_logo.png */,
 				9E9989311FBF63C400659960 /* Assets.xcassets */,
 				9E9989331FBF63C400659960 /* LaunchScreen.storyboard */,
 				9E9989361FBF63C400659960 /* Info.plist */,
@@ -424,6 +427,7 @@
 				9EE8A99D1FE050FA007A29B5 /* FeedbackScreen.storyboard in Resources */,
 				9E9989321FBF63C400659960 /* Assets.xcassets in Resources */,
 				9E52F42E1FD050B3008BEDD4 /* SelectVoiceScreen.storyboard in Resources */,
+				C39F4EA51FEC6E6800C57471 /* app_logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
