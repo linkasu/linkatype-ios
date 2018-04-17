@@ -36,19 +36,22 @@ class ChatCell: UICollectionViewCell {
     static let id = String(describing:ChatCell.self)
     
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var selectedMarkView: UIView!
     
     override var isSelected: Bool {
         didSet {
-//            print(title.text!, " selected=\(isSelected)")
             title.textColor = isSelected ? UIColor.white : UIColor.lightGray
+            UIView.animate(withDuration: 0.2) {
+                self.selectedMarkView.isHidden = !self.isSelected
+            }
         }
     }
 
     override var isHighlighted: Bool {
         didSet {
-//            print(title.text!, " highlighted=\(isHighlighted)")
+            title.textColor = isHighlighted ? UIColor.lightGray : title.textColor
             UIView.animate(withDuration: 0.2) {
-                self.backgroundColor = self.isHighlighted ? UIColor.white : UIColor.dtBlue
+                self.backgroundColor = self.isHighlighted ? UIColor.highlitedCell : UIColor.clear
             }
         }
     }

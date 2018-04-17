@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="A5J-NE-R68">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="A5J-NE-R68">
     <device id="ipad9_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,6 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="48E-6m-Zva">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="20"/>
+                                <color key="backgroundColor" red="0.98431372549019602" green="0.80000000000000004" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ez9-dB-o8G">
                                 <rect key="frame" x="1014" y="0.0" width="10" height="1"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -26,10 +30,11 @@
                                     <constraint firstAttribute="height" constant="1" id="JpO-v1-70c"/>
                                 </constraints>
                             </view>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whQ-3b-RHh">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="whQ-3b-RHh">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="44"/>
+                                <color key="backgroundColor" red="0.098039215690000001" green="0.45098039220000002" blue="0.46666666670000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <items>
-                                    <barButtonItem title="DisType" id="EOR-24-hwA">
+                                    <barButtonItem title="LINKa: напиши" id="EOR-24-hwA">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="TIW-ZK-fPo"/>
@@ -68,11 +73,11 @@
                                         </connections>
                                     </barButtonItem>
                                 </items>
-                                <color key="barTintColor" red="0.035294117647058823" green="0.31372549019607843" blue="0.81568627450980391" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="barTintColor" red="0.098039215690000001" green="0.45098039220000002" blue="0.46666666670000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </toolbar>
                             <collectionView clipsSubviews="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" indicatorStyle="black" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="009-RD-bXw">
                                 <rect key="frame" x="0.0" y="64" width="1024" height="45"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.098039215686274508" green="0.45098039215686275" blue="0.46666666666666667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="QU9-x1-mRr"/>
                                 </constraints>
@@ -96,13 +101,24 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CHK-9Q-vuk" userLabel="selectedMarkView">
+                                                    <rect key="frame" x="0.0" y="43" width="72" height="2"/>
+                                                    <color key="backgroundColor" red="0.74509803919999995" green="0.83921568629999999" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="2" id="2GL-HQ-s6b"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                         </view>
                                         <constraints>
                                             <constraint firstItem="gtZ-st-nU8" firstAttribute="centerX" secondItem="pkc-RU-TsL" secondAttribute="centerX" id="8ic-AA-aiZ"/>
+                                            <constraint firstItem="CHK-9Q-vuk" firstAttribute="width" secondItem="pkc-RU-TsL" secondAttribute="width" id="JNl-87-wRr"/>
+                                            <constraint firstAttribute="bottom" secondItem="CHK-9Q-vuk" secondAttribute="bottom" id="unh-CW-a5X"/>
+                                            <constraint firstItem="CHK-9Q-vuk" firstAttribute="leading" secondItem="pkc-RU-TsL" secondAttribute="leading" id="w8h-Tb-H5c"/>
                                             <constraint firstItem="gtZ-st-nU8" firstAttribute="centerY" secondItem="pkc-RU-TsL" secondAttribute="centerY" id="zec-vF-FXd"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="selectedMarkView" destination="CHK-9Q-vuk" id="GY5-R3-DyH"/>
                                             <outlet property="title" destination="gtZ-st-nU8" id="Fq3-Pv-y6H"/>
                                         </connections>
                                     </collectionViewCell>
@@ -110,7 +126,7 @@
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KIf-fY-rpp">
                                 <rect key="frame" x="15" y="117" width="994" height="29"/>
-                                <color key="backgroundColor" red="0.77647058820000003" green="0.78039215689999997" blue="0.78823529410000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.84313725490196079" green="0.85098039215686272" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="СКАЗАТЬ">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -133,7 +149,7 @@
                             </textView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kjw-QC-h1n" userLabel="separatorVertical">
                                 <rect key="frame" x="15" y="194" width="994" height="2"/>
-                                <color key="backgroundColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.74509803921568629" green="0.83921568627450982" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="2" id="fUP-Wm-y66"/>
                                 </constraints>
@@ -204,6 +220,7 @@
                             <constraint firstItem="7hH-IV-c4V" firstAttribute="top" secondItem="Kjw-QC-h1n" secondAttribute="bottom" constant="8" id="IlA-8g-bXd"/>
                             <constraint firstItem="009-RD-bXw" firstAttribute="leading" secondItem="sBy-t1-ddP" secondAttribute="leading" id="Lqi-g5-uNb"/>
                             <constraint firstItem="7hH-IV-c4V" firstAttribute="leading" secondItem="ggf-gb-JBP" secondAttribute="trailing" constant="8" id="OPc-Ni-s4y"/>
+                            <constraint firstItem="48E-6m-Zva" firstAttribute="width" secondItem="sBy-t1-ddP" secondAttribute="width" id="QHI-mD-9LZ"/>
                             <constraint firstItem="009-RD-bXw" firstAttribute="top" secondItem="whQ-3b-RHh" secondAttribute="bottom" id="QIW-1V-yVC"/>
                             <constraint firstItem="KIf-fY-rpp" firstAttribute="leading" secondItem="sBy-t1-ddP" secondAttribute="leading" constant="15" id="VKF-Hu-f4s"/>
                             <constraint firstItem="sBy-t1-ddP" firstAttribute="trailing" secondItem="Ez9-dB-o8G" secondAttribute="trailing" id="W9B-Tu-H6W"/>
@@ -212,6 +229,7 @@
                             <constraint firstItem="Kjw-QC-h1n" firstAttribute="top" secondItem="JrQ-vo-vsa" secondAttribute="bottom" constant="8" id="YRK-bG-yxh"/>
                             <constraint firstItem="ggf-gb-JBP" firstAttribute="leading" secondItem="Kjw-QC-h1n" secondAttribute="leading" id="Yzt-bq-SAM"/>
                             <constraint firstItem="7hH-IV-c4V" firstAttribute="centerX" secondItem="sBy-t1-ddP" secondAttribute="centerX" id="bb6-lL-o1a"/>
+                            <constraint firstItem="whQ-3b-RHh" firstAttribute="top" secondItem="48E-6m-Zva" secondAttribute="bottom" id="bft-tB-vjh"/>
                             <constraint firstItem="KIf-fY-rpp" firstAttribute="top" secondItem="009-RD-bXw" secondAttribute="bottom" constant="8" id="cud-vq-U6V"/>
                             <constraint firstItem="KIf-fY-rpp" firstAttribute="centerX" secondItem="sBy-t1-ddP" secondAttribute="centerX" id="e29-jE-Iz1"/>
                             <constraint firstItem="whQ-3b-RHh" firstAttribute="top" secondItem="sBy-t1-ddP" secondAttribute="top" id="eu4-9g-7Mo"/>
@@ -220,8 +238,10 @@
                             <constraint firstItem="whQ-3b-RHh" firstAttribute="trailing" secondItem="sBy-t1-ddP" secondAttribute="trailing" id="p1X-6k-8eC"/>
                             <constraint firstItem="JrQ-vo-vsa" firstAttribute="top" secondItem="KIf-fY-rpp" secondAttribute="bottom" id="rhv-xL-zof"/>
                             <constraint firstItem="Kjw-QC-h1n" firstAttribute="width" secondItem="KIf-fY-rpp" secondAttribute="width" id="sEU-bO-eOl"/>
+                            <constraint firstItem="48E-6m-Zva" firstAttribute="centerX" secondItem="WpT-5q-kMh" secondAttribute="centerX" id="uY4-YF-AIp"/>
                             <constraint firstItem="ggf-gb-JBP" firstAttribute="top" secondItem="7hH-IV-c4V" secondAttribute="top" id="ul1-L5-0TC"/>
                             <constraint firstItem="JrQ-vo-vsa" firstAttribute="centerX" secondItem="sBy-t1-ddP" secondAttribute="centerX" id="wQH-dy-mQj"/>
+                            <constraint firstItem="48E-6m-Zva" firstAttribute="top" secondItem="WpT-5q-kMh" secondAttribute="top" id="x99-X6-fTg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="sBy-t1-ddP"/>
                     </view>
@@ -241,7 +261,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M9C-bh-xDP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-239" y="85"/>
+            <point key="canvasLocation" x="-239.06249999999997" y="84.375"/>
         </scene>
     </scenes>
     <resources>

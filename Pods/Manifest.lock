@@ -1,10 +1,10 @@
 PODS:
-  - Alamofire (4.6.0)
-  - Realm (3.0.2):
-    - Realm/Headers (= 3.0.2)
-  - Realm/Headers (3.0.2)
-  - RealmSwift (3.0.2):
-    - Realm (= 3.0.2)
+  - Alamofire (4.5.1)
+  - Realm (3.0.0):
+    - Realm/Headers (= 3.0.0)
+  - Realm/Headers (3.0.0)
+  - RealmSwift (3.0.0):
+    - Realm (= 3.0.0)
   - YandexMobileMetrica (2.9.4):
     - YandexMobileMetrica/Static (= 2.9.4)
   - YandexMobileMetrica/Static (2.9.4)
@@ -15,9 +15,9 @@ DEPENDENCIES:
   - YandexMobileMetrica (~> 2.9.4)
 
 SPEC CHECKSUMS:
-  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  Realm: 6f23fd1f178a09342eac21bfa7c2bf4312a7a180
-  RealmSwift: 695393add1b8f9d5fa75dd16e6355cf3935f71e2
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  Realm: dec0de73be8c57506e39db72694d513c189493b3
+  RealmSwift: 44a7090b16d1b22a406c6bf129bdd602db1bbecc
   YandexMobileMetrica: 8f150e2d04cf34e3af9506a75310a6229bcf05c5
 
 PODFILE CHECKSUM: 271234c06d8ee6db4e1ac9bcfbec534863d6d83b

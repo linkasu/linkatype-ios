@@ -34,6 +34,9 @@ import UIKit
 
 extension UIColor {
     class var dtBlue:UIColor {
-        return UIColor(red: 0, green: 122/255, blue: 1, alpha: 0)
+        return UIColor(red:0.10, green:0.45, blue:0.47, alpha:1.00)
+    }
+    class var highlitedCell: UIColor {
+        return UIColor(red:0.11, green:0.52, blue:0.54, alpha:1.00)
     }
 }

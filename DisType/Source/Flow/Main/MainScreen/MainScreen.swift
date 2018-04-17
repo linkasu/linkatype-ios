@@ -66,9 +66,10 @@ class MainScreen: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var categoryTableView: UITableView!
     @IBOutlet weak var messageTableView: UITableView!
-    
+    // MARK: - Setup
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.statusBarStyle = .lightContent
         setupSayButton()
         setupTextView()
         setupChatCollectionView()
@@ -77,7 +78,6 @@ class MainScreen: UIViewController, UITextViewDelegate {
         setupTableMenu()
     }
     
-    // MARK: - Setup
     fileprivate func setupTableMenu() {
         let deleteMenuItem = UIMenuItem(title: "Удалить", action: #selector(CategoryCell.delete(row:)))
         let renameMenuItem = UIMenuItem(title: "Переименовать", action: #selector(CategoryCell.rename(row:)))
