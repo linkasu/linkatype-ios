@@ -47,6 +47,7 @@ class SelectVoiceCoordinator: BaseCoordinator, Coordinator, CoordinatorOutput, S
     
     
     fileprivate var menuSelection:MenuSelection?
+    fileprivate var voices: [String: String] = [:]
     
     fileprivate lazy var selectVoiceVC:SelectVoiceScreen = {
         let vc = self.screenAssembly.selectVoiceScreen(delegate:self)
@@ -60,6 +61,7 @@ class SelectVoiceCoordinator: BaseCoordinator, Coordinator, CoordinatorOutput, S
         self.appPreference = appPreference
         self.sourceView = sourceView
         self.ttsManager = ttsManager
+        voices = ttsManager.voicesNamesAndIDs(for: nil)
     }
     
     // MARK: - Coordinator
@@ -68,17 +70,19 @@ class SelectVoiceCoordinator: BaseCoordinator, Coordinator, CoordinatorOutput, S
     }
     
     // MARK: - SelectVoiceScreenDelegate
-    internal func voices() -> [String] {
-        return ttsManager.voicesNames()
+    internal func voicesNamesIDs() -> [String:String] {
+        return voices
     }
     
     internal func selectedVoiceName() -> String {
-        guard let name = ttsManager.selectedVoice?.name else { return "" }
+//        guard let name = ttsManager.selectedVoice?.name else { return "" }
+        let name = ttsManager.selectedVoice.name
         return name
     }
     
-    internal func didSelect(_ voiceName: String) {
-        ttsManager.select(voice: voiceName)
+    internal func didSelect(_ position: Int) {
+        let name = Array(voices.keys)[position]
+        ttsManager.select(voiceID: voices[name]!)
     }
     
     internal func didCloseScreen() {

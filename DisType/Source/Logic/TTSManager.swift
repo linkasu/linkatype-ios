@@ -36,13 +36,13 @@ class TTSManager {
     fileprivate var languageCode:String? = "ru-RU"
     fileprivate let appPreference: AppSettingsManager
     
-    var selectedVoice:AVSpeechSynthesisVoice? {
+    var selectedVoice:AVSpeechSynthesisVoice {
         didSet {
-            appPreference.voiceId(selectedVoice!.identifier)
+//            guard let selectedVoice = selectedVoice else { appPreference.voiceId(""); return }
+            appPreference.voiceId(selectedVoice.identifier)
         }
     }
 
-    
     init(appPreference: AppSettingsManager) {
         self.appPreference = appPreference
         
@@ -52,33 +52,35 @@ class TTSManager {
         } else {
             let voices = AVSpeechSynthesisVoice.speechVoices()
             let voice = voices.filter({ $0.language == "ru-RU" }).first
-            selectedVoice = voice
+            selectedVoice = voice!
         }
     }
 
-    func languageVoices() -> [AVSpeechSynthesisVoice] {
+    fileprivate func voices(for language: String? = nil) -> [AVSpeechSynthesisVoice] {
         let voices = AVSpeechSynthesisVoice.speechVoices()
-        let languageVoices = voices.filter { $0.language == self.languageCode }
+        languageCode = language
+        guard let code = language else { return voices }
         
+        let languageVoices = voices.filter { $0.language == code }
         return languageVoices
     }
 
-    func voicesNames() -> [String] {
-        let names = languageVoices().reduce([]) { (result, obj) -> [String] in
+    public func voicesNamesAndIDs(for language: String? = "ru-RU") -> [String : String] {
+        let ids = voices(for: language).reduce([:]) { (result, obj) -> [String : String] in
             var acc = result
-            acc.append(obj.name)
+            acc[obj.name] = obj.identifier
             return acc
         }
 
-        return names
+        return ids
     }
     
-    func select(voice name:String) {
-        guard let voice = languageVoices().filter({$0.name==name}).first else { return }
+    public func select(voiceID id:String) {
+        guard let voice = voices(for: languageCode).filter({$0.identifier==id}).first else { return }
         selectedVoice = voice
     }
     
-    func speak(_ text: String, with languageCode:String? = "ru_RU") {
+    public func speak(_ text: String, with languageCode:String? = "ru_RU") {
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = selectedVoice
         let synth = AVSpeechSynthesizer()

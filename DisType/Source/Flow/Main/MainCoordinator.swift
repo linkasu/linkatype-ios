@@ -142,6 +142,7 @@ class MainCoordinator: BaseCoordinator, HomeDelegate, Coordinator, CoordinatorOu
     func showMenu() {
         let menuCoordinator = assembly.menuCoordinator
         addDependency(menuCoordinator)
+        mainVC.view.endEditing(true)
         
         menuCoordinator.finishFlow = { result in
             self.removeDependency(menuCoordinator)

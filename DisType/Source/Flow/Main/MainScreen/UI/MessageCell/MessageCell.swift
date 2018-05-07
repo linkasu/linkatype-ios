@@ -36,6 +36,5 @@ class MessageCell: UITableViewCell {
     static let id = String(describing:MessageCell.self)
     
     @objc func delete(row:Int){}
-    @objc func rename(row:Int){}
-    
+    @objc func rename(row:Int){}    
 }

@@ -33,9 +33,9 @@ import Foundation
 import UIKit
 
 protocol SelectVoiceScreenDelegate {
-    func voices() -> [String]
+    func voicesNamesIDs() -> [String:String]
     func selectedVoiceName() -> String
-    func didSelect(_ voiceName:String)
+    func didSelect(_ position: Int)
     func didCloseScreen()
 }
 
@@ -43,15 +43,15 @@ class SelectVoiceScreen: UIViewController, UITableViewDelegate, UITableViewDataS
 
     var delegate:SelectVoiceScreenDelegate?
     
-    fileprivate var voices:[String] = []
+    fileprivate var voicesIDs:[String:String] = [:]
     fileprivate var selectedVoiceName:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        voices = delegate?.voices() ?? []
+        voicesIDs = delegate?.voicesNamesIDs() ?? [:]
         selectedVoiceName = delegate?.selectedVoiceName() ?? ""
-        
-        preferredContentSize = CGSize(width: 400, height: 44 * voices.count)
+        let height = 44 * voicesIDs.count > 400 ? 400 : 44 * voicesIDs.count
+        preferredContentSize = CGSize(width: 400, height: height)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -59,13 +59,13 @@ class SelectVoiceScreen: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return voices.count
+        return voicesIDs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "selectVoiceCell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LanguageCell.id, for: indexPath) as? LanguageCell else { return UITableViewCell()}
         
-        let name = voices[indexPath.row]
+        let name = Array(voicesIDs.keys)[indexPath.row]
         cell.textLabel?.text = name
         cell.isSelected = (name == selectedVoiceName)
         
@@ -73,8 +73,17 @@ class SelectVoiceScreen: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.didSelect(voices[indexPath.row])
+        delegate?.didSelect(indexPath.row)
         tableView.cellForRow(at: indexPath)?.isSelected = true
     }
     
+}
+
+class LanguageCell: UITableViewCell {
+    static let id = String(describing:LanguageCell.self)
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        self.accessoryType = selected ? .checkmark : .none
+    }
 }
